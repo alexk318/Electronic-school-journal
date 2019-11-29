@@ -6,5 +6,23 @@
 
 
 {% block body %}
-    <h1>Enf</h1>
+    <h1>Electronic school journal</h1>
+
+    <form action="{% url 'index' %}" method="post">
+
+        {% csrf_token %}
+
+        <br />
+        {{ msg }}
+        <br /><br />
+        {% for field in forms %}
+            {{ field.label }}
+            {{ field }}
+            <br /><br />
+        {% endfor %}
+
+        <br />
+        <input type="submit" value="Log in">
+
+    </form>
 {% endblock %}
