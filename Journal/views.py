@@ -1,29 +1,40 @@
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
-
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, logout, login
 
 from .forms import AuthForms
 
 
 def index(request):
-    if request.method == 'POST':
-        forms = AuthForms(request.POST)
-        if forms.is_valid():
-            username = forms.cleaned_data['username']
-            password = forms.cleaned_data['password']
+    if request.user.is_authenticated:
+        return redirect('journal')
+    else:
+        if request.method == 'POST':
+            forms = AuthForms(request.POST)
+            if forms.is_valid():
+                username = forms.cleaned_data['username']
+                password = forms.cleaned_data['password']
 
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                return HttpResponseRedirect('/journal')
-            else:
-                msg = 'The entered data is incorrect'
-                return render(request, 'Journal/index.html', {'forms': forms, 'msg': msg})
+                user = authenticate(username=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    return redirect('journal')
+                else:
+                    msg = 'The entered data is incorrect'
+                    return render(request, 'Journal/index.html', {'forms': forms, 'msg': msg})
 
-    forms = AuthForms()
-    return render(request, 'Journal/index.html', {'forms': forms})
+        forms = AuthForms()
+        return render(request, 'Journal/index.html', {'forms': forms})
 
 
 def journal(request):
-    return render(request, 'Journal/journal.html')
+    if request.user.is_authenticated:
+        return render(request, 'Journal/journal.html', {'current_user': request.user})
+    else:
+        msg = 'To access the journal you need to log in!'
+        forms = AuthForms()
+        return render(request, 'Journal/index.html', {'forms': forms, 'msg': msg})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('index')
