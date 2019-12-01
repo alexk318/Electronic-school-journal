@@ -28,7 +28,9 @@ def index(request):
 
 def journal(request):
     if request.user.is_authenticated:
-        return render(request, 'Journal/journal.html', {'current_user': request.user})
+        return render(request, 'Journal/journal.html', {'current_user': request.user,
+                                                        'group': request.user.groups.values_list('name', flat=True).
+                      first()})
     else:
         msg = 'To access the journal you need to log in!'
         forms = AuthForms()
