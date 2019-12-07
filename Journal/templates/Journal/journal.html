@@ -10,10 +10,4 @@
     <i>You are {{ group }}</i>
 
     <br /><a role="button" class="btn btn-link" href="/logout">Log out</a>
-
-    {% if group == 'Teacher' %}
-        <form action="{% url 'notification' %}" method="post">
-            <br /><button type="button" class="btn btn-primary">+ Notification</button>
-        </form>
-    {% endif %}
 {% endblock %}
