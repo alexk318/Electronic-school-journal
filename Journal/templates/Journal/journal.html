@@ -11,8 +11,9 @@
 
     <br /><a role="button" class="btn btn-link" href="/logout">Log out</a>
 
-
-    <form action="{% url 'notification' %}" method="post">
-        <br /><button type="button" class="btn btn-primary">+ Notification</button>
-    </form>
+    {% if group == 'Teacher' %}
+        <form action="{% url 'notification' %}" method="post">
+            <br /><button type="button" class="btn btn-primary">+ Notification</button>
+        </form>
+    {% endif %}
 {% endblock %}
