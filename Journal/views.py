@@ -37,6 +37,11 @@ def journal(request):
         return render(request, 'Journal/index.html', {'forms': forms, 'msg': msg})
 
 
+def notification(request):
+    group = request.user.groups.values_list('name', flat=True)
+    return render(request, 'Journal/notification.html', {'group': group})
+
+
 def logout_view(request):
     logout(request)
     return redirect('index')
