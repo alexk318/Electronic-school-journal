@@ -9,5 +9,13 @@
     <h1>Hello, {{ current_user.first_name }}</h1>
     <i>You are {{ group }}</i>
 
+    {% if group == 'Admin' %}
+        <br /><br />
+        <div class="btn-group" role="group" aria-label="Basic example">
+          <a href="/journal/schedule" class="btn btn-primary" tabindex="-1" role="button" aria-disabled="true">Schedule</a>
+          <!-- <button type="button" class="btn btn-secondary">x</button> -->
+        </div>
+    {% endif %}
+
     <br /><a role="button" class="btn btn-link" href="/logout">Log out</a>
 {% endblock %}
