@@ -13,7 +13,14 @@
         {% csrf_token %}
 
         <br />
-        {{ msg }}
+
+        {% if msg %}
+            <div class="alert alert-danger" role="alert">
+                {{ msg }}
+            </div>
+        {% endif %}
+
+
         <br /><br />
         {% for field in forms %}
             {{ field.label }}

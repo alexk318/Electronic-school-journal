@@ -43,6 +43,12 @@ def schedule(request):
     return render(request, 'Journal/schedule.html', {})
 
 
+def classes(request):
+    if request.user.groups.values_list('name', flat=True).first() != 'Admin':
+        return render(request, 'Journal/index.html', {})
+    return render(request, 'Journal/classes.html', {})
+
+
 def logout_view(request):
     logout(request)
     return redirect('index')
