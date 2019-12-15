@@ -59,7 +59,7 @@ def classes(request):
 
         sorted_titles = sorted(titles, key=key)
 
-        return render(request, 'Journal/classes.html', {'titles': sorted_titles})
+        return render(request, 'Journal/classes.html', {'titles': sorted_titles, 'classes': classes})
 
 
 def logout_view(request):

@@ -6,11 +6,41 @@
 
 
 {% block body %}
+
     <h1>Classes management</h1>
 
     <h4>Classes: </h4>
-    {% for title in titles %}
-        {{ title }}
-        <br />
-    {% endfor %}
+
+    <table style="width:100%">
+        <tr>
+            <th>Title</th>
+        </tr>
+
+        {% for title in titles %}
+            <tr>
+                <td>{{ title }}</td>
+            </tr>
+        {% endfor %}
+
+    </table>
+
+
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+
 {% endblock %}
