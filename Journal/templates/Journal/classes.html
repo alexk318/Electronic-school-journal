@@ -6,4 +6,11 @@
 
 
 {% block body %}
+    <h1>Classes management</h1>
+
+    <h4>Classes: </h4>
+    {% for title in titles %}
+        {{ title }}
+        <br />
+    {% endfor %}
 {% endblock %}

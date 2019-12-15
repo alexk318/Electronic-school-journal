@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, logout, login
 
+import re
+
 from .forms import AuthForms
+from .models import Class
 
 
 def index(request):
@@ -46,7 +49,17 @@ def schedule(request):
 def classes(request):
     if request.user.groups.values_list('name', flat=True).first() != 'Admin':
         return render(request, 'Journal/index.html', {})
-    return render(request, 'Journal/classes.html', {})
+    else:
+        classes = Class.objects.all()
+        titles = [classes_.title for classes_ in classes ]
+
+        def key(s):
+            num, letters = re.match(r'(\d*)(.*)', s).groups()
+            return float(num or 'inf'), letters
+
+        sorted_titles = sorted(titles, key=key)
+
+        return render(request, 'Journal/classes.html', {'titles': sorted_titles})
 
 
 def logout_view(request):
