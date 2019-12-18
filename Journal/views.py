@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, logout, login
 
 import re
 
-from .forms import AuthForms
+from .forms import AuthForms, ClassEditForms
 from .models import Class
 
 
@@ -51,7 +51,7 @@ def classes(request):
         return render(request, 'Journal/index.html', {})
     else:
         classes = Class.objects.all()
-        titles = [classes_.title for classes_ in classes ]
+        titles = [classes_.title for classes_ in classes]
 
         def key(s):
             num, letters = re.match(r'(\d*)(.*)', s).groups()
@@ -59,7 +59,16 @@ def classes(request):
 
         sorted_titles = sorted(titles, key=key)
 
-        return render(request, 'Journal/classes.html', {'titles': sorted_titles, 'classes': classes})
+        forms = ClassEditForms()
+        return render(request, 'Journal/classes.html', {'titles': sorted_titles,
+                                                        'classes': classes, 'forms' : forms})
+
+
+def class_delete(request, class_title):
+    c = Class.objects.filter(title=class_title).first()
+    c.delete()
+
+    return redirect('classes')
 
 
 def logout_view(request):

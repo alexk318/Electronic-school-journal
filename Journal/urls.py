@@ -8,6 +8,7 @@ urlpatterns = [
     path('journal/', views.journal, name='journal'),
     path('journal/schedule/', views.schedule, name='schedule'),
     path('journal/classes/', views.classes, name='classes'),
+    path('journal/classes/delete/<class_title>', views.class_delete, name='class_delete'),
 
     path('logout/', views.logout_view, name='logout'),
 ]

@@ -9,16 +9,36 @@
 
     <h1>Classes management</h1>
 
-    <h4>Classes: </h4>
+    <div class="alert alert-success" role="alert">
+        {{ msg }}
+    </div>
 
+    <br />
     <table style="width:100%">
         <tr>
             <th>Title</th>
+            <th>Edit</th>
+            <th>Delete</th>
         </tr>
 
         {% for title in titles %}
             <tr>
                 <td>{{ title }}</td>
+
+                <td>
+                    {% for form in forms %}
+                        {{ form }}
+                    {% endfor %}
+
+                    <input type="submit" value="Edit">
+                </td>
+
+                <form action="{% url 'class_delete' title %}" method="post">
+                    <td>
+                        <input type="submit" value="Delete">
+                    </td>
+                </form>
+
             </tr>
         {% endfor %}
 
