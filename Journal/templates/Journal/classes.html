@@ -9,10 +9,6 @@
 
     <h1>Classes management</h1>
 
-    <div class="alert alert-success" role="alert">
-        {{ msg }}
-    </div>
-
     <br />
     <table style="width:100%">
         <tr>
@@ -26,11 +22,13 @@
                 <td>{{ title }}</td>
 
                 <td>
-                    {% for form in forms %}
-                        {{ form }}
-                    {% endfor %}
+                    <form action="{% url 'class_edit' title %}" method="post">
+                        {% for form in forms %}
+                            {{ form }}
+                        {% endfor %}
 
-                    <input type="submit" value="Edit">
+                        <input type="submit" value="Edit">
+                    </form>
                 </td>
 
                 <form action="{% url 'class_delete' title %}" method="post">

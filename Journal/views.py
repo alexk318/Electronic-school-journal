@@ -48,7 +48,7 @@ def schedule(request):
 
 def classes(request):
     if request.user.groups.values_list('name', flat=True).first() != 'Admin':
-        return render(request, 'Journal/index.html', {})
+        return redirect('index')
     else:
         classes = Class.objects.all()
         titles = [classes_.title for classes_ in classes]
@@ -61,10 +61,27 @@ def classes(request):
 
         forms = ClassEditForms()
         return render(request, 'Journal/classes.html', {'titles': sorted_titles,
-                                                        'classes': classes, 'forms' : forms})
+                                                        'classes': classes, 'forms': forms})
+
+
+def class_edit(request, class_title):
+    c = Class.objects.filter(title=class_title).first()
+
+    if request.user.groups.values_list('name', flat=True).first() != 'Admin':
+        return redirect('index')
+
+    if request.method == 'POST':
+        form = ClassEditForms(request.POST)
+        if form.is_valid():
+            c.title = form.cleaned_data['title']
+            c.save()
+
+    return redirect('classes')
 
 
 def class_delete(request, class_title):
+    if request.user.groups.values_list('name', flat=True).first() != 'Admin':
+        return redirect('index')
     c = Class.objects.filter(title=class_title).first()
     c.delete()
 
