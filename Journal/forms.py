@@ -8,3 +8,7 @@ class AuthForms(forms.Form):
 
 class ClassEditForms(forms.Form):
     title = forms.CharField(max_length=3)
+
+
+class ClassAddForms(forms.Form):
+    title = forms.CharField(label='Title:' ,max_length=3)

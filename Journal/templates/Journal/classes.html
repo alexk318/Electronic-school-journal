@@ -23,7 +23,7 @@
 
                 <td>
                     <form action="{% url 'class_edit' title %}" method="post">
-                        {% for form in forms %}
+                        {% for form in editforms %}
                             {{ form }}
                         {% endfor %}
 
@@ -41,6 +41,18 @@
         {% endfor %}
 
     </table>
+
+    <br /><br />
+    <h3>New Class</h3>
+
+    <form action="{% url 'class_add' %}" method="post">
+        {% for forms in addforms %}
+            {{ forms.label }}
+            {{ forms }}
+        {% endfor %}
+
+        <input type="submit" value="Add">
+    </form>
 
 
     <style>

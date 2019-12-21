@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, logout, login
 
 import re
 
-from .forms import AuthForms, ClassEditForms
+from .forms import AuthForms, ClassEditForms, ClassAddForms
 from .models import Class
 
 
@@ -60,8 +60,20 @@ def classes(request):
         sorted_titles = sorted(titles, key=key)
 
         forms = ClassEditForms()
+        addforms = ClassAddForms()
         return render(request, 'Journal/classes.html', {'titles': sorted_titles,
-                                                        'classes': classes, 'forms': forms})
+                                                        'classes': classes, 'editforms': forms, 'addforms': addforms})
+
+
+def class_add(request):
+    form = ClassAddForms(request.POST)
+    if form.is_valid():
+        title = form.cleaned_data['title']
+
+        new_class = Class(title=title)
+        new_class.save()
+
+    return redirect('classes')
 
 
 def class_edit(request, class_title):
