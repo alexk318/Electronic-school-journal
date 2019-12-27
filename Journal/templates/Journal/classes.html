@@ -10,10 +10,21 @@
     <h1>Classes management</h1>
 
     <br />
+    <h3>New Class</h3>
+
+    <form action="{% url 'class_add' %}" method="post">
+        {% for forms in addforms %}
+            {{ forms.label }}
+            {{ forms }}
+        {% endfor %}
+
+        <input type="submit" value="Add">
+    </form>
+
+    <br />
     <table style="width:100%">
         <tr>
             <th>Title</th>
-            <th>Edit</th>
             <th>Delete</th>
         </tr>
 
@@ -21,15 +32,6 @@
             <tr>
                 <td>{{ title }}</td>
 
-                <td>
-                    <form action="{% url 'class_edit' title %}" method="post">
-                        {% for form in editforms %}
-                            {{ form }}
-                        {% endfor %}
-
-                        <input type="submit" value="Edit">
-                    </form>
-                </td>
 
                 <form action="{% url 'class_delete' title %}" method="post">
                     <td>
@@ -41,18 +43,6 @@
         {% endfor %}
 
     </table>
-
-    <br /><br />
-    <h3>New Class</h3>
-
-    <form action="{% url 'class_add' %}" method="post">
-        {% for forms in addforms %}
-            {{ forms.label }}
-            {{ forms }}
-        {% endfor %}
-
-        <input type="submit" value="Add">
-    </form>
 
 
     <style>

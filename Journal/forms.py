@@ -6,9 +6,5 @@ class AuthForms(forms.Form):
     password = forms.CharField(label='Password:', max_length=200)
 
 
-class ClassEditForms(forms.Form):
-    title = forms.CharField(max_length=3)
-
-
 class ClassAddForms(forms.Form):
-    title = forms.CharField(label='Title:' ,max_length=3)
+    title = forms.CharField(label='Title:', max_length=3)

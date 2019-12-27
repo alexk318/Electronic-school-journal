@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, logout, login
 
 import re
 
-from .forms import AuthForms, ClassEditForms, ClassAddForms
+from .forms import AuthForms, ClassAddForms
 from .models import Class
 
 
@@ -59,10 +59,9 @@ def classes(request):
 
         sorted_titles = sorted(titles, key=key)
 
-        forms = ClassEditForms()
         addforms = ClassAddForms()
         return render(request, 'Journal/classes.html', {'titles': sorted_titles,
-                                                        'classes': classes, 'editforms': forms, 'addforms': addforms})
+                                                        'classes': classes, 'addforms': addforms})
 
 
 def class_add(request):
@@ -72,21 +71,6 @@ def class_add(request):
 
         new_class = Class(title=title)
         new_class.save()
-
-    return redirect('classes')
-
-
-def class_edit(request, class_title):
-    c = Class.objects.filter(title=class_title).first()
-
-    if request.user.groups.values_list('name', flat=True).first() != 'Admin':
-        return redirect('index')
-
-    if request.method == 'POST':
-        form = ClassEditForms(request.POST)
-        if form.is_valid():
-            c.title = form.cleaned_data['title']
-            c.save()
 
     return redirect('classes')
 

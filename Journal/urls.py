@@ -10,7 +10,6 @@ urlpatterns = [
 
     path('journal/classes/', views.classes, name='classes'),
     path('journal/classes/add/', views.class_add, name='class_add'),
-    path('journal/classes/edit/<class_title>', views.class_edit, name='class_edit'),
     path('journal/classes/delete/<class_title>', views.class_delete, name='class_delete'),
 
     path('logout/', views.logout_view, name='logout'),
