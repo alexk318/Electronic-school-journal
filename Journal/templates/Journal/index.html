@@ -4,32 +4,14 @@
     Electronic school journal
 {% endblock %}
 
+{% block head %}
+
+{% endblock %}
 
 {% block body %}
-    <h1>Electronic school journal</h1>
-
-    <form action="{% url 'index' %}" method="post">
-
-        {% csrf_token %}
-
-        <br />
-
-        {% if msg %}
-            <div class="alert alert-danger" role="alert">
-                {{ msg }}
-            </div>
-        {% endif %}
-
-
-        <br /><br />
-        {% for field in forms %}
-            {{ field.label }}
-            {{ field }}
-            <br /><br />
-        {% endfor %}
-
-        <br />
-        <input type="submit" value="Log in">
-
-    </form>
+    <div class="card">
+        <div class="card-body">
+            <h1 class="display-1">Electronic school Journal</h1>
+        </div>
+    </div>
 {% endblock %}
