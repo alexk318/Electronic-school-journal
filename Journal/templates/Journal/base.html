@@ -42,7 +42,10 @@
             <div class="menubar menubar-dark" id="main-menu">
 
                 <div class="menubar-header text-center bg-primary">
-                    <!-- Заглавная картинка -->
+                    <br />
+                    {{ current_user.first_name }}
+                    -
+                    {{ current_user.groups.get }}
                 </div>
 
                 <div class="menubar-body">
