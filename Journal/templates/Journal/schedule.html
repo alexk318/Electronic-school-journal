@@ -5,24 +5,42 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Schedule</h1>
+    <div class="card">
+        <div class="card-body">
+            <h1 class="display-1">Schedule</h1>
 
-    <br />
-    Choose a class:
-    <select>
-        <option>7a</option>
-        <option>7b</option>
-        <option>8a</option>
-    </select>
+            <i>
+                <mark>Digitalization</mark>
+                is an important step in the twenty-first century</i>
+        </div>
+    </div>
 
-    <br /><br />
-    <h2>Monday:</h2>
-        <h6>1. Math</h6>
-        <h6>2. Math</h6>
-        <h6>3. Biology</h6>
-        <h6>4. Geography</h6>
-        <h6>5. Sport</h6>
-        <h6>6. Sport</h6>
+    <br/>
+    <div class="card">
+        <div class="card-body">
+            <h3 class="display-3">Choose a class:</h3>
+            <select>
+                {% for title in titles %}
+                    <option>title</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h4 class="display-4">Monday:</h4>
+            <br/>
+                <h6>1. Math</h6>
+                <h6>2. Math</h6>
+                <h6>3. Biology</h6>
+                <h6>4. Geography</h6>
+                <h6>5. Sport</h6>
+                <h6>6. Sport</h6>
+        </div>
+    </div>
+
+
 
 
 {% endblock %}

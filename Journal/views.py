@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, logout, login
 import re
 
 from .forms import AuthForms, ClassAddForms
-from .models import Class
+from .models import SchoolClass
 
 
 def index(request):
@@ -53,7 +53,7 @@ def classes(request):
     if request.user.groups.values_list('name', flat=True).first() != 'Admin':
         return redirect('index')
     else:
-        classes = Class.objects.all()
+        classes = SchoolClass.objects.all()
         titles = [classes_.title for classes_ in classes]
 
         def key(s):
@@ -72,7 +72,7 @@ def class_add(request):
     if form.is_valid():
         title = form.cleaned_data['title']
 
-        new_class = Class(title=title)
+        new_class = SchoolClass(title=title)
         new_class.save()
 
     return redirect('classes')
@@ -81,7 +81,7 @@ def class_add(request):
 def class_delete(request, class_title):
     if request.user.groups.values_list('name', flat=True).first() != 'Admin':
         return redirect('index')
-    c = Class.objects.filter(title=class_title).first()
+    c = SchoolClass.objects.filter(title=class_title).first()
     c.delete()
 
     return redirect('classes')
