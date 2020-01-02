@@ -19,10 +19,14 @@
     <div class="card">
         <div class="card-body">
             <h3 class="display-3">Choose a class:</h3>
-            <select>
-                {% for title in titles %}
-                    <option>title</option>
-                {% endfor %}
+
+            <label for="choose"></label>
+            <select id="choose">
+                <option>
+                    {% for c in classes %}
+                        {{ c.title }}
+                    {% endfor %}
+                </option>
             </select>
         </div>
     </div>

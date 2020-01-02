@@ -7,6 +7,16 @@ from .forms import AuthForms, ClassAddForms
 from .models import SchoolClass
 
 
+classes = SchoolClass.objects.all()
+titles = [classes_.title for classes_ in classes]
+
+def key(s):
+    num, letters = re.match(r'(\d*)(.*)', s).groups()
+    return float(num or 'inf'), letters
+
+sorted_titles = sorted(titles, key=key)
+
+
 def index(request):
     if request.user.is_authenticated:
         return redirect('journal')
@@ -46,21 +56,13 @@ def journal(request):
 def schedule(request):
     if request.user.groups.values_list('name', flat=True).first() != 'Admin':
         return redirect('index')
-    return render(request, 'Journal/schedule.html', {})
+    return render(request, 'Journal/schedule.html', {'classes': classes})
 
 
 def classes(request):
     if request.user.groups.values_list('name', flat=True).first() != 'Admin':
         return redirect('index')
     else:
-        classes = SchoolClass.objects.all()
-        titles = [classes_.title for classes_ in classes]
-
-        def key(s):
-            num, letters = re.match(r'(\d*)(.*)', s).groups()
-            return float(num or 'inf'), letters
-
-        sorted_titles = sorted(titles, key=key)
 
         addforms = ClassAddForms()
         return render(request, 'Journal/classes.html', {'titles': sorted_titles,
