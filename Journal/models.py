@@ -27,7 +27,7 @@ class Day(models.Model):
 class Schedule(models.Model):
     day = models.ForeignKey(Day, on_delete=models.CASCADE, default="")
     schoolclass = models.ForeignKey(SchoolClass, on_delete=models.CASCADE, default="")
-    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, default="")
+    lesson = models.ManyToManyField(Lesson)
 
     def __str__(self):
-        return 'Schedule for %s' % self.day
+        return 'Schedule for %s' % self.schoolclass

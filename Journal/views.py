@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, logout, login
 import re
 
 from .forms import AuthForms, ClassAddForms
-from .models import SchoolClass
+from .models import SchoolClass, Schedule, Day
 
 
 classes = SchoolClass.objects.all()
@@ -54,9 +54,53 @@ def journal(request):
 
 
 def schedule(request):
-    if request.user.groups.values_list('name', flat=True).first() != 'Admin':
+    if request.user.groups.values_list('name', flat=True).first() == 'Admin':
+        all_schoolclasses = SchoolClass.objects.all()
+
+        return render(request, 'Journal/schedule.html', {'titles': sorted_titles})
+    else:
         return redirect('index')
-    return render(request, 'Journal/schedule.html', {'classes': classes})
+
+
+def class_schedule(request, class_title):
+    if request.user.groups.values_list('name', flat=True).first() == 'Admin':
+        monday = Day.objects.filter(title='Monday').first()
+        tuesday = Day.objects.filter(title='Tuesday').first()
+        wednesday = Day.objects.filter(title='Wednesday').first()
+        thursday = Day.objects.filter(title='Thursday').first()
+        friday = Day.objects.filter(title='Friday').first()
+
+
+        schoolclass = SchoolClass.objects.filter(title=class_title).first()
+
+        schedule_monday = Schedule.objects.filter(schoolclass=schoolclass, day=monday).first()
+        schedule_tuesday = Schedule.objects.filter(schoolclass=schoolclass, day=tuesday).first()
+        schedule_wednesday = Schedule.objects.filter(schoolclass=schoolclass, day=wednesday).first()
+        schedule_thursday = Schedule.objects.filter(schoolclass=schoolclass, day=thursday).first()
+        schedule_friday = Schedule.objects.filter(schoolclass=schoolclass, day=friday).first()
+
+        lessons_monday = schedule_monday.lesson.all()
+        lessons_tuesday = schedule_tuesday.lesson.all()
+        lessons_wednesday = schedule_wednesday.lesson.all()
+        lessons_thursday = schedule_thursday.lesson.all()
+        lessons_friday = schedule_friday.lesson.all()
+
+
+        return render(request, 'Journal/schedule.html', {'titles': titles,
+                                                         'class_title': class_title,
+                                                         'schedule': schedule,
+
+                                                         'lessons_monday': lessons_monday,
+                                                         'lessons_tuesday': lessons_tuesday,
+                                                         'lessons_wednesday': lessons_wednesday,
+                                                         'lessons_thursday': lessons_thursday,
+                                                         'lessons_friday': lessons_friday,
+                                                         })
+    else:
+        return redirect('index')
+
+
+
 
 
 def classes(request):

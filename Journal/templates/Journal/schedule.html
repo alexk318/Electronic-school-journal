@@ -4,47 +4,65 @@
     Schedule
 {% endblock %}
 
+
 {% block body %}
     <div class="card">
         <div class="card-body">
             <h1 class="display-1">Schedule</h1>
 
-            <i>
-                <mark>Digitalization</mark>
-                is an important step in the twenty-first century</i>
-        </div>
-    </div>
-
-    <br/>
-    <div class="card">
-        <div class="card-body">
-            <h3 class="display-3">Choose a class:</h3>
-
-            <label for="choose"></label>
-            <select id="choose">
-                <option>
-                    {% for c in classes %}
-                        {{ c.title }}
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {% if not class_title %}
+                        Choose class
+                    {% else %}
+                        {{ class_title }}
+                    {% endif %}
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    {% for t in titles %}
+                        <a class="dropdown-item" href="{% url 'class_schedule' t %}">{{ t }}</a>
                     {% endfor %}
-                </option>
-            </select>
-        </div>
-    </div>
+                </div>
+            </div>
 
-    <div class="card">
-        <div class="card-body">
-            <h4 class="display-4">Monday:</h4>
-            <br/>
-                <h6>1. Math</h6>
-                <h6>2. Math</h6>
-                <h6>3. Biology</h6>
-                <h6>4. Geography</h6>
-                <h6>5. Sport</h6>
-                <h6>6. Sport</h6>
         </div>
     </div>
 
 
+    {% if class_title %}
+        <div class="card">
+            <div class="card-body">
+                <h4 class="display-4">Monday</h4>
+                {% for lesson in lessons_monday %}
+                    {{ lesson }}
+                {% endfor %}
 
+                <h4 class="display-4">Tuesday</h4>
+                {% for lesson in lessons_tuesday %}
+                    {{ lesson }}
+                {% endfor %}
+
+                <h4 class="display-4">Wednesday</h4>
+                {% for lesson in lessons_wednesday %}
+                    {{ lesson }}
+                {% endfor %}
+
+                <h4 class="display-4">Thursday</h4>
+                {% for lesson in lessons_thursday %}
+                    {{ lesson }}
+                {% endfor %}
+
+                <h4 class="display-4">Friday</h4>
+                {% for lesson in lessons_friday %}
+                    {{ lesson }}
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+    <script src="https://unpkg.com/jquery@3.4.1/dist/jquery.slim.min.js"></script>
+    <script src="https://unpkg.com/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
 
 {% endblock %}
