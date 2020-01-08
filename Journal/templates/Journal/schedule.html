@@ -31,34 +31,172 @@
 
 
     {% if class_title %}
-        <div class="card">
-            <div class="card-body">
-                <h4 class="display-4">Monday</h4>
-                {% for lesson in lessons_monday %}
-                    {{ lesson }}
-                {% endfor %}
+        <div class="row row row-cols-1 row-cols-md-2 row-cols-lg-5">
 
-                <h4 class="display-4">Tuesday</h4>
-                {% for lesson in lessons_tuesday %}
-                    {{ lesson }}
-                {% endfor %}
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title text-muted">Monday</h6>
+                        <h3 class="mb-10">
+                            {% for lessons in lessons_monday %}
+                                {{ lessons }}
+                                <br/>
+                            {% endfor %}
+                        </h3>
+                        <p class="text-muted mb-0">
+                            <span class="float-right">Teacher</span>
+                        </p>
 
-                <h4 class="display-4">Wednesday</h4>
-                {% for lesson in lessons_wednesday %}
-                    {{ lesson }}
-                {% endfor %}
+                        <br/>
+                        <div class="form-group">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary">
+                                    <i class="mdi mdi-comment-arrow-right"title="Add"></i>
+                                </button>
+                                <button type="button" class="btn btn-primary">
+                                    <i class="mdi mdi-comment-edit" title="Edit"></i>
+                                </button>
+                                <button type="button" class="btn btn-primary">
+                                    <i class="mdi mdi-comment-alert" title="Delete"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
 
-                <h4 class="display-4">Thursday</h4>
-                {% for lesson in lessons_thursday %}
-                    {{ lesson }}
-                {% endfor %}
+                </div>
+            </div>
 
-                <h4 class="display-4">Friday</h4>
-                {% for lesson in lessons_friday %}
-                    {{ lesson }}
-                {% endfor %}
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title text-muted">Tuesday</h6>
+                        <h3 class="mb-10">
+                            {% for lessons in lessons_tuesday %}
+                                {{ lessons }}
+                                <br/>
+                            {% endfor %}
+                        </h3>
+                        <p class="text-muted mb-0">
+                            <span class="float-right"></span>
+                        </p>
+
+                        <br/>
+                        <div class="form-group">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary">
+                                    <i class="mdi mdi-comment-arrow-right"title="Add"></i>
+                                </button>
+                                <button type="button" class="btn btn-primary">
+                                    <i class="mdi mdi-comment-edit" title="Edit"></i>
+                                </button>
+                                <button type="button" class="btn btn-primary">
+                                    <i class="mdi mdi-comment-alert" title="Delete"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title text-muted">Wednesday</h6>
+                        <h3 class="mb-10">
+                            {% for lessons in lessons_wednesday %}
+                                {{ lessons }}
+                                <br/>
+                            {% endfor %}
+                        </h3>
+                        <p class="text-muted mb-0">
+                            <span class="float-right"></span>
+                        </p>
+
+                       <br/>
+                        <div class="form-group">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary">
+                                    <i class="mdi mdi-comment-arrow-right"title="Add"></i>
+                                </button>
+                                <button type="button" class="btn btn-primary">
+                                    <i class="mdi mdi-comment-edit" title="Edit"></i>
+                                </button>
+                                <button type="button" class="btn btn-primary">
+                                    <i class="mdi mdi-comment-alert" title="Delete"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title text-muted">Thursday</h6>
+                        <h3 class="mb-10">
+                            {% for lessons in lessons_thursday %}
+                                {{ lessons }}
+                                <br/>
+                            {% endfor %}
+                        </h3>
+                        <p class="text-muted mb-0">
+                            <span class="float-right"></span>
+                        </p>
+
+                        <br/>
+                        <div class="form-group">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary">
+                                    <i class="mdi mdi-comment-arrow-right"title="Add"></i>
+                                </button>
+                                <button type="button" class="btn btn-primary">
+                                    <i class="mdi mdi-comment-edit" title="Edit"></i>
+                                </button>
+                                <button type="button" class="btn btn-primary">
+                                    <i class="mdi mdi-comment-alert" title="Delete"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+
+
+                        <h6 class="card-title text-muted">Friday</h6>
+                        <h3 class="mb-10">
+                            {% for lessons in lessons_friday %}
+                                {{ lessons }}
+                                <br/>
+                            {% endfor %}
+                        </h3>
+                        <p class="text-muted mb-0">
+                            <span class="float-right"></span>
+                        </p>
+
+                        <br/>
+                        <div class="form-group">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary">
+                                    <i class="mdi mdi-comment-arrow-right"title="Add"></i>
+                                </button>
+                                <button type="button" class="btn btn-primary">
+                                    <i class="mdi mdi-comment-edit" title="Edit"></i>
+                                </button>
+                                <button type="button" class="btn btn-primary">
+                                    <i class="mdi mdi-comment-alert" title="Delete"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+
     {% endif %}
 
     <script src="https://unpkg.com/jquery@3.4.1/dist/jquery.slim.min.js"></script>
