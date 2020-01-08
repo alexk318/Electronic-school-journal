@@ -68,6 +68,8 @@ TEMPLATES = [
     },
 ]
 
+TEMPLATES_CONTEXT_PROCESSORS = ('django.core.context_processors.request', )
+
 WSGI_APPLICATION = 'JournalBase.wsgi.application'
 
 

@@ -43,16 +43,16 @@
 
                 <div class="menubar-header text-center bg-primary">
                     <br />
-                    {{ current_user.first_name }}
+                    {{ request.user.first_name }}
                     -
-                    {{ current_user.groups.get }}
+                    {{ request.user.groups.get }}
                 </div>
 
                 <div class="menubar-body">
                     <!-- Элементы -->
                     <ul class="menu accordion">
 
-                        {% if not current_user.is_authenticated %}
+                        {% if not request.user.is_authenticated %}
 
                             <li class="menu-item">
                                 <a href="/" class="menu-link">
@@ -72,14 +72,14 @@
 
                             <li class="menu-items">
                                 <a href="schedule/" class="menu-link">
-                                    <i class="menu-icon mdi mdi-exit-to-app"></i>
+                                    <i class="menu-icon mdi mdi-clipboard-text-multiple"></i>
                                     <span class="menu-label">Schedule</span>
                                 </a>
                             </li>
 
                             <li class="menu-items">
                                 <a href="classes/" class="menu-link">
-                                    <i class="menu-icon mdi mdi-exit-to-app"></i>
+                                    <i class="menu-icon mdi mdi-account-box-multiple"></i>
                                     <span class="menu-label">Classes</span>
                                 </a>
                             </li>
