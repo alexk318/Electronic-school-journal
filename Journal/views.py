@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, logout, login
 
 import re
+from datetime import datetime
 
 from .forms import AuthForms, ClassAddForms
 from .models import SchoolClass, Schedule, Day
@@ -9,6 +10,7 @@ from .models import SchoolClass, Schedule, Day
 
 classes = SchoolClass.objects.all()
 titles = [classes_.title for classes_ in classes]
+
 
 def key(s):
     num, letters = re.match(r'(\d*)(.*)', s).groups()
@@ -55,8 +57,6 @@ def journal(request):
 
 def schedule(request):
     if request.user.groups.values_list('name', flat=True).first() == 'Admin':
-        all_schoolclasses = SchoolClass.objects.all()
-
         return render(request, 'Journal/schedule.html', {'titles': sorted_titles})
     else:
         return redirect('index')
@@ -64,37 +64,26 @@ def schedule(request):
 
 def class_schedule(request, class_title):
     if request.user.groups.values_list('name', flat=True).first() == 'Admin':
-        monday = Day.objects.filter(title='Monday').first()
-        tuesday = Day.objects.filter(title='Tuesday').first()
-        wednesday = Day.objects.filter(title='Wednesday').first()
-        thursday = Day.objects.filter(title='Thursday').first()
-        friday = Day.objects.filter(title='Friday').first()
-
-
         schoolclass = SchoolClass.objects.filter(title=class_title).first()
+        all_schedules = Schedule.objects.filter(schoolclass=schoolclass)
+        now_month = datetime.now().strftime('%m')
 
-        schedule_monday = Schedule.objects.filter(schoolclass=schoolclass, day=monday).first()
-        schedule_tuesday = Schedule.objects.filter(schoolclass=schoolclass, day=tuesday).first()
-        schedule_wednesday = Schedule.objects.filter(schoolclass=schoolclass, day=wednesday).first()
-        schedule_thursday = Schedule.objects.filter(schoolclass=schoolclass, day=thursday).first()
-        schedule_friday = Schedule.objects.filter(schoolclass=schoolclass, day=friday).first()
+        days = Day.objects.all()
 
-        lessons_monday = schedule_monday.lesson.all()
-        lessons_tuesday = schedule_tuesday.lesson.all()
-        lessons_wednesday = schedule_wednesday.lesson.all()
-        lessons_thursday = schedule_thursday.lesson.all()
-        lessons_friday = schedule_friday.lesson.all()
+        schedules = []
+        for schedule in all_schedules:
+            date = schedule.date
+            month = datetime.strptime(date, '%d-%m-%Y %H:%M').strftime('%m')
+
+            if month == now_month:
+                schedules.append(schedule)
 
 
         return render(request, 'Journal/schedule.html', {'titles': titles,
                                                          'class_title': class_title,
                                                          'schedule': schedule,
-
-                                                         'lessons_monday': lessons_monday,
-                                                         'lessons_tuesday': lessons_tuesday,
-                                                         'lessons_wednesday': lessons_wednesday,
-                                                         'lessons_thursday': lessons_thursday,
-                                                         'lessons_friday': lessons_friday,
+                                                         'schedules': schedules,
+                                                         'days': days,
                                                          })
     else:
         return redirect('index')

@@ -35,81 +35,101 @@
 </head>
 
 <body>
-    <body class="menubar-enabled navbar-top-fixed">
+<body class="menubar-enabled navbar-top-fixed">
 
-        <div class="wrapper">
+<div class="wrapper">
 
-            <div class="menubar menubar-dark" id="main-menu">
+    <div class="menubar menubar-dark" id="main-menu">
 
-                <div class="menubar-header text-center bg-primary">
-                    <br />
-                    {{ request.user.first_name }}
-                    -
-                    {{ request.user.groups.get }}
-                </div>
-
-                <div class="menubar-body">
-                    <!-- Элементы -->
-                    <ul class="menu accordion">
-
-                        {% if not request.user.is_authenticated %}
-
-                            <li class="menu-item">
-                                <a href="/" class="menu-link">
-                                    <i class="menu-icon mdi mdi-view-dashboard"></i>
-                                    <span class="menu-label">Getting Started</span>
-                                </a>
-                            </li>
-
-                            <li class="menu-item">
-                                <a href="/login" class="menu-link">
-                                    <i class="menu-icon mdi mdi-view-split-vertical"></i>
-                                    <span class="menu-label">Log in</span>
-                                </a>
-                            </li>
-
-                        {% else %}
-
-                            <li class="menu-items">
-                                <a href="/journal/schedule" class="menu-link">
-                                    <i class="menu-icon mdi mdi-clipboard-text-multiple"></i>
-                                    <span class="menu-label">Schedule</span>
-                                </a>
-                            </li>
-
-                            <li class="menu-items">
-                                <a href="\journal/classes" class="menu-link">
-                                    <i class="menu-icon mdi mdi-account-box-multiple"></i>
-                                    <span class="menu-label">Classes</span>
-                                </a>
-                            </li>
-
-                            <li class="menu-items">
-                                <a href="/logout" class="menu-link">
-                                    <i class="menu-icon mdi mdi-exit-to-app"></i>
-                                    <span class="menu-label">Log out</span>
-                                </a>
-                            </li>
-
-                        {% endif %}
-
-
-
-                    </ul>
-
-                </div>
-
-                <div class="menubar-footer bg-dark p-10">
-                    <a href="https://morioh.com" class="d-block text-truncate">&copy Morioh</a>
-                </div>
-
-            </div>
-
-                    {% block body %}{% endblock %}
+        <div class="menubar-header text-center bg-primary">
+            <br/>
+            {{ request.user.first_name }}
+            -
+            {{ request.user.groups.get }}
         </div>
 
+        <div class="menubar-body">
+            <!-- Элементы -->
+            <ul class="menu accordion">
 
-    </body>
+                {% if not request.user.is_authenticated %}
+
+                    <li class="menu-item">
+                        <a href="/" class="menu-link">
+                            <i class="menu-icon mdi mdi-view-dashboard"></i>
+                            <span class="menu-label">Getting Started</span>
+                        </a>
+                    </li>
+
+                    <li class="menu-item">
+                        <a href="/login" class="menu-link">
+                            <i class="menu-icon mdi mdi-view-split-vertical"></i>
+                            <span class="menu-label">Log in</span>
+                        </a>
+                    </li>
+
+                {% else %}
+
+                    <li class="menu-items">
+                        <a href="javascript://" class="menu-link" data-toggle="collapse" data-target="#menu-96b24e">
+                            <i class="menu-icon mdi mdi-clipboard-text-multiple"></i>
+                            <span class="menu-label">Schedule</span>
+                            <i class="menu-arrow mdi mdi-chevron-right"></i>
+                        </a>
+
+                        <ul class="menu collapse" data-parent="#main-menu" id="menu-96b24e">
+                            <li class="menu-item">
+                                <a href="form-general.html" class="menu-link">
+                                    <i class="menu-icon">E</i>
+                                    <span class="menu-label">Class schedules</span>
+                                </a>
+                            </li>
+
+                            <li class="menu-item">
+                                <a href="form-advanced.html" class="menu-link">
+                                    <i class="menu-icon">A</i>
+                                    <span class="menu-label">Plan</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="menu-items">
+                        <a href="\journal/classes" class="menu-link">
+                            <i class="menu-icon mdi mdi-account-box-multiple"></i>
+                            <span class="menu-label">Classes</span>
+                        </a>
+                    </li>
+
+                    <li class="menu-items">
+                        <a href="/logout" class="menu-link">
+                            <i class="menu-icon mdi mdi-exit-to-app"></i>
+                            <span class="menu-label">Log out</span>
+                        </a>
+                    </li>
+
+                {% endif %}
+
+
+            </ul>
+
+        </div>
+
+        <div class="menubar-footer bg-dark p-10">
+            <a href="https://morioh.com" class="d-block text-truncate">&copy Morioh</a>
+        </div>
+
+    </div>
+
+    <script src="https://unpkg.com/jquery@3.4.1/dist/jquery.slim.min.js"></script>
+    <script src="https://unpkg.com/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
+
+    {% block body %}{% endblock %}
+</div>
+
+
+</body>
 </body>
 
 </html>
