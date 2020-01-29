@@ -71,23 +71,23 @@
                 {% else %}
 
                     <li class="menu-items">
-                        <a href="javascript://" class="menu-link" data-toggle="collapse" data-target="#menu-96b24e">
+                        <a href="javascript://" class="menu-link" data-toggle="collapse" data-target="#menu-schedule">
                             <i class="menu-icon mdi mdi-clipboard-text-multiple"></i>
                             <span class="menu-label">Schedule</span>
                             <i class="menu-arrow mdi mdi-chevron-right"></i>
                         </a>
 
-                        <ul class="menu collapse" data-parent="#main-menu" id="menu-96b24e">
+                        <ul class="menu collapse" data-parent="#main-menu" id="menu-schedule">
                             <li class="menu-item">
-                                <a href="form-general.html" class="menu-link">
-                                    <i class="menu-icon">E</i>
-                                    <span class="menu-label">Class schedules</span>
+                                <a href="/journal/schedule/" class="menu-link">
+                                    <i class="menu-icon mdi mdi-clipboard-text"></i>
+                                    <span class="menu-label">Classes</span>
                                 </a>
                             </li>
 
                             <li class="menu-item">
-                                <a href="form-advanced.html" class="menu-link">
-                                    <i class="menu-icon">A</i>
+                                <a href="/journal/schedule/plan/" class="menu-link">
+                                    <i class="menu-icon mdi mdi-clipboard-list-outline"></i>
                                     <span class="menu-label">Plan</span>
                                 </a>
                             </li>
@@ -95,10 +95,29 @@
                     </li>
 
                     <li class="menu-items">
-                        <a href="\journal/classes" class="menu-link">
-                            <i class="menu-icon mdi mdi-account-box-multiple"></i>
-                            <span class="menu-label">Classes</span>
+                        <a href="javascript://" class="menu-link" data-toggle="collapse" data-target="#menu-management">
+                            <i class="menu-icon mdi mdi-camera-control"></i>
+                            <span class="menu-label">Management</span>
+                            <i class="menu-arrow mdi mdi-chevron-right"></i>
                         </a>
+
+
+                        <ul class="menu collapse" data-parent="#main-menu" id="menu-management">
+                            <li class="menu-item">
+                            <a href="\journal/classes" class="menu-link">
+                                <i class="menu-icon mdi mdi-account-box-multiple"></i>
+                                <span class="menu-label">Classes management</span>
+                            </a>
+                            </li>
+
+                            <li class="menu-item">
+                            <a href="\journal/classes" class="menu-link">
+                                <i class="menu-icon mdi mdi-bookshelf"></i>
+                                <span class="menu-label">Lessons management</span>
+                            </a>
+                            </li>
+                        </ul>
+
                     </li>
 
                     <li class="menu-items">
@@ -120,6 +139,7 @@
         </div>
 
     </div>
+
 
     <script src="https://unpkg.com/jquery@3.4.1/dist/jquery.slim.min.js"></script>
     <script src="https://unpkg.com/popper.js@1.16.0/dist/umd/popper.min.js"></script>

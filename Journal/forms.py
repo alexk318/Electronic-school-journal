@@ -8,3 +8,4 @@ class AuthForms(forms.Form):
 
 class ClassAddForms(forms.Form):
     title = forms.CharField(label='Title:', max_length=3)
+

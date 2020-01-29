@@ -23,48 +23,164 @@
 
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     {% for t in titles %}
-                        <a class="dropdown-item" href="{% url 'class_schedule' t %}">{{ t }}</a>
+                        <a class="dropdown-item" href="{% url 'class_schedule' t %}">{{ t }}
+                            {% if not schedules %}
+                                <span class="badge badge-danger">
+                                !
+
+                            </span>
+                            {% endif %}
+                        </a>
                     {% endfor %}
                 </div>
             </div>
+
+            {% if not schedules %}
+                {% if class_title %}
+                    <br/>
+                    <div class="col-md-3">
+                        <div class="alert alert-danger" role="alert">
+                            <h5>The schedule will not be displayed to users, because:</h5>
+
+                            <ul>
+                                <li><h5>There is no schedule for class {{ class_title }}</h5></li>
+                            </ul>
+                        </div>
+
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-primary">September</button>
+                            <button type="button" class="btn btn-primary">October</button>
+                            <button type="button" class="btn btn-primary">November</button>
+                            <button type="button" class="btn btn-primary">December</button>
+                            <button type="button" class="btn btn-primary">January</button>
+                            <button type="button" class="btn btn-primary">February</button>
+                            <button type="button" class="btn btn-primary">March</button>
+                            <button type="button" class="btn btn-primary">April</button>
+                            <button type="button" class="btn btn-primary">May</button>
+                            <button type="button" class="btn btn-primary">June</button>
+                            <button type="button" class="btn btn-primary">Jule</button>
+                            <button type="button" class="btn btn-primary">August</button>
+                        </div>
+
+                        <div class="not-edit">
+                            <br/>
+                            <a class="btn btn-outline-primary" onclick="editmode()" role="button">Edit mode</a>
+                        </div>
+
+                        <div class="edit">
+                            <br/>
+                            <button type="button" class="btn btn-primary" disabled>In edit mode</button>
+
+                            <button type="button" class="btn btn-outline-danger" onclick="cancel()"
+                                    data-toggle="tooltip" title="Cancel">×
+                            </button>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
 
         </div>
     </div>
 
 
-    {% if class_title %}
-        <div class="row row row-cols-1 row-cols-md-2 row-cols-lg-5">
-            {% for s in schedules %}
-                <div class="col">
-                    <div class="card">
-                        <div class="card-body">
-                            <h6 class="card-title text-muted">{{ s.day.title }}</h6>
-                            <h3 class="mb-10">
-                                {% for s in schedules %}
-                                    {{ s.lesson.title }}
+    <div class="row row row-cols-1 row-cols-md-2 row-cols-lg-5">
+        {% for day in days %}
+
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-title text-muted">{{ day.title }}</h6>
+
+
+                                <h3 class="mb-10">
+                                {% for schedule_day in schedules_days %}
+                                    {% for schedule in schedule_day %}
+                                        {% if schedule.day == day %}
+                                            {{ schedule.lesson }}
+                                            <br />
+                                        {% endif %}
                                     {% endfor %}
-                            </h3>
-                            <p class="text-muted mb-0">
-                                <span class="float-right">Teacher</span>
-                            </p>
-                            <br/>
-                            <div class="form-group">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-primary">
-                                        <i class="mdi mdi-comment-arrow-right"title="Add"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-primary">
-                                        <i class="mdi mdi-comment-edit" title="Edit"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-primary">
-                                        <i class="mdi mdi-comment-alert" title="Delete"></i>
-                                    </button>
+                                {% endfor %}
+                                </h3>
+
+
+                                <p class="text-muted mb-0">
+                                    {{ schedule.date }}<br />
+                                    {{ schedule.start }}<br />
+                                    {{ schedule.end }}
+                                <div class="edit">
+                                    <br/>
+                                    <label for="lesson">Adding a lesson:</label>
+
+                                    <form action="{% url 'schedule_add' day.title class_title %}" method="get">
+                                        <div class="col-md-8">
+                                            <select class="form-control" id="lesson" name="lesson_selection">
+                                                {% for lesson in lessons %}
+                                                    <option value="{{ lesson }}">{{ lesson.title }}</option>
+                                                {% endfor %}
+                                            </select>
+
+                                            <label for="date"></label>
+                                            <input class="form-control" id="date" name="date_enter">
+
+                                            <br/>
+                                            <button style="margin-left: 15px" type="submit"
+                                                    class="btn btn-outline-dark">
+                                                Add
+                                            </button>
+
+                                        </div>
+                                    </form>
+
                                 </div>
+
+                                </p>
+
                             </div>
                         </div>
                     </div>
-                </div>
-            {% endfor %}
-    {% endif %}
+
+        {% endfor %}
+
+        <style>
+            .not-edit {
+                display: block;
+            }
+
+            .edit {
+                display: none;
+            }
+        </style>
+
+
+        <script>
+            div_notedit = document.getElementsByClassName('not-edit');
+            div_edit = document.getElementsByClassName('edit');
+
+            function editmode() {
+                for (var i = 0; i < div_notedit.length; i++) {
+                    div_notedit[i].style.display = 'none';
+                }
+
+                for (var i2 = 0; i2 < div_edit.length; i2++) {
+                    div_edit[i2].style.display = 'block';
+                }
+            }
+
+
+            function cancel() {
+                for (var i3 = 0; i3 < div_notedit.length; i3++) {
+                    div_notedit[i3].style.display = 'block';
+                }
+
+                for (var i4 = 0; i4 < div_edit.length; i4++) {
+                    div_edit[i4].style.display = 'none';
+                }
+            }
+
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            });
+        </script>
 
 {% endblock %}
