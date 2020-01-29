@@ -67,13 +67,11 @@ def class_schedule(request, class_title):
     if request.user.groups.values_list('name', flat=True).first() == 'Admin':
         schoolclass = SchoolClass.objects.filter(title=class_title).first()
         all_schedules = Schedule.objects.filter(schoolclass=schoolclass).all()
-        # now_month = datetime.now().strftime('%m')
-        #
+
         days = Day.objects.all()
         lessons = Lesson.objects.all()
 
         schedules = []
-
         for i in all_schedules:
             date = i.date
             date_datetime = datetime.strptime(date, '%d.%m.%Y')
@@ -82,24 +80,11 @@ def class_schedule(request, class_title):
             if month == 2:
                 schedules.append(i)
 
-
-        schedules_monday = []
-        schedules_tuesday = []
-        schedules_wednesday = []
-        schedules_thursday = []
-        schedules_friday = []
-
-        for s in schedules:
-            if s.day.title == 'Monday':
-                schedules_monday.append(s)
-            elif s.day.title == 'Tuesday':
-                schedules_tuesday.append(s)
-            elif s.day.title == 'Wednesday':
-                schedules_wednesday.append(s)
-            elif s.day.title == 'Thursday':
-                schedules_thursday.append(s)
-            elif s.day.title == 'Friday':
-                schedules_friday.append(s)
+        schedules_monday = [s for s in schedules if s.day.title == 'Monday']
+        schedules_tuesday = [s for s in schedules if s.day.title == 'Tuesday']
+        schedules_wednesday = [s for s in schedules if s.day.title == 'Wednesday']
+        schedules_thursday = [s for s in schedules if s.day.title == 'Thursday']
+        schedules_friday = [s for s in schedules if s.day.title == 'Friday']
 
         schedules_days = list()
         schedules_days.append(schedules_monday)
