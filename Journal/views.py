@@ -74,7 +74,7 @@ def class_schedule(request, class_title):
         schedules = []
         for i in all_schedules:
             date = i.date
-            date_datetime = datetime.strptime(date, '%d.%m.%Y')
+            date_datetime = datetime.strptime(date, '%Y-%m-%d')
             month = int(date_datetime.strftime('%m'))
 
             if month == 2:
