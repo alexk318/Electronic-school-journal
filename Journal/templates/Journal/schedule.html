@@ -17,7 +17,7 @@
                     {% if not class_title %}
                         Choose class
                     {% else %}
-                        {{ class_title }}
+                        {{ class_title }} <span class="badge badge-danger">!</span>
                     {% endif %}
                 </button>
 
@@ -43,7 +43,7 @@
                             <h5>The schedule will not be displayed to users, because:</h5>
 
                             <ul>
-                                <li><h5>There is no schedule for class {{ class_title }}</h5></li>
+                                <li><h5>Schedule not ready</h5></li>
                             </ul>
                         </div>
 
