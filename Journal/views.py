@@ -1,6 +1,6 @@
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, logout, login
+from django.contrib.auth.decorators import login_required
 
 import re
 from datetime import datetime
@@ -16,6 +16,7 @@ titles = [classes_.title for classes_ in classes]
 def key(s):
     num, letters = re.match(r'(\d*)(.*)', s).groups()
     return float(num or 'inf'), letters
+
 
 sorted_titles = sorted(titles, key=key)
 
@@ -45,17 +46,14 @@ def log_in(request):
                 return render(request, 'Journal/login.html', {'forms': forms, 'msg': msg})
 
 
+@login_required(login_url="/login/")
 def journal(request):
-    if request.user.is_authenticated:
-        return render(request, 'Journal/journal.html', {'current_user': request.user,
-                                                        'group': request.user.groups.values_list('name', flat=True).
-                      first()})
-    else:
-        msg = 'To access the journal you need to log in!'
-        forms = AuthForms()
-        return render(request, 'Journal/index.html', {'forms': forms, 'msg': msg})
+    return render(request, 'Journal/journal.html', {'current_user': request.user,
+                                                    'group': request.user.groups.values_list('name', flat=True).
+                  first()})
 
 
+@login_required(login_url="/login/")
 def schedule(request):
     if request.user.groups.values_list('name', flat=True).first() == 'Admin':
         return render(request, 'Journal/schedule.html', {'titles': sorted_titles})
@@ -63,6 +61,7 @@ def schedule(request):
         return redirect('index')
 
 
+@login_required(login_url="/login/")
 def class_schedule(request, class_title):
     if request.user.groups.values_list('name', flat=True).first() == 'Admin':
         schoolclass = SchoolClass.objects.filter(title=class_title).first()
@@ -92,17 +91,22 @@ def class_schedule(request, class_title):
         schedules_days.append(schedules_thursday)
         schedules_days.append(schedules_friday)
 
+        months = {'January': 1, 'February': 2, 'March': 3, 'April': 4, 'May': 5, 'June': 6, 'Jule': 7, 'August': 8,
+                  'September': 9, 'October': 10, 'November': 11, 'December': 12}
+
         return render(request, 'Journal/schedule.html', {'titles': sorted_titles,
                                                          'class_title': class_title,
                                                          'all_schedules': all_schedules,
                                                          'days': days,
                                                          'lessons': lessons,
                                                          'schedules_days': schedules_days,
+                                                         'months': months,
                                                          })
     else:
         return redirect('index')
 
 
+@login_required(login_url="/login/")
 def schedule_add(request, day, class_title):
     schoolclass = SchoolClass.objects.filter(title=class_title).first()
     day = Day.objects.filter(title=day).first()
@@ -115,6 +119,8 @@ def schedule_add(request, day, class_title):
 
     return redirect('class_schedule', class_title)
 
+
+@login_required(login_url="/login/")
 def classes(request):
     if request.user.groups.values_list('name', flat=True).first() != 'Admin':
         return redirect('index')
@@ -125,6 +131,7 @@ def classes(request):
                                                         'classes': classes, 'addforms': addforms})
 
 
+@login_required(login_url="/login/")
 def class_add(request):
     form = ClassAddForms(request.POST)
     if form.is_valid():
@@ -136,6 +143,7 @@ def class_add(request):
     return redirect('classes')
 
 
+@login_required(login_url="/login/")
 def class_delete(request, class_title):
     if request.user.groups.values_list('name', flat=True).first() != 'Admin':
         return redirect('index')
