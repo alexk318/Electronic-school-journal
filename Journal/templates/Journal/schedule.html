@@ -23,7 +23,7 @@
 
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     {% for t in titles %}
-                        <a class="dropdown-item" href="{% url 'class_schedule' t %}">{{ t }}
+                        <a class="dropdown-item" href="{% url 'class_schedule' t 'September'  %}">{{ t }}
                             {% if not schedules %}
                                 <span class="badge badge-danger">
                                 !
@@ -34,6 +34,23 @@
                     {% endfor %}
                 </div>
             </div>
+
+            <br />
+            {% if class_title %}
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ week_day }}
+                    </button>
+
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        {% for month in months %}
+                            <a class="dropdown-item" href="{% url 'class_schedule' class_title month %}">{{ month }}</a>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            {% endif %}
 
             {% if not schedules %}
                 {% if class_title %}
@@ -47,20 +64,6 @@
                             </ul>
                         </div>
 
-                        <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-primary">September</button>
-                            <button type="button" class="btn btn-primary">October</button>
-                            <button type="button" class="btn btn-primary">November</button>
-                            <button type="button" class="btn btn-primary">December</button>
-                            <button type="button" class="btn btn-primary">January</button>
-                            <button type="button" class="btn btn-primary">February</button>
-                            <button type="button" class="btn btn-primary">March</button>
-                            <button type="button" class="btn btn-primary">April</button>
-                            <button type="button" class="btn btn-primary">May</button>
-                            <button type="button" class="btn btn-primary">June</button>
-                            <button type="button" class="btn btn-primary">Jule</button>
-                            <button type="button" class="btn btn-primary">August</button>
-                        </div>
 
                         <div class="not-edit">
                             <br/>

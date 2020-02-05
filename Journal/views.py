@@ -8,7 +8,6 @@ from datetime import datetime
 from .forms import AuthForms, ClassAddForms
 from .models import Day, SchoolClass, Lesson, Schedule
 
-
 classes = SchoolClass.objects.all()
 titles = [classes_.title for classes_ in classes]
 
@@ -62,7 +61,7 @@ def schedule(request):
 
 
 @login_required(login_url="/login/")
-def class_schedule(request, class_title):
+def class_schedule(request, class_title, week_day):
     if request.user.groups.values_list('name', flat=True).first() == 'Admin':
         schoolclass = SchoolClass.objects.filter(title=class_title).first()
         all_schedules = Schedule.objects.filter(schoolclass=schoolclass).all()
@@ -70,12 +69,15 @@ def class_schedule(request, class_title):
         days = Day.objects.all()
         lessons = Lesson.objects.all()
 
+        months = {'January': 1, 'February': 2, 'March': 3, 'April': 4, 'May': 5, 'June': 6, 'Jule': 7, 'August': 8,
+                  'September': 9, 'October': 10, 'November': 11, 'December': 12}
+
         schedules = []
         for i in all_schedules:
             date_datetime = i.date
             month = int(date_datetime.strftime('%m'))
 
-            if month == 2:
+            if month == months[week_day]:
                 schedules.append(i)
 
         schedules_monday = [s for s in schedules if s.day.title == 'Monday']
@@ -91,9 +93,6 @@ def class_schedule(request, class_title):
         schedules_days.append(schedules_thursday)
         schedules_days.append(schedules_friday)
 
-        months = {'January': 1, 'February': 2, 'March': 3, 'April': 4, 'May': 5, 'June': 6, 'Jule': 7, 'August': 8,
-                  'September': 9, 'October': 10, 'November': 11, 'December': 12}
-
         return render(request, 'Journal/schedule.html', {'titles': sorted_titles,
                                                          'class_title': class_title,
                                                          'all_schedules': all_schedules,
@@ -101,6 +100,7 @@ def class_schedule(request, class_title):
                                                          'lessons': lessons,
                                                          'schedules_days': schedules_days,
                                                          'months': months,
+                                                         'week_day': week_day,
                                                          })
     else:
         return redirect('index')
