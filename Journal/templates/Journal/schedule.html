@@ -24,7 +24,7 @@
 
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         {% for t in titles %}
-                            <a class="dropdown-item" href="{% url 'class_schedule' t 'September' %}">{{ t }}
+                            <a class="dropdown-item" href="{% url 'class_schedule' t 'September' '1-7' %}">{{ t }}
                                 {% if not schedules %}
                                     <span class="badge badge-danger">
                                     !
@@ -42,23 +42,41 @@
                     <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {{ week_day }}
+                            {{ month_title }}
                         </button>
 
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             {% for month in months %}
                                 <a class="dropdown-item"
-                                   href="{% url 'class_schedule' class_title month %}">{{ month }}</a>
+                                   href="{% url 'class_schedule' class_title month week_numbers %}">{{ month }}</a>
                             {% endfor %}
                         </div>
 
                     </div>
                 </div>
+
+                <div class="btn-group">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ week_numbers }}
+                        </button>
+
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            {% for week in weeks %}
+                                <a class="dropdown-item"
+                                   href="{% url 'class_schedule' class_title month_title week %}">{{ week }}</a>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                </div>
+
             {% endif %}
 
             {% if not schedules %}
                 {% if class_title %}
-                    <br/><br />
+                    <br/><br/>
                     <div class="col-md-3">
                         <div class="alert alert-danger" role="alert">
                             <h5>The schedule will not be displayed to users, because:</h5>
