@@ -10,51 +10,55 @@
         <div class="card-body">
             <h1 class="display-1">Schedule</h1>
 
-            <div class="dropdown">
-
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {% if not class_title %}
-                        Choose class
-                    {% else %}
-                        {{ class_title }} <span class="badge badge-danger">!</span>
-                    {% endif %}
-                </button>
-
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    {% for t in titles %}
-                        <a class="dropdown-item" href="{% url 'class_schedule' t 'September'  %}">{{ t }}
-                            {% if not schedules %}
-                                <span class="badge badge-danger">
-                                !
-
-                            </span>
-                            {% endif %}
-                        </a>
-                    {% endfor %}
-                </div>
-            </div>
-
-            <br />
-            {% if class_title %}
+            <div class="btn-group">
                 <div class="dropdown">
+
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{ week_day }}
+                        {% if not class_title %}
+                            Choose class
+                        {% else %}
+                            {{ class_title }} <span class="badge badge-danger">!</span>
+                        {% endif %}
                     </button>
 
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        {% for month in months %}
-                            <a class="dropdown-item" href="{% url 'class_schedule' class_title month %}">{{ month }}</a>
+                        {% for t in titles %}
+                            <a class="dropdown-item" href="{% url 'class_schedule' t 'September' %}">{{ t }}
+                                {% if not schedules %}
+                                    <span class="badge badge-danger">
+                                    !
+
+                                </span>
+                                {% endif %}
+                            </a>
                         {% endfor %}
                     </div>
+                </div>
+            </div>
 
+            {% if class_title %}
+                <div class="btn-group">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ week_day }}
+                        </button>
+
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            {% for month in months %}
+                                <a class="dropdown-item"
+                                   href="{% url 'class_schedule' class_title month %}">{{ month }}</a>
+                            {% endfor %}
+                        </div>
+
+                    </div>
                 </div>
             {% endif %}
 
             {% if not schedules %}
                 {% if class_title %}
-                    <br/>
+                    <br/><br />
                     <div class="col-md-3">
                         <div class="alert alert-danger" role="alert">
                             <h5>The schedule will not be displayed to users, because:</h5>
@@ -89,59 +93,59 @@
     <div class="row row row-cols-1 row-cols-md-2 row-cols-lg-5">
         {% for day in days %}
 
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-body">
-                                <h6 class="card-title text-muted">{{ day.title }}</h6>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title text-muted">{{ day.title }}</h6>
 
 
-                                <h3 class="mb-10">
-                                {% for schedule_day in schedules_days %}
-                                    {% for schedule in schedule_day %}
-                                        {% if schedule.day == day %}
-                                            {{ schedule.lesson }}
-                                            <br />
-                                        {% endif %}
-                                    {% endfor %}
+                        <h3 class="mb-10">
+                            {% for schedule_day in schedules_days %}
+                                {% for schedule in schedule_day %}
+                                    {% if schedule.day == day %}
+                                        {{ schedule.lesson }}
+                                        <br/>
+                                    {% endif %}
                                 {% endfor %}
-                                </h3>
+                            {% endfor %}
+                        </h3>
 
 
-                                <p class="text-muted mb-0">
-                                    {{ schedule.date }}<br />
-                                    {{ schedule.start }}<br />
-                                    {{ schedule.end }}
-                                <div class="edit">
+                        <p class="text-muted mb-0">
+                            {{ schedule.date }}<br/>
+                            {{ schedule.start }}<br/>
+                            {{ schedule.end }}
+                        <div class="edit">
+                            <br/>
+                            <label for="lesson">Adding a lesson:</label>
+
+                            <form action="{% url 'schedule_add' day.title class_title %}" method="get">
+                                <div class="col-md-8">
+                                    <select class="form-control" id="lesson" name="lesson_selection">
+                                        {% for lesson in lessons %}
+                                            <option value="{{ lesson }}">{{ lesson.title }}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <label for="date"></label>
+                                    <input class="form-control" id="date" name="date_enter">
+
                                     <br/>
-                                    <label for="lesson">Adding a lesson:</label>
-
-                                    <form action="{% url 'schedule_add' day.title class_title %}" method="get">
-                                        <div class="col-md-8">
-                                            <select class="form-control" id="lesson" name="lesson_selection">
-                                                {% for lesson in lessons %}
-                                                    <option value="{{ lesson }}">{{ lesson.title }}</option>
-                                                {% endfor %}
-                                            </select>
-
-                                            <label for="date"></label>
-                                            <input class="form-control" id="date" name="date_enter">
-
-                                            <br/>
-                                            <button style="margin-left: 15px" type="submit"
-                                                    class="btn btn-outline-dark">
-                                                Add
-                                            </button>
-
-                                        </div>
-                                    </form>
+                                    <button style="margin-left: 15px" type="submit"
+                                            class="btn btn-outline-dark">
+                                        Add
+                                    </button>
 
                                 </div>
+                            </form>
 
-                                </p>
-
-                            </div>
                         </div>
+
+                        </p>
+
                     </div>
+                </div>
+            </div>
 
         {% endfor %}
 
