@@ -11,30 +11,34 @@
             <h1 class="display-1">Schedule</h1>
 
             <div class="btn-group">
-                <div class="dropdown">
 
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {% if not class_title %}
-                            Choose class
-                        {% else %}
-                            {{ class_title }} <span class="badge badge-danger">!</span>
-                        {% endif %}
-                    </button>
+                {% if request.user.groups.get.name != 'Student' %}
+                    <div class="dropdown">
 
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        {% for t in titles %}
-                            <a class="dropdown-item" href="{% url 'class_schedule' t 'September' '1-7' %}">{{ t }}
-                                {% if not schedules %}
-                                    <span class="badge badge-danger">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {% if not class_title %}
+                                Choose class
+                            {% else %}
+                                {{ class_title }} <span class="badge badge-danger">!</span>
+                            {% endif %}
+                        </button>
+
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            {% for t in titles %}
+                                <a class="dropdown-item" href="{% url 'class_schedule' t 'September' '1-7' %}">{{ t }}
+                                    {% if not schedules %}
+                                        <span class="badge badge-danger">
                                     !
 
                                 </span>
-                                {% endif %}
-                            </a>
-                        {% endfor %}
+                                    {% endif %}
+                                </a>
+                            {% endfor %}
+                        </div>
                     </div>
-                </div>
+                {% endif %}
+
             </div>
 
             {% if class_title %}
@@ -72,39 +76,27 @@
                     </div>
                 </div>
 
-            {% endif %}
 
-            {% if not schedules %}
-                {% if class_title %}
-                    <br/><br/>
-                    <div class="col-md-3">
-                        <div class="alert alert-danger" role="alert">
-                            <h5>The schedule will not be displayed to users, because:</h5>
+                <br/>
 
-                            <ul>
-                                <li><h5>Schedule not ready</h5></li>
-                            </ul>
-                        </div>
-
-
-                        <div class="not-edit">
-                            <br/>
-                            <a class="btn btn-outline-primary" onclick="editmode()" role="button">Edit mode</a>
-                        </div>
-
-                        <div class="edit">
-                            <br/>
-                            <button type="button" class="btn btn-primary" disabled>In edit mode</button>
-
-                            <button type="button" class="btn btn-outline-danger" onclick="cancel()"
-                                    data-toggle="tooltip" title="Cancel">×
-                            </button>
-                        </div>
+                {% if request.user.groups.get.name != 'Student' %}
+                    <div class="not-edit">
+                        <br/>
+                        <a class="btn btn-outline-primary" onclick="editmode()" role="button">Edit mode</a>
                     </div>
                 {% endif %}
+
+                <div class="edit">
+                    <br/>
+                    <button type="button" class="btn btn-primary" disabled>In edit mode</button>
+
+                    <button type="button" class="btn btn-outline-danger" onclick="cancel()"
+                            data-toggle="tooltip" title="Cancel">×
+                    </button>
+                </div>
+                </div>
             {% endif %}
 
-        </div>
     </div>
 
 
@@ -159,53 +151,52 @@
 
                         </div>
 
-                        </p>
-
                     </div>
                 </div>
             </div>
 
         {% endfor %}
+    </div>
 
-        <style>
-            .not-edit {
-                display: block;
+    <style>
+        .not-edit {
+            display: block;
+        }
+
+        .edit {
+            display: none;
+        }
+    </style>
+
+
+    <script>
+        div_notedit = document.getElementsByClassName('not-edit');
+        div_edit = document.getElementsByClassName('edit');
+
+        function editmode() {
+            for (var i = 0; i < div_notedit.length; i++) {
+                div_notedit[i].style.display = 'none';
             }
 
-            .edit {
-                display: none;
+            for (var i2 = 0; i2 < div_edit.length; i2++) {
+                div_edit[i2].style.display = 'block';
             }
-        </style>
+        }
 
 
-        <script>
-            div_notedit = document.getElementsByClassName('not-edit');
-            div_edit = document.getElementsByClassName('edit');
-
-            function editmode() {
-                for (var i = 0; i < div_notedit.length; i++) {
-                    div_notedit[i].style.display = 'none';
-                }
-
-                for (var i2 = 0; i2 < div_edit.length; i2++) {
-                    div_edit[i2].style.display = 'block';
-                }
+        function cancel() {
+            for (var i3 = 0; i3 < div_notedit.length; i3++) {
+                div_notedit[i3].style.display = 'block';
             }
 
-
-            function cancel() {
-                for (var i3 = 0; i3 < div_notedit.length; i3++) {
-                    div_notedit[i3].style.display = 'block';
-                }
-
-                for (var i4 = 0; i4 < div_edit.length; i4++) {
-                    div_edit[i4].style.display = 'none';
-                }
+            for (var i4 = 0; i4 < div_edit.length; i4++) {
+                div_edit[i4].style.display = 'none';
             }
+        }
 
-            $(function () {
-                $('[data-toggle="tooltip"]').tooltip()
-            });
-        </script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        });
+    </script>
 
 {% endblock %}

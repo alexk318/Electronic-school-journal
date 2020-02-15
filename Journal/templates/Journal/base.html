@@ -42,10 +42,6 @@
     <div class="menubar menubar-dark" id="main-menu">
 
         <div class="menubar-header text-center bg-primary">
-            <br/>
-            {{ request.user.first_name }}
-            -
-            {{ request.user.groups.get }}
         </div>
 
         <div class="menubar-body">
@@ -71,28 +67,51 @@
                 {% else %}
 
                     <li class="menu-items">
-                        <a href="javascript://" class="menu-link" data-toggle="collapse" data-target="#menu-schedule">
-                            <i class="menu-icon mdi mdi-clipboard-text-multiple"></i>
-                            <span class="menu-label">Schedule</span>
-                            <i class="menu-arrow mdi mdi-chevron-right"></i>
-                        </a>
-
-                        <ul class="menu collapse" data-parent="#main-menu" id="menu-schedule">
-                            <li class="menu-item">
-                                <a href="/journal/schedule/" class="menu-link">
-                                    <i class="menu-icon mdi mdi-clipboard-text"></i>
-                                    <span class="menu-label">Classes</span>
-                                </a>
-                            </li>
-
-                            <li class="menu-item">
-                                <a href="/journal/schedule/plan/" class="menu-link">
-                                    <i class="menu-icon mdi mdi-clipboard-list-outline"></i>
-                                    <span class="menu-label">Plan</span>
-                                </a>
-                            </li>
-                        </ul>
+                        <li class="menu-item">
+                            <a href="" class="menu-link">
+                                <i class="menu-icon mdi mdi-account"></i>
+                                <span class="menu-label">{{ request.user.first_name }} {{ request.user.last_name }}</span>
+                            </a>
+                        </li>
                     </li>
+
+                    {% if request.user.groups.get.name == 'Admin' %}
+
+                        <li class="menu-items">
+                            <a href="javascript://" class="menu-link" data-toggle="collapse"
+                               data-target="#menu-schedule">
+                                <i class="menu-icon mdi mdi-clipboard-text-multiple"></i>
+                                <span class="menu-label">Schedule</span>
+                                <i class="menu-arrow mdi mdi-chevron-right"></i>
+                            </a>
+
+                            <ul class="menu collapse" data-parent="#main-menu" id="menu-schedule">
+                                <li class="menu-item">
+                                    <a href="/journal/schedule/" class="menu-link">
+                                        <i class="menu-icon mdi mdi-clipboard-text"></i>
+                                        <span class="menu-label">Classes</span>
+                                    </a>
+                                </li>
+
+                                <li class="menu-item">
+                                    <a href="/journal/schedule/plan/" class="menu-link">
+                                        <i class="menu-icon mdi mdi-clipboard-list-outline"></i>
+                                        <span class="menu-label">Plan</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                    {% endif %}
+
+                    {% if request.user.groups.get.name == 'Student' %}
+                        <li class="menu-item">
+                            <a href="{% url 'class_schedule' request.user.schoolclass_set.first.title 'September' '1-7' %}" class="menu-link">
+                                <i class="menu-icon mdi mdi-clipboard-text-multiple"></i>
+                                <span class="menu-label">Schedule</span>
+                            </a>
+                        </li>
+                    {% endif %}
 
                     <li class="menu-items">
                         <a href="javascript://" class="menu-link" data-toggle="collapse" data-target="#menu-management">
@@ -104,17 +123,17 @@
 
                         <ul class="menu collapse" data-parent="#main-menu" id="menu-management">
                             <li class="menu-item">
-                            <a href="\journal/classes" class="menu-link">
-                                <i class="menu-icon mdi mdi-account-box-multiple"></i>
-                                <span class="menu-label">Classes management</span>
-                            </a>
+                                <a href="\journal/classes" class="menu-link">
+                                    <i class="menu-icon mdi mdi-account-box-multiple"></i>
+                                    <span class="menu-label">Classes management</span>
+                                </a>
                             </li>
 
                             <li class="menu-item">
-                            <a href="\journal/classes" class="menu-link">
-                                <i class="menu-icon mdi mdi-bookshelf"></i>
-                                <span class="menu-label">Lessons management</span>
-                            </a>
+                                <a href="\journal/classes" class="menu-link">
+                                    <i class="menu-icon mdi mdi-bookshelf"></i>
+                                    <span class="menu-label">Lessons management</span>
+                                </a>
                             </li>
                         </ul>
 

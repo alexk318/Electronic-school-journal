@@ -62,55 +62,55 @@ def schedule(request):
 
 @login_required(login_url="/login/")
 def class_schedule(request, class_title, month_title, week_numbers):
-    if request.user.groups.values_list('name', flat=True).first() == 'Admin':
-        schoolclass = SchoolClass.objects.filter(title=class_title).first()
-        all_schedules = Schedule.objects.filter(schoolclass=schoolclass).all()
+    if request.user.groups.get().name == 'Student' and request.user.schoolclass_set.first().title != class_title:
+        return redirect('class_schedule', request.user.schoolclass_set.first().title, 'September', '1-7')
 
-        days = Day.objects.all()
-        lessons = Lesson.objects.all()
+    schoolclass = SchoolClass.objects.filter(title=class_title).first()
+    all_schedules = Schedule.objects.filter(schoolclass=schoolclass).all()
 
-        months = {'January': 1, 'February': 2, 'March': 3, 'April': 4, 'May': 5, 'June': 6, 'Jule': 7, 'August': 8,
-                  'September': 9, 'October': 10, 'November': 11, 'December': 12}
+    days = Day.objects.all()
+    lessons = Lesson.objects.all()
 
-        weeks = {'1-7': [1, 2, 3, 4, 5, 6, 7], '8-14': [8, 9, 10, 11, 12, 13, 14],
-                 '15-21': [15, 16, 17, 18, 19, 20, 21], '22-28': [22, 23, 24, 25, 26, 27, 28], '29-31': [29, 30, 31]}
+    months = {'January': 1, 'February': 2, 'March': 3, 'April': 4, 'May': 5, 'June': 6, 'Jule': 7, 'August': 8,
+              'September': 9, 'October': 10, 'November': 11, 'December': 12}
 
-        schedules = []
-        for i in all_schedules:
-            date_datetime = i.date
+    weeks = {'1-7': [1, 2, 3, 4, 5, 6, 7], '8-14': [8, 9, 10, 11, 12, 13, 14],
+             '15-21': [15, 16, 17, 18, 19, 20, 21], '22-28': [22, 23, 24, 25, 26, 27, 28], '29-31': [29, 30, 31]}
 
-            day = int(date_datetime.strftime('%d'))
-            month = int(date_datetime.strftime('%m'))
+    schedules = []
+    for i in all_schedules:
+        date_datetime = i.date
 
-            if month == months[month_title] and day in weeks[week_numbers]:
-                schedules.append(i)
+        day = int(date_datetime.strftime('%d'))
+        month = int(date_datetime.strftime('%m'))
 
-        schedules_monday = [s for s in schedules if s.day.title == 'Monday']
-        schedules_tuesday = [s for s in schedules if s.day.title == 'Tuesday']
-        schedules_wednesday = [s for s in schedules if s.day.title == 'Wednesday']
-        schedules_thursday = [s for s in schedules if s.day.title == 'Thursday']
-        schedules_friday = [s for s in schedules if s.day.title == 'Friday']
+        if month == months[month_title] and day in weeks[week_numbers]:
+            schedules.append(i)
 
-        schedules_days = list()
-        schedules_days.append(schedules_monday)
-        schedules_days.append(schedules_tuesday)
-        schedules_days.append(schedules_wednesday)
-        schedules_days.append(schedules_thursday)
-        schedules_days.append(schedules_friday)
+    schedules_monday = [s for s in schedules if s.day.title == 'Monday']
+    schedules_tuesday = [s for s in schedules if s.day.title == 'Tuesday']
+    schedules_wednesday = [s for s in schedules if s.day.title == 'Wednesday']
+    schedules_thursday = [s for s in schedules if s.day.title == 'Thursday']
+    schedules_friday = [s for s in schedules if s.day.title == 'Friday']
 
-        return render(request, 'Journal/schedule.html', {'titles': sorted_titles,
-                                                         'class_title': class_title,
-                                                         'all_schedules': all_schedules,
-                                                         'days': days,
-                                                         'lessons': lessons,
-                                                         'schedules_days': schedules_days,
-                                                         'months': months,
-                                                         'month_title': month_title,
-                                                         'weeks': weeks,
-                                                         'week_numbers': week_numbers,
-                                                         })
-    else:
-        return redirect('index')
+    schedules_days = list()
+    schedules_days.append(schedules_monday)
+    schedules_days.append(schedules_tuesday)
+    schedules_days.append(schedules_wednesday)
+    schedules_days.append(schedules_thursday)
+    schedules_days.append(schedules_friday)
+
+    return render(request, 'Journal/schedule.html', {'titles': sorted_titles,
+                                                     'class_title': class_title,
+                                                     'all_schedules': all_schedules,
+                                                     'days': days,
+                                                     'lessons': lessons,
+                                                     'schedules_days': schedules_days,
+                                                     'months': months,
+                                                     'month_title': month_title,
+                                                     'weeks': weeks,
+                                                     'week_numbers': week_numbers,
+                                                     })
 
 
 @login_required(login_url="/login/")
