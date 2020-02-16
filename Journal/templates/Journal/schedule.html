@@ -79,21 +79,6 @@
 
                 <br/>
 
-                {% if request.user.groups.get.name != 'Student' %}
-                    <div class="not-edit">
-                        <br/>
-                        <a class="btn btn-outline-primary" onclick="editmode()" role="button">Edit mode</a>
-                    </div>
-                {% endif %}
-
-                <div class="edit">
-                    <br/>
-                    <button type="button" class="btn btn-primary" disabled>In edit mode</button>
-
-                    <button type="button" class="btn btn-outline-danger" onclick="cancel()"
-                            data-toggle="tooltip" title="Cancel">×
-                    </button>
-                </div>
                 </div>
             {% endif %}
 
@@ -125,31 +110,6 @@
                             {{ schedule.date }}<br/>
                             {{ schedule.start }}<br/>
                             {{ schedule.end }}
-                        <div class="edit">
-                            <br/>
-                            <label for="lesson">Adding a lesson:</label>
-
-                            <form action="{% url 'schedule_add' day.title class_title %}" method="get">
-                                <div class="col-md-8">
-                                    <select class="form-control" id="lesson" name="lesson_selection">
-                                        {% for lesson in lessons %}
-                                            <option value="{{ lesson }}">{{ lesson.title }}</option>
-                                        {% endfor %}
-                                    </select>
-
-                                    <label for="date"></label>
-                                    <input class="form-control" id="date" name="date_enter">
-
-                                    <br/>
-                                    <button style="margin-left: 15px" type="submit"
-                                            class="btn btn-outline-dark">
-                                        Add
-                                    </button>
-
-                                </div>
-                            </form>
-
-                        </div>
 
                     </div>
                 </div>
@@ -167,36 +127,5 @@
             display: none;
         }
     </style>
-
-
-    <script>
-        div_notedit = document.getElementsByClassName('not-edit');
-        div_edit = document.getElementsByClassName('edit');
-
-        function editmode() {
-            for (var i = 0; i < div_notedit.length; i++) {
-                div_notedit[i].style.display = 'none';
-            }
-
-            for (var i2 = 0; i2 < div_edit.length; i2++) {
-                div_edit[i2].style.display = 'block';
-            }
-        }
-
-
-        function cancel() {
-            for (var i3 = 0; i3 < div_notedit.length; i3++) {
-                div_notedit[i3].style.display = 'block';
-            }
-
-            for (var i4 = 0; i4 < div_edit.length; i4++) {
-                div_edit[i4].style.display = 'none';
-            }
-        }
-
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        });
-    </script>
 
 {% endblock %}
