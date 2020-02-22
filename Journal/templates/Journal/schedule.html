@@ -81,18 +81,18 @@
 
                 </div>
 
-                <div id="accordion">
+                <div class="accordion" id="accordion">
                     <div class="card">
-                        <div class="card-header" id="headingOne">
+                        <div class="card-header" id="headingTwo">
                             <h5 class="mb-0">
-                                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne"
-                                        aria-controls="collapseOne">
+                                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo"
+                                        aria-controls="collapseTwo">
                                     Adding a new schedule
                                 </button>
                             </h5>
                         </div>
 
-                        <div id="collapseOne" aria-labelledby="headingOne" data-parent="#accordion">
+                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                             <div class="card-body">
 
                                 <form action="{% url 'class_schedule' class_title 'September' '1-7' %}"
@@ -114,6 +114,7 @@
                         </div>
                     </div>
                 </div>
+
             {% endif %}
 
     </div>
