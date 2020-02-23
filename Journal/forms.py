@@ -1,11 +1,12 @@
 from django import forms
-from .models import Day, Lesson
+from .models import Day, Lesson, SchoolClass, Schedule
 
 days = Day.objects.all()
 days_choices = [tuple([d, d]) for d in days]
 
 lessons = Lesson.objects.all()
 lessons_choices = [tuple([l, l]) for l in lessons]
+
 
 class AuthForms(forms.Form):
     username = forms.CharField(label='Username:', max_length=100, required=True,
@@ -14,8 +15,13 @@ class AuthForms(forms.Form):
                                widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
 
-class ClassAddForms(forms.Form):
-    title = forms.CharField(label='Title:', max_length=3)
+class ClassAddForms(forms.ModelForm):
+    class Meta:
+        model = SchoolClass
+        fields = ['title']
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control'})
+        }
 
 
 class ScheduleAddForms(forms.Form):
