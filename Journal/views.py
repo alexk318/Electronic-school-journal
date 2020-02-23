@@ -4,10 +4,9 @@ from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required
 
 import re
-import datetime
-import time
+from django.contrib.auth.models import User, Group
 
-from .forms import AuthForms, ClassAddForms, ScheduleAddForms
+from .forms import AuthForms, ClassAddForms, ScheduleAddForms, UserAddForms
 from .models import Day, SchoolClass, Lesson, Schedule
 
 classes = SchoolClass.objects.all()
@@ -148,24 +147,22 @@ def class_schedule(request, class_title, month_title, week_numbers):
 def classes(request):
     if request.user.groups.values_list('name', flat=True).first() != 'Admin':
         return redirect('index')
-    else:
-
+    elif request.method == 'GET':
         addforms = ClassAddForms()
+        schoolclasses = SchoolClass.objects.all()
+
         return render(request, 'Journal/classes.html', {'titles': sorted_titles,
-                                                        'classes': classes, 'addforms': addforms})
+                                                        'schoolclasses': schoolclasses, 'addforms': addforms})
+    else:
+        form = ClassAddForms(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data['title']
+            teacher = User.objects.filter(username=form.cleaned_data['teacher']).first()
 
+            new_class = SchoolClass(title=title, teacher=teacher)
+            new_class.save()
 
-@login_required(login_url="/login/")
-def class_add(request):
-    form = ClassAddForms(request.POST)
-    if form.is_valid():
-        title = form.cleaned_data['title']
-
-        new_class = SchoolClass(title=title)
-        new_class.save()
-
-    return redirect('classes')
-
+        return redirect('classes')
 
 @login_required(login_url="/login/")
 def class_delete(request, class_title):
@@ -175,6 +172,42 @@ def class_delete(request, class_title):
     c.delete()
 
     return redirect('classes')
+
+
+@login_required(login_url="/login/")
+def users(request):
+    users = User.objects.all()
+    forms = UserAddForms()
+
+    if request.user.groups.values_list('name', flat=True).first() != 'Admin':
+        return redirect('index')
+    elif request.method == 'GET':
+        return render(request, 'Journal/users.html', {'users': users, 'forms': forms})
+    else:
+        forms_post = UserAddForms(request.POST)
+        if forms_post.is_valid():
+            username = forms_post.cleaned_data['username']
+            password = forms_post.cleaned_data['password']
+            first_name = forms_post.cleaned_data['first_name']
+            last_name = forms_post.cleaned_data['last_name']
+            email = forms_post.cleaned_data['email']
+
+            group = forms_post.cleaned_data['group']
+            groups = Group.objects.get(name=group)
+
+            new_user = User.objects.create_user(username=username,
+                                                password=password,
+                                                first_name=first_name,
+                                                last_name=last_name,
+                                                email=email)
+
+            new_user.save()
+            groups.user_set.add(new_user)
+
+
+            return redirect('users')
+        else:
+            return render(request, 'Journal/users.html', {'users': users, 'forms': forms_post})
 
 
 def logout_view(request):
