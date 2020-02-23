@@ -37,6 +37,7 @@
                             {% endfor %}
                         </div>
                     </div>
+                    <a href="{% url 'classes' %}"><i class="menu-icon mdi mdi-plus"></i></a>
                 {% endif %}
 
             </div>
@@ -153,14 +154,5 @@
         {% endfor %}
     </div>
 
-    <style>
-        .not-edit {
-            display: block;
-        }
-
-        .edit {
-            display: none;
-        }
-    </style>
 
 {% endblock %}
