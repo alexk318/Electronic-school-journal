@@ -1,66 +1,87 @@
 {% extends 'Journal/base.html' %}
 
 {% block title %}
-    Classes
+    Classes management
 {% endblock %}
 
-
 {% block body %}
+    <div class="card">
+        <div class="card-body">
+            <h2 class="display-2">Classes management</h2>
+        </div>
+    </div>
 
-    <h1>Classes management</h1>
+    <div class="card">
+        <div class="card-body">
+            <div class="accordion" id="accordion">
+                <div class="card">
+                    <div class="card-header" id="headingTwo">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo"
+                                    aria-controls="collapseTwo">
+                                Adding a new class
+                            </button>
+                        </h5>
+                    </div>
 
-    <br />
-    <h3>New Class</h3>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                        <div class="card-body">
 
-    <form action="{% url 'class_add' %}" method="post">
-        {% for forms in addforms %}
-            {{ forms.label }}
-            {{ forms }}
-        {% endfor %}
+                            <form action="{% url 'classes' %}"
+                                  method="post">
 
-        <input type="submit" value="Add">
-    </form>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            {% for forms in addforms %}
+                                                {{ forms.label }}
+                                                {{ forms }}
+                                                <br />
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
 
-    <br />
-    <table style="width:100%">
-        <tr>
-            <th>Title</th>
-            <th>Delete</th>
-        </tr>
+                                <button type="submit" class="btn btn-outline-dark">Add</button>
 
-        {% for title in titles %}
-            <tr>
-                <td>{{ title }}</td>
+                            </form>
 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                <form action="{% url 'class_delete' title %}" method="post">
-                    <td>
-                        <input type="submit" value="Delete">
-                    </td>
-                </form>
+    <div class="card">
+        <div class="card-body">
 
-            </tr>
-        {% endfor %}
+            <div class="row">
+                {% for c in schoolclasses %}
 
-    </table>
+                    <div class="col-sm-3">
+                        <div class="card" style="width: 18rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">Class {{ c.title }}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">
+                                    {% if c.teacher %}
+                                        <a href="">Head teacher: {{ c.teacher.first_name }} {{ c.teacher.last_name }}</a>
 
+                                    {% else %}
+                                        The head teacher is not defined for this class
+                                    {% endif %}
+                                </h6>
 
-    <style>
-        table {
-            font-family: arial, sans-serif;
-            border-collapse: collapse;
-            width: 100%;
-        }
+                                <a href="#" class="card-link">More ...</a>
+                            </div>
+                        </div>
+                    </div>
 
-        td, th {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
+                {% endfor %}
+            </div>
 
-        tr:nth-child(even) {
-            background-color: #dddddd;
-        }
-    </style>
+        </div>
+    </div>
+
 
 {% endblock %}
