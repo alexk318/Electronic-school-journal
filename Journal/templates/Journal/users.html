@@ -1,0 +1,142 @@
+{% extends 'Journal/base.html' %}
+
+{% block title %}
+    Classes management
+{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <div class="card-body">
+            <h2 class="display-2">Users management</h2>
+        </div>
+    </div>
+
+    {% if forms.errors %}
+        {% for field in forms %}
+            {% for error in field.errors %}
+                <div class="col-md-4">
+                    <div class="alert alert-danger" role="alert">
+                        {{ error|escape }}
+                        -
+                        There was an error adding a new user, Possible reasons:
+                        <br/>
+                        • You did not enter all the data
+                    </div>
+                </div>
+            {% endfor %}
+        {% endfor %}
+        {% for error in field.non_field_errors %}
+            <div class="col-md-4">
+                <div class="alert alert-danger" role="alert">
+                    Non field
+                    -
+                    {{ error|escape }}
+                    -
+                    There was an error adding a new user, Possible reasons:
+                    <br/>
+                    • You did not enter all the data
+                </div>
+            </div>
+        {% endfor %}
+
+    {% endif %}
+
+    <div class="card">
+        <div class="card-body">
+            <div class="accordion" id="accordion">
+                <div class="card">
+                    <div class="card-header" id="headingTwo">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo"
+                                    aria-controls="collapseTwo">
+                                Adding a new user
+                            </button>
+                        </h5>
+                    </div>
+
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                        <div class="card-body">
+
+                            <form action="{% url 'users' %}"
+                                  method="post">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            {% for field in forms %}
+                                                {{ field.label }}
+                                                {{ field }}
+                                                <br/>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-outline-dark">Add</button>
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                {% for u in users %}
+
+                    <div class="col-sm-3">
+                        <div class="card" style="width: 18rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">User "{{ u.username }}"
+                                    {% if request.user.username == u.username %}
+                                        (You)
+                                    {% endif %}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">
+
+                                    {% if u.first_name %}
+                                        First name: {{ u.first_name }}
+                                    {% else %}
+                                        First name is not defined
+                                    {% endif %}
+
+                                    <br/>
+
+                                    {% if u.last_name %}
+                                        Last name: {{ u.last_name }}
+                                    {% else %}
+                                        Last name is not defined
+                                    {% endif %}
+
+                                    <br/>
+
+                                    {% if u.email %}
+                                        Email: {{ u.email }}
+                                    {% endif %}
+
+                                    <br/>
+                                    <br/>
+
+                                    {% if u.groups.first.name %}
+                                        Group: {{ u.groups.first.name }}
+
+                                    {% else %}
+                                        No group defined for this user!
+
+                                    {% endif %}
+
+                                    <br/>
+                                </h6>
+
+                                <a href="#" class="card-link">Profile -></a>
+                            </div>
+                        </div>
+                    </div>
+
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
