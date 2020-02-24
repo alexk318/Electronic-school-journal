@@ -8,8 +8,6 @@ class SchoolClass(models.Model):
 
     teacher = models.ForeignKey(User, on_delete=models.CASCADE, related_name='teachers', null=True)
 
-    homework = models.TextField(default="")
-
     def __str__(self):
         return '%s' % self.title.capitalize()
 
