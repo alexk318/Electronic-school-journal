@@ -7,38 +7,24 @@
 {% block body %}
     <div class="card">
         <div class="card-body">
-            <h3 class="display-3">Users management</h3>
+            <h3 class="display-3">Home work</h3>
         </div>
     </div>
 
-    {% if forms.errors %}
-        {% for field in forms %}
-            {% for error in field.errors %}
-                <div class="col-md-4">
-                    <div class="alert alert-danger" role="alert">
-                        {{ error|escape }}
-                        -
-                        There was an error adding a new user, Possible reasons:
-                        <br/>
-                        • You did not enter all the data
-                    </div>
-                </div>
-            {% endfor %}
-        {% endfor %}
-        {% for error in field.non_field_errors %}
-            <div class="col-md-4">
-                <div class="alert alert-danger" role="alert">
-                    Non field
-                    -
-                    {{ error|escape }}
-                    -
-                    There was an error adding a new user, Possible reasons:
-                    <br/>
-                    • You did not enter all the data
-                </div>
+    {% if error %}
+        <div class="col-md-4">
+            <div class="alert alert-danger" role="alert">
+                There was an error adding a new user
             </div>
-        {% endfor %}
+        </div>
+    {% endif %}
 
+    {% if success %}
+        <div class="col-md-2">
+            <div class="alert alert-success" role="alert">
+                New user added successfully
+            </div>
+        </div>
     {% endif %}
 
     <div class="card">
@@ -61,20 +47,20 @@
                                   method="post">
 
 
-                                        <div class="row">
-                                            {% for field in forms %}
-                                                <div class="col-5 col-sm-5">
-                                                    {{ field.label }}
-                                                    {{ field }}
-                                                <br />
-                                                </div>
-                                            {% endfor %}
+                                <div class="row">
+                                    {% for field in forms %}
+                                        <div class="col-5 col-sm-5">
+                                            {{ field.label }}
+                                            {{ field }}
+                                            <br/>
                                         </div>
+                                    {% endfor %}
+                                </div>
 
-                                    <br/>
-                                    <button type="submit" class="btn btn-outline-dark col-md-1">
-                                        Add
-                                    </button>
+                                <br/>
+                                <button type="submit" class="btn btn-outline-dark col-md-1">
+                                    Add
+                                </button>
                             </form>
 
                         </div>
