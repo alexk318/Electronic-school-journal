@@ -12,9 +12,11 @@ groups = Group.objects.all()
 groups_choices = [tuple([g, g]) for g in groups]
 
 users = User.objects.all()
-teacher = Group.objects.filter(name='Teacher').first()
-teachers = [user for user in users if user.groups.first() == teacher]
-teachers_choices = [tuple([t.first_name + ' ' + t.last_name, t.first_name]) for t in teachers]
+teachers = [user for user in users if user.groups.get().name == 'Teacher' and user.teachers.first() is None]
+teachers_choices = [tuple([t.id, t.first_name + ' ' + t.last_name]) for t in teachers]
+
+schoolclasses = SchoolClass.objects.all()
+schoolclass_choices = [tuple([s, s]) for s in schoolclasses]
 
 
 class AuthForms(forms.Form):
@@ -25,7 +27,8 @@ class AuthForms(forms.Form):
 
 
 class UserAddForms(forms.ModelForm):
-    group = forms.CharField(label='Group:', widget=forms.Select(choices=groups_choices, attrs={'class': 'form-control'}))
+    group = forms.CharField(label='Group:',
+                            widget=forms.Select(choices=groups_choices, attrs={'class': 'form-control'}))
 
     class Meta:
         model = User
@@ -40,12 +43,14 @@ class UserAddForms(forms.ModelForm):
 
 
 class ClassAddForms(forms.ModelForm):
+    teacher = forms.CharField(label='Available head teacher:',
+                              widget=forms.Select(choices=teachers_choices, attrs={'class': 'form-control'}))
+
     class Meta:
         model = SchoolClass
-        fields = ['title', 'teacher']
+        fields = ['title']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
-            'teacher': forms.Select(choices=teachers_choices, attrs={'class': 'form-control'})
         }
 
 
@@ -58,3 +63,9 @@ class ScheduleAddForms(forms.Form):
 
     lesson_start = forms.TimeField(widget=forms.TimeInput(format='%H:%M'))
     lesson_end = forms.TimeField(widget=forms.TimeInput(format='%H:%M'))
+
+
+class HomeWorkForms(forms.Form):
+    schoolclass = forms.CharField(label='Schoolclass:', widget=forms.Select(choices=schoolclass_choices,
+                                                                            attrs={'class': 'form-control'}))
+    text = forms.CharField(label='Text:', widget=forms.Textarea(attrs={'class': 'form-control'}))
