@@ -16,6 +16,8 @@ urlpatterns = [
     path('journal/classes/delete/<class_title>', views.class_delete, name='class_delete'),
 
     path('journal/users/', views.users, name='users'),
-    
+
+    path('journal/homework', views.homework, name='homework'),
+
     path('logout/', views.logout_view, name='logout'),
 ]
