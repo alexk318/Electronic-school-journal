@@ -59,20 +59,22 @@
 
                             <form action="{% url 'users' %}"
                                   method="post">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group">
+
+
+                                        <div class="row">
                                             {% for field in forms %}
-                                                {{ field.label }}
-                                                {{ field }}
-                                                <br/>
+                                                <div class="col-5 col-sm-5">
+                                                    {{ field.label }}
+                                                    {{ field }}
+                                                <br />
+                                                </div>
                                             {% endfor %}
                                         </div>
-                                    </div>
-                                </div>
 
-                                <button type="submit" class="btn btn-outline-dark">Add</button>
-
+                                    <br/>
+                                    <button type="submit" class="btn btn-outline-dark col-md-1">
+                                        Add
+                                    </button>
                             </form>
 
                         </div>
