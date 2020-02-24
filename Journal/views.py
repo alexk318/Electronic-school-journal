@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 import re
 from django.contrib.auth.models import User, Group
 
-from .forms import AuthForms, ClassAddForms, ScheduleAddForms, UserAddForms
+from .forms import AuthForms, ClassAddForms, ScheduleAddForms, UserAddForms, HomeWorkForms
 from .models import Day, SchoolClass, Lesson, Schedule
 
 classes = SchoolClass.objects.all()
@@ -145,11 +145,11 @@ def class_schedule(request, class_title, month_title, week_numbers):
 
 @login_required(login_url="/login/")
 def classes(request):
+    schoolclasses = SchoolClass.objects.all()
+    addforms = ClassAddForms()
     if request.user.groups.values_list('name', flat=True).first() != 'Admin':
         return redirect('index')
     elif request.method == 'GET':
-        addforms = ClassAddForms()
-        schoolclasses = SchoolClass.objects.all()
 
         return render(request, 'Journal/classes.html', {'titles': sorted_titles,
                                                         'schoolclasses': schoolclasses, 'addforms': addforms})
@@ -157,12 +157,19 @@ def classes(request):
         form = ClassAddForms(request.POST)
         if form.is_valid():
             title = form.cleaned_data['title']
-            teacher = User.objects.filter(username=form.cleaned_data['teacher']).first()
+            teacher = User.objects.filter(id=form.cleaned_data['teacher']).first()
 
             new_class = SchoolClass(title=title, teacher=teacher)
             new_class.save()
 
-        return redirect('classes')
+            success = True
+            return render(request, 'Journal/classes.html', {'titles': sorted_titles,
+                                                            'schoolclasses': schoolclasses, 'addforms': addforms})
+
+        error = True
+        return render(request, 'Journal/classes.html', {'titles': sorted_titles,
+                                                        'schoolclasses': schoolclasses, 'addforms': addforms})
+
 
 @login_required(login_url="/login/")
 def class_delete(request, class_title):
@@ -205,9 +212,18 @@ def users(request):
             groups.user_set.add(new_user)
 
 
-            return redirect('users')
+            success = True
+            return render(request, 'Journal/users.html', {'users': users, 'forms': forms_post, 'success': success})
         else:
-            return render(request, 'Journal/users.html', {'users': users, 'forms': forms_post})
+
+            error = True
+            return render(request, 'Journal/users.html', {'users': users, 'forms': forms_post, 'error': error})
+
+
+@login_required(login_url='/login/')
+def homework(request):
+        forms = HomeWorkForms()
+        return render(request, 'Journal/homework.html', {'forms': forms})
 
 
 def logout_view(request):
