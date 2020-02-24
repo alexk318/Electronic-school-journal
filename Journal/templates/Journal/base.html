@@ -114,37 +114,46 @@
                         </li>
                     {% endif %}
 
+                    {% if request.user.groups.get.name == 'Admin' %}
+
+                        <li class="menu-items">
+                            <a href="javascript://" class="menu-link" data-toggle="collapse" data-target="#menu-management">
+                                <i class="menu-icon mdi mdi-camera-control"></i>
+                                <span class="menu-label">Management</span>
+                                <i class="menu-arrow mdi mdi-chevron-right"></i>
+                            </a>
+
+
+                            <ul class="menu collapse" data-parent="#main-menu" id="menu-management">
+                                <li class="menu-item">
+                                    <a href="{% url 'classes' %}" class="menu-link">
+                                        <i class="menu-icon mdi mdi-account-box-multiple"></i>
+                                        <span class="menu-label">Classes management</span>
+                                    </a>
+                                </li>
+
+                                <li class="menu-item">
+                                    <a href="" class="menu-link">
+                                        <i class="menu-icon mdi mdi-bookshelf"></i>
+                                        <span class="menu-label">Lessons management</span>
+                                    </a>
+                                </li>
+
+                                <li class="menu-item">
+                                    <a href="{% url 'users' %}" class="menu-link">
+                                        <i class="menu-icon mdi mdi-account-group-outline"></i>
+                                        <span class="menu-label">Users management</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    {% endif %}
+
                     <li class="menu-items">
-                        <a href="javascript://" class="menu-link" data-toggle="collapse" data-target="#menu-management">
-                            <i class="menu-icon mdi mdi-camera-control"></i>
-                            <span class="menu-label">Management</span>
-                            <i class="menu-arrow mdi mdi-chevron-right"></i>
+                        <a href="{% url 'homework' %}" class="menu-link">
+                            <i class="menu-icon mdi mdi-note-text"></i>
+                            <span class="menu-label">Home work</span>
                         </a>
-
-
-                        <ul class="menu collapse" data-parent="#main-menu" id="menu-management">
-                            <li class="menu-item">
-                                <a href="{% url 'classes' %}" class="menu-link">
-                                    <i class="menu-icon mdi mdi-account-box-multiple"></i>
-                                    <span class="menu-label">Classes management</span>
-                                </a>
-                            </li>
-
-                            <li class="menu-item">
-                                <a href="" class="menu-link">
-                                    <i class="menu-icon mdi mdi-bookshelf"></i>
-                                    <span class="menu-label">Lessons management</span>
-                                </a>
-                            </li>
-
-                            <li class="menu-item">
-                                <a href="{% url 'users' %}" class="menu-link">
-                                    <i class="menu-icon mdi mdi-account-group-outline"></i>
-                                    <span class="menu-label">Users management</span>
-                                </a>
-                            </li>
-                        </ul>
-
                     </li>
 
                     <li class="menu-items">
