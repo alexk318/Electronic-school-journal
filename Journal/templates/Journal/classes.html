@@ -31,18 +31,19 @@
                                   method="post">
 
                                 <div class="row">
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            {% for forms in addforms %}
-                                                {{ forms.label }}
-                                                {{ forms }}
-                                                <br />
-                                            {% endfor %}
+                                    {% for field in addforms %}
+                                        <div class="col-5 col-sm-5">
+                                            {{ field.label }}
+                                            {{ field }}
+                                            <br/>
                                         </div>
-                                    </div>
+                                    {% endfor %}
                                 </div>
 
-                                <button type="submit" class="btn btn-outline-dark">Add</button>
+                                <br/>
+                                <button type="submit" class="btn btn-outline-dark col-md-1">
+                                    Add
+                                </button>
 
                             </form>
 
