@@ -65,7 +65,18 @@ class ScheduleAddForms(forms.Form):
     lesson_end = forms.TimeField(widget=forms.TimeInput(format='%H:%M'))
 
 
+class LessonAddForms(forms.ModelForm):
+    class Meta:
+        model = Lesson
+        fields = ['title']
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+
 class HomeWorkForms(forms.Form):
     schoolclass = forms.CharField(label='Schoolclass:', widget=forms.Select(choices=schoolclass_choices,
                                                                             attrs={'class': 'form-control'}))
+    lesson = forms.CharField(label='Lesson:', widget=forms.Select(choices=lessons_choices,
+                                                                  attrs={'class': 'form-control'}))
     text = forms.CharField(label='Text:', widget=forms.Textarea(attrs={'class': 'form-control'}))

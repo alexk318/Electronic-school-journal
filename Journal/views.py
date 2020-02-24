@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 import re
 from django.contrib.auth.models import User, Group
 
-from .forms import AuthForms, ClassAddForms, ScheduleAddForms, UserAddForms, HomeWorkForms
+from .forms import AuthForms, ClassAddForms, ScheduleAddForms, UserAddForms, HomeWorkForms, LessonAddForms
 from .models import Day, SchoolClass, Lesson, Schedule
 
 classes = SchoolClass.objects.all()
@@ -164,11 +164,13 @@ def classes(request):
 
             success = True
             return render(request, 'Journal/classes.html', {'titles': sorted_titles,
-                                                            'schoolclasses': schoolclasses, 'addforms': addforms})
+                                                            'schoolclasses': schoolclasses, 'addforms': addforms,
+                                                            'success': success})
 
         error = True
         return render(request, 'Journal/classes.html', {'titles': sorted_titles,
-                                                        'schoolclasses': schoolclasses, 'addforms': addforms})
+                                                        'schoolclasses': schoolclasses, 'addforms': addforms,
+                                                        'error': error})
 
 
 @login_required(login_url="/login/")
@@ -211,7 +213,6 @@ def users(request):
             new_user.save()
             groups.user_set.add(new_user)
 
-
             success = True
             return render(request, 'Journal/users.html', {'users': users, 'forms': forms_post, 'success': success})
         else:
@@ -219,6 +220,34 @@ def users(request):
             error = True
             return render(request, 'Journal/users.html', {'users': users, 'forms': forms_post, 'error': error})
 
+
+@login_required(login_url='/login/')
+def lessons(request):
+    lessons = Lesson.objects.all()
+    lessonsforms = LessonAddForms()
+    if request.user.groups.values_list('name', flat=True).first() != 'Admin':
+        return redirect('index')
+    elif request.method == 'GET':
+
+        return render(request, 'Journal/lessons.html', {'titles': sorted_titles,
+                                                        'lessons': lessons, 'lessonsforms': lessonsforms})
+    else:
+        form = LessonAddForms(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data['title']
+
+            new_lesson = Lesson(title=title)
+            new_lesson.save()
+
+            success = True
+            return render(request, 'Journal/lessons.html', {'titles': sorted_titles,
+                                                            'lessons': lessons, 'lessonsforms': lessonsforms,
+                                                            'success': success})
+
+        error = True
+        return render(request, 'Journal/lessons.html', {'titles': sorted_titles,
+                                                        'lessons': lessons, 'lessonsforms': lessonsforms,
+                                                        'error': error})
 
 @login_required(login_url='/login/')
 def homework(request):

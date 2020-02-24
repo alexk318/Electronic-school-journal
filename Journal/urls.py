@@ -17,6 +17,8 @@ urlpatterns = [
 
     path('journal/users/', views.users, name='users'),
 
+    path('journal/lessons/', views.lessons, name='lessons'),
+
     path('journal/homework', views.homework, name='homework'),
 
     path('logout/', views.logout_view, name='logout'),
