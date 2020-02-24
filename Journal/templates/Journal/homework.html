@@ -1,0 +1,63 @@
+{% extends 'Journal/base.html' %}
+
+{% block title %}
+    Home work
+{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <div class="card-body">
+            <h3 class="display-3">Home work</h3>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            {% if request.user.groups.get.name == 'Student' %}
+            {% endif %}
+
+            {% if request.user.groups.get.name == 'Teacher' %}
+
+                <div class="accordion" id="accordion">
+                    <div class="card">
+                        <div class="card-header" id="headingTwo">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo"
+                                        aria-controls="collapseTwo">
+                                    Homework assignment
+                                </button>
+                            </h5>
+                        </div>
+
+                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                            <div class="card-body">
+
+                                <form action="{% url 'homework' %}"
+                                      method="post">
+
+
+                                    <div class="row">
+                                        {% for field in forms %}
+                                            <div class="col-5 col-sm-5">
+                                                {{ field.label }}
+                                                {{ field }}
+                                                <br/>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+
+                                    <br/>
+                                    <button type="submit" class="btn btn-outline-dark col-md-1">
+                                        Add
+                                    </button>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
