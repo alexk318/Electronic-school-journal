@@ -30,8 +30,6 @@ class AuthForms(forms.Form):
 
 
 class UserAddForms(forms.ModelForm):
-    group = forms.CharField(label='Group:',
-                            widget=forms.Select(choices=groups_choices, attrs={'class': 'form-control'}))
 
     class Meta:
         model = User

@@ -49,23 +49,37 @@
 
                                 <div class="row">
                                     {% for field in forms %}
-                                        <div class="col-5 col-sm-5">
+                                        <div class="col-4 col-sm-2">
                                             {{ field.label }}
                                             {{ field }}
                                             <br/>
                                         </div>
                                     {% endfor %}
-
                                 </div>
 
+                                <div class="row">
+                                    <label id="grouplabel" class="control-label" for="group">Group</label>
+                                    <br/>
+                                    <div class="col-4 col-sm-2">
+                                        <select id="group" onchange="value_check()" class="form-control">
+                                            {% for group in groups %}
+                                                <option value="{{ group.name }}">{{ group.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
 
 
-                                <label hidden class="control-label" for="student_class">Class:</label>
-                                <div class="col-md-2">
-                                    <select hidden id="student_class" class="form-control">
-                                        <option value=""></option>
-                                    </select>
+                                    <label id="classlabel" class="control-label"
+                                           for="student_class">Class </label>
+                                    <div class="col-2 col-sm-2">
+                                        <select id="student_class" class="form-control">
+                                            {% for schoolclass in schoolclasses %}
+                                                <option value="{{ schoolclass.title }}">{{ schoolclass.title }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
                                 </div>
+
 
                                 <br/>
                                 <button type="submit" class="btn btn-outline-dark col-md-1">
@@ -140,24 +154,45 @@
     </div>
 
     <style>
-        #student_class {
-
-
-            margin-left: 655px;
+        #group {
+            margin-top: 40px;
         }
 
-        .control-label {
-            margin-left: 670px;
+        #grouplabel {
+            margin-left: 225px;
+            margin-top: 45px;
+        }
+
+        #student_class {
+
+            margin-top: 40px;
+
+        }
+
+
+        #classlabel {
+            margin-left: 10px;
+            margin-top: 45px;
         }
 
     </style>
 
     <script>
-        let choose_class = document.getElementById('student_class')[0].value;
-        let choice = choose_class.options[choose_class.selectedIndex].value;
+        function value_check() {
+            let class_selector = document.getElementById('student_class');
+            let class_label = document.getElementById('classlabel');
 
-        if (choice === 'Student') {
-            alert('Nice. Is Student.')
+            let group_selector = document.getElementById('group');
+            let group_choice = group_selector[group_selector.selectedIndex].value;
+
+            if (group_choice === "Student") {
+                class_selector.hidden = false;
+                class_label.hidden = false
+            } else {
+                class_selector.hidden = true;
+                class_label.hidden = true;
+            }
         }
     </script>
+
 {% endblock %}
