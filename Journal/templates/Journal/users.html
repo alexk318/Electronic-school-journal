@@ -1,13 +1,13 @@
 {% extends 'Journal/base.html' %}
 
 {% block title %}
-    Classes management
+    Users management
 {% endblock %}
 
 {% block body %}
     <div class="card">
         <div class="card-body">
-            <h3 class="display-3">Classes management</h3>
+            <h3 class="display-3">Users management</h3>
         </div>
     </div>
 
@@ -55,12 +55,23 @@
                                             <br/>
                                         </div>
                                     {% endfor %}
+
+                                </div>
+
+
+
+                                <label hidden class="control-label" for="student_class">Class:</label>
+                                <div class="col-md-2">
+                                    <select hidden id="student_class" class="form-control">
+                                        <option value=""></option>
+                                    </select>
                                 </div>
 
                                 <br/>
                                 <button type="submit" class="btn btn-outline-dark col-md-1">
                                     Add
                                 </button>
+
                             </form>
 
                         </div>
@@ -127,4 +138,26 @@
             </div>
         </div>
     </div>
+
+    <style>
+        #student_class {
+
+
+            margin-left: 655px;
+        }
+
+        .control-label {
+            margin-left: 670px;
+        }
+
+    </style>
+
+    <script>
+        let choose_class = document.getElementById('student_class')[0].value;
+        let choice = choose_class.options[choose_class.selectedIndex].value;
+
+        if (choice === 'Student') {
+            alert('Nice. Is Student.')
+        }
+    </script>
 {% endblock %}
