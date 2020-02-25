@@ -285,6 +285,11 @@ def homework(request):
             return render(request, 'Journal/homework.html', {'forms': forms, 'error': error, 'homeworks': homeworks})
 
 
+@login_required(login_url='/login/')
+def profile(request, user_id):
+    return render(request, 'Journal/profile.html', {})
+
+
 def logout_view(request):
     logout(request)
     return redirect('index')

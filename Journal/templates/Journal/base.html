@@ -42,12 +42,11 @@
     <div class="menubar menubar-dark" id="main-menu">
 
         <div class="menubar-header text-center bg-primary">
-            <br />
+            <br/>
             Electronic school journal
         </div>
 
         <div class="menubar-body">
-            <!-- Элементы -->
             <ul class="menu accordion">
 
                 {% if not request.user.is_authenticated %}
@@ -68,11 +67,29 @@
 
                 {% else %}
 
-                    <li class="menu-item">
-                        <a href="" class="menu-link">
+                    <li class="menu-items">
+                        <a href="javascript://" class="menu-link" data-toggle="collapse"
+                           data-target="#menu-user">
                             <i class="menu-icon mdi mdi-account"></i>
-                            <span class="menu-label">{{ request.user.first_name }} {{ request.user.last_name }}</span>
+                            <span class="menu-label">{{ request.user.first_name }}  {{ request.user.last_name }}</span>
+                            <i class="menu-arrow mdi mdi-chevron-right"></i>
                         </a>
+
+                        <ul class="menu collapse" data-parent="#main-menu" id="menu-user">
+                            <li class="menu-item">
+                                <a href="{% url 'profile' request.user.id %}" class="menu-link">
+                                    <i class="menu-icon mdi mdi-file-account"></i>
+                                    <span class="menu-label">Profile</span>
+                                </a>
+                            </li>
+
+{#                            <li class="menu-item">#}
+{#                                <a href="" class="menu-link">#}
+{#                                    <i class="menu-icon mdi mdi-clipboard-list-outline"></i>#}
+{#                                    <span class="menu-label">Plan</span>#}
+{#                                </a>#}
+{#                            </li>#}
+                        </ul>
                     </li>
 
                     {% if request.user.groups.get.name == 'Admin' %}
@@ -117,7 +134,8 @@
                     {% if request.user.groups.get.name == 'Admin' %}
 
                         <li class="menu-items">
-                            <a href="javascript://" class="menu-link" data-toggle="collapse" data-target="#menu-management">
+                            <a href="javascript://" class="menu-link" data-toggle="collapse"
+                               data-target="#menu-management">
                                 <i class="menu-icon mdi mdi-camera-control"></i>
                                 <span class="menu-label">Management</span>
                                 <i class="menu-arrow mdi mdi-chevron-right"></i>
