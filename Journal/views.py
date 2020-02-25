@@ -186,16 +186,12 @@ def class_delete(request, class_title):
 @login_required(login_url="/login/")
 def users(request):
     users = User.objects.all()
-    groups = Group.objects.all()
-    schoolclasses = SchoolClass.objects.all()
-
     forms = UserAddForms()
 
     if request.user.groups.values_list('name', flat=True).first() != 'Admin':
         return redirect('index')
     elif request.method == 'GET':
-        return render(request, 'Journal/users.html', {'users': users, 'forms': forms, 'groups': groups,
-                                                      'schoolclasses': schoolclasses})
+        return render(request, 'Journal/users.html', {'users': users, 'forms': forms})
     else:
         forms_post = UserAddForms(request.POST)
         if forms_post.is_valid():
@@ -216,6 +212,12 @@ def users(request):
 
             new_user.save()
             groups.user_set.add(new_user)
+
+            if group == 'Student':
+                schoolclass_title = forms_post.cleaned_data['schoolclass']
+                schoolclass = SchoolClass.objects.get(title=schoolclass_title)
+
+                schoolclass.students.add(new_user)
 
             success = True
             return render(request, 'Journal/users.html', {'users': users, 'forms': forms_post, 'success': success})

@@ -30,6 +30,17 @@ class AuthForms(forms.Form):
 
 
 class UserAddForms(forms.ModelForm):
+    group = forms.CharField(label='Group:',
+                            widget=forms.Select(choices=groups_choices, attrs={'class': 'form-control', 'id': 'group',
+                                                                               'onchange': 'value_check()'}))
+
+    schoolclass = forms.CharField(label='',
+                                  widget=forms.Select(choices=schoolclass_choices, attrs={'class': 'form-control',
+                                                                                          'id': 'schoolclass',
+                                                                                          'required': True,
+                                                                                          'hidden': True,
+                                                                                          'onload': 'after_load()',
+                                                                                          }))
 
     class Meta:
         model = User
