@@ -7,7 +7,7 @@ import re
 from django.contrib.auth.models import User, Group
 
 from .forms import AuthForms, ClassAddForms, ScheduleAddForms, UserAddForms, HomeWorkForms, LessonAddForms
-from .models import Day, SchoolClass, Lesson, Schedule
+from .models import Day, SchoolClass, Lesson, Schedule, HomeWork
 
 classes = SchoolClass.objects.all()
 titles = [classes_.title for classes_ in classes]
@@ -249,10 +249,34 @@ def lessons(request):
                                                         'lessons': lessons, 'lessonsforms': lessonsforms,
                                                         'error': error})
 
+
 @login_required(login_url='/login/')
 def homework(request):
-        forms = HomeWorkForms()
-        return render(request, 'Journal/homework.html', {'forms': forms})
+    forms = HomeWorkForms()
+    homeworks = HomeWork.objects.all()
+    if request.method == 'GET':
+        return render(request, 'Journal/homework.html', {'forms': forms, 'homeworks': homeworks})
+    else:
+        forms_post = HomeWorkForms(request.POST)
+        if forms_post.is_valid():
+            schoolclass_title = forms_post.cleaned_data['schoolclass']
+            schoolclass = SchoolClass.objects.filter(title=schoolclass_title).first()
+
+            schedule_id = forms_post.cleaned_data['schedule']
+            schedule = Schedule.objects.filter(id=schedule_id).first()
+
+            teacher = request.user
+
+            text = forms_post.cleaned_data['text']
+
+            new_homework = HomeWork(teacher=teacher, schoolclass=schoolclass, schedule=schedule, text=text)
+            new_homework.save()
+
+            success = True
+            return render(request, 'Journal/homework.html', {'forms': forms, 'success': success, 'homeworks': homeworks})
+        else:
+            error = True
+            return render(request, 'Journal/homework.html', {'forms': forms, 'error': error, 'homeworks': homeworks})
 
 
 def logout_view(request):

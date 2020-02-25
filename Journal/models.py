@@ -37,4 +37,14 @@ class Schedule(models.Model):
     end = models.TimeField(blank=True, null=True)
 
     def __str__(self):
-        return 'Class: {}, Lesson: {}'.format(self.schoolclass, self.lesson)
+        return 'Day: {}, Lesson: {}'.format(self.day, self.lesson)
+
+
+class HomeWork(models.Model):
+    schoolclass = models.ForeignKey(SchoolClass, on_delete=models.CASCADE)
+    schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE, default="")
+    teacher = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.TextField(default="")
+
+    def __str__(self):
+        return 'Teacher: {} {}, SchoolClass: {}'.format(self.teacher.first_name, self.teacher.last_name, self.schoolclass)

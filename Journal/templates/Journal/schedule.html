@@ -82,6 +82,23 @@
 
                 </div>
 
+                {% if error %}
+                    <div class="col-md-4">
+                        <div class="alert alert-danger" role="alert">
+                            There was an error adding a new class
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if success %}
+                    <div class="col-md-2">
+                        <div class="alert alert-success" role="alert">
+                            New class added successfully
+                        </div>
+                    </div>
+                {% endif %}
+
+
                 <div class="accordion" id="accordion">
                     <div class="card">
                         <div class="card-header" id="headingTwo">
@@ -99,15 +116,18 @@
                                 <form action="{% url 'class_schedule' class_title 'September' '1-7' %}"
                                       method="post">
 
-                                    <div class="form-group">
-                                        {% for f in form %}
-                                            {{ f.label }}
-                                            {{ f }}
-                                            <br /><br />
+                                    <div class="row">
+                                        {% for field in form %}
+                                            <div class="col-2 col-sm-2">
+                                                {{ field.label }}
+                                                {{ field }}
+                                                <br/>
+                                            </div>
                                         {% endfor %}
                                     </div>
 
-                                    <button type="submit" class="btn btn-outline-dark">Add</button>
+
+                                    <button type="submit" class="btn btn-outline-dark col-md-1">Add</button>
 
                                 </form>
 

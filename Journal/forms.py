@@ -1,5 +1,5 @@
 from django import forms
-from .models import Day, Lesson, SchoolClass
+from .models import Day, Lesson, SchoolClass, Schedule
 from django.contrib.auth.models import User, Group
 
 days = Day.objects.all()
@@ -14,6 +14,9 @@ groups_choices = [tuple([g, g]) for g in groups]
 users = User.objects.all()
 teachers = [user for user in users if user.groups.get().name == 'Teacher' and user.teachers.first() is None]
 teachers_choices = [tuple([t.id, t.first_name + ' ' + t.last_name]) for t in teachers]
+
+schedules = Schedule.objects.all()
+schedules_choices = [tuple([s.id, s]) for s in schedules if s.homework_set.first() is None]
 
 schoolclasses = SchoolClass.objects.all()
 schoolclass_choices = [tuple([s, s]) for s in schoolclasses]
@@ -55,14 +58,16 @@ class ClassAddForms(forms.ModelForm):
 
 
 class ScheduleAddForms(forms.Form):
-    day_week = forms.CharField(label='Day of the week:', widget=forms.Select(choices=days_choices))
-    lesson = forms.CharField(label='Lesson:', widget=forms.Select(choices=lessons_choices, attrs={'format': '%Y-%m-%d'})
+    day_week = forms.CharField(label='Day of the week:', widget=forms.Select(choices=days_choices,
+                                                                             attrs={'class': 'form-control'}))
+    lesson = forms.CharField(label='Lesson:', widget=forms.Select(choices=lessons_choices, attrs={'format': '%Y-%m-%d',
+                                                                                                  'class': 'form-control'})
                              )
 
-    lesson_date = forms.DateField(label='Lesson date:', widget=forms.SelectDateWidget)
+    lesson_date = forms.DateField(label='Lesson date:', widget=forms.SelectDateWidget(attrs={'class': 'form-control'}))
 
-    lesson_start = forms.TimeField(widget=forms.TimeInput(format='%H:%M'))
-    lesson_end = forms.TimeField(widget=forms.TimeInput(format='%H:%M'))
+    lesson_start = forms.TimeField(widget=forms.TimeInput(format='%H:%M', attrs={'class': 'form-control'}))
+    lesson_end = forms.TimeField(widget=forms.TimeInput(format='%H:%M', attrs={'class': 'form-control'}))
 
 
 class LessonAddForms(forms.ModelForm):
@@ -77,6 +82,6 @@ class LessonAddForms(forms.ModelForm):
 class HomeWorkForms(forms.Form):
     schoolclass = forms.CharField(label='Schoolclass:', widget=forms.Select(choices=schoolclass_choices,
                                                                             attrs={'class': 'form-control'}))
-    lesson = forms.CharField(label='Lesson:', widget=forms.Select(choices=lessons_choices,
-                                                                  attrs={'class': 'form-control'}))
+    schedule = forms.CharField(label='Schedule:', widget=forms.Select(choices=schedules_choices,
+                                                                      attrs={'class': 'form-control'}))
     text = forms.CharField(label='Text:', widget=forms.Textarea(attrs={'class': 'form-control'}))

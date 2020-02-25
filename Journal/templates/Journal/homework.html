@@ -18,6 +18,22 @@
 
             {% if request.user.groups.get.name == 'Teacher' %}
 
+                {% if error %}
+                    <div class="col-md-4">
+                        <div class="alert alert-danger" role="alert">
+                            There was an error adding a new homework
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if success %}
+                    <div class="col-md-2">
+                        <div class="alert alert-success" role="alert">
+                            New homework added successfully
+                        </div>
+                    </div>
+                {% endif %}
+
                 <div class="accordion" id="accordion">
                     <div class="card">
                         <div class="card-header" id="headingTwo">
@@ -57,7 +73,33 @@
                     </div>
                 </div>
 
+
+                </div>
+
+
+
+                </div>
+                <div class="card">
+                    <div class="card-body">
+
+                        <div class="row">
+                            {% for h in homeworks %}
+
+                                <div class="col-sm-3">
+                                    <div class="card" style="width: 18rem;">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Homework for "{{ h.schoolclass.title }}"</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted"></h6>
+
+                                            <a href="#" class="card-link"></a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                </div>
             {% endif %}
-        </div>
-    </div>
 {% endblock %}
