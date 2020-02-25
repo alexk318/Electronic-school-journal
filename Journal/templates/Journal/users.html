@@ -119,6 +119,21 @@
                                     {% endif %}
 
                                     <br/>
+                                    {% if u.groups.get.name == 'Student' %}
+                                        Class {{ u.schoolclass_set.first.title }} student.
+                                    {% endif %}
+
+                                    {% if u.groups.get.name == 'Teacher' %}
+                                        {% if u.teachers.first %}
+                                            Head teacher {{ u.teachers.first.title }} class.
+
+                                            {% else %}
+                                            Not appointed as a head teacher
+                                        {% endif %}
+                                    {% endif %}
+
+
+                                    <br/>
                                 </h6>
 
                                 <a href="#" class="card-link">Profile -></a>
@@ -143,7 +158,7 @@
         }
 
         $(document).ready(function after_load() {
-                schoolclass_selector.hidden = $('#group :selected').text() !== 'Student';
+            schoolclass_selector.hidden = $('#group :selected').text() !== 'Student';
         });
 
 
