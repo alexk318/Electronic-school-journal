@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+#from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required
@@ -6,8 +6,9 @@ from django.contrib.auth.decorators import login_required
 import re
 from django.contrib.auth.models import User, Group
 
-from .forms import AuthForms, ClassAddForms, ScheduleAddForms, UserAddForms, HomeWorkForms, LessonAddForms
-from .models import Day, SchoolClass, Lesson, Schedule, HomeWork
+from .forms import AuthForms, ClassAddForms, ScheduleAddForms, UserAddForms, HomeWorkForms, LessonAddForms, \
+    UserImageForm
+from .models import Day, SchoolClass, Lesson, Schedule, HomeWork, UserImage
 
 classes = SchoolClass.objects.all()
 titles = [classes_.title for classes_ in classes]
@@ -186,15 +187,18 @@ def class_delete(request, class_title):
 @login_required(login_url="/login/")
 def users(request):
     users = User.objects.all()
+
     forms = UserAddForms()
+    image_form = UserImageForm()
 
     if request.user.groups.values_list('name', flat=True).first() != 'Admin':
         return redirect('index')
     elif request.method == 'GET':
-        return render(request, 'Journal/users.html', {'users': users, 'forms': forms})
+        return render(request, 'Journal/users.html', {'users': users, 'forms': forms, 'image_form': image_form})
     else:
         forms_post = UserAddForms(request.POST)
-        if forms_post.is_valid():
+        image_form = UserImageForm(request.POST, request.FILES)
+        if forms_post.is_valid() and image_form.is_valid():
             username = forms_post.cleaned_data['username']
             password = forms_post.cleaned_data['password']
             first_name = forms_post.cleaned_data['first_name']
@@ -219,12 +223,18 @@ def users(request):
 
                 schoolclass.students.add(new_user)
 
+            image = image_form.save(commit=False)
+            image.user = new_user
+            image.save()
+
             success = True
-            return render(request, 'Journal/users.html', {'users': users, 'forms': forms_post, 'success': success})
+            return render(request, 'Journal/users.html', {'users': users, 'forms': forms_post, 'success': success,
+                                                          'image_form': image_form})
         else:
 
             error = True
-            return render(request, 'Journal/users.html', {'users': users, 'forms': forms_post, 'error': error})
+            return render(request, 'Journal/users.html', {'users': users, 'forms': forms_post, 'error': error,
+                                                          'image_form': image_form})
 
 
 @login_required(login_url='/login/')
@@ -279,7 +289,8 @@ def homework(request):
             new_homework.save()
 
             success = True
-            return render(request, 'Journal/homework.html', {'forms': forms, 'success': success, 'homeworks': homeworks})
+            return render(request, 'Journal/homework.html',
+                          {'forms': forms, 'success': success, 'homeworks': homeworks})
         else:
             error = True
             return render(request, 'Journal/homework.html', {'forms': forms, 'error': error, 'homeworks': homeworks})
@@ -287,7 +298,12 @@ def homework(request):
 
 @login_required(login_url='/login/')
 def profile(request, user_id):
-    return render(request, 'Journal/profile.html', {})
+    user = User.objects.filter(id=user_id).first()
+    user_image = UserImage.objects.filter(user=user).first()
+
+    profile_photo = user_image.image.url
+
+    return render(request, 'Journal/profile.html', {'profile_photo': profile_photo})
 
 
 def logout_view(request):

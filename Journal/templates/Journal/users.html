@@ -15,6 +15,33 @@
         <div class="col-md-4">
             <div class="alert alert-danger" role="alert">
                 There was an error adding a new user
+
+                <!--
+                With username:
+                {{ forms.username.errors.as_text }}
+
+                With first
+                {{ forms.first_name.errors.as_text }}
+
+                With last
+                {{ forms.last_name.errors.as_text }}
+
+                With password
+                {{ forms.password.errors.as_text }}
+
+                With email
+                {{ forms.email.errors.as_text }}
+
+                With group
+                {{ forms.group.errors.as_text }}
+
+                With class_choose
+                {{ forms.schoolclass.errors.as_text }}
+
+
+                {{ image_form.image.errors.as_text }}
+
+                -->
             </div>
         </div>
     {% endif %}
@@ -43,8 +70,7 @@
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                         <div class="card-body">
 
-                            <form action="{% url 'users' %}"
-                                  method="post">
+                            <form action="{% url 'users' %}" method="post" enctype="multipart/form-data">
 
 
                                 <div class="row">
@@ -56,6 +82,10 @@
                                         </div>
                                     {% endfor %}
 
+
+                                    <div class="col-5 col-sm-5">
+                                        {{ image_form.as_p }}
+                                    </div>
                                 </div>
 
 
@@ -127,7 +157,7 @@
                                         {% if u.teachers.first %}
                                             Head teacher {{ u.teachers.first.title }} class.
 
-                                            {% else %}
+                                        {% else %}
                                             Not appointed as a head teacher
                                         {% endif %}
                                     {% endif %}
@@ -148,18 +178,7 @@
 
 
     <script>
-        let schoolclass_selector = document.getElementById('schoolclass');
 
-        function value_check() {
-
-
-            schoolclass_selector.hidden = $('#group :selected').text() !== 'Student';
-
-        }
-
-        $(document).ready(function after_load() {
-            schoolclass_selector.hidden = $('#group :selected').text() !== 'Student';
-        });
 
 
     </script>

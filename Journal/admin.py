@@ -1,5 +1,7 @@
 from django.contrib import admin
-from .models import SchoolClass, Lesson, Day, Schedule, HomeWork
+from .models import SchoolClass, Lesson, Day, Schedule, HomeWork, UserImage
+
+admin.site.register(UserImage)
 
 admin.site.register(SchoolClass)
 admin.site.register(Lesson)

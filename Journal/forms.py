@@ -1,5 +1,5 @@
 from django import forms
-from .models import Day, Lesson, SchoolClass, Schedule
+from .models import Day, Lesson, SchoolClass, Schedule, UserImage
 from django.contrib.auth.models import User, Group
 
 days = Day.objects.all()
@@ -12,7 +12,8 @@ groups = Group.objects.all()
 groups_choices = [tuple([g, g]) for g in groups]
 
 users = User.objects.all()
-teachers = [user for user in users if user.groups.get().name == 'Teacher' and user.teachers.first() is None]
+
+teachers = [u for u in users if u.groups.get().name == 'Teacher' and u.teachers.first() is None]
 teachers_choices = [tuple([t.id, t.first_name + ' ' + t.last_name]) for t in teachers]
 
 schedules = Schedule.objects.all()
@@ -31,16 +32,7 @@ class AuthForms(forms.Form):
 
 class UserAddForms(forms.ModelForm):
     group = forms.CharField(label='Group:',
-                            widget=forms.Select(choices=groups_choices, attrs={'class': 'form-control', 'id': 'group',
-                                                                               'onchange': 'value_check()'}))
-
-    schoolclass = forms.CharField(label='',
-                                  widget=forms.Select(choices=schoolclass_choices, attrs={'class': 'form-control',
-                                                                                          'id': 'schoolclass',
-                                                                                          'required': True,
-                                                                                          'hidden': True,
-                                                                                          'onload': 'after_load()',
-                                                                                          }))
+                            widget=forms.Select(choices=groups_choices, attrs={'class': 'form-control', }))
 
     class Meta:
         model = User
@@ -52,6 +44,12 @@ class UserAddForms(forms.ModelForm):
             'last_name': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
             'email': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
         }
+
+
+class UserImageForm(forms.ModelForm):
+    class Meta:
+        model = UserImage
+        fields = ['image']
 
 
 class ClassAddForms(forms.ModelForm):

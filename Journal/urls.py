@@ -1,12 +1,13 @@
 from django.urls import path
-
+from JournalBase import settings
+from django.conf.urls.static import static
 from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
     path('login/', views.log_in, name='login'),
 
-    path('/journal/profile/<int:user_id>', views.profile, name='profile'),
+    path('journal/profile/<int:user_id>', views.profile, name='profile'),
 
     path('journal/', views.journal, name='journal'),
     path('journal/schedule/', views.schedule, name='schedule'),
@@ -25,3 +26,8 @@ urlpatterns = [
 
     path('logout/', views.logout_view, name='logout'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
+
