@@ -1,4 +1,4 @@
-#from django.http import HttpResponse
+# from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required
@@ -158,10 +158,14 @@ def classes(request):
         form = ClassAddForms(request.POST)
         if form.is_valid():
             title = form.cleaned_data['title']
-            teacher = User.objects.filter(id=form.cleaned_data['teacher']).first()
 
-            new_class = SchoolClass(title=title, teacher=teacher)
+            new_class = SchoolClass(title=title)
             new_class.save()
+
+            if not form.cleaned_data['teacher'] == '':
+                teacher = User.objects.filter(id=form.cleaned_data['teacher']).first()
+                new_class.teacher = teacher
+                new_class.save()
 
             success = True
             return render(request, 'Journal/classes.html', {'titles': sorted_titles,
@@ -172,6 +176,13 @@ def classes(request):
         return render(request, 'Journal/classes.html', {'titles': sorted_titles,
                                                         'schoolclasses': schoolclasses, 'addforms': addforms,
                                                         'error': error})
+
+
+@login_required(login_url='/login')
+def thisclass(request, class_id):
+    curr_class = SchoolClass.objects.filter(id=class_id).first()
+
+    return render(request, 'Journal/thisclass.html', {'curr_class': curr_class})
 
 
 @login_required(login_url="/login/")
@@ -216,12 +227,6 @@ def users(request):
 
             new_user.save()
             groups.user_set.add(new_user)
-
-            if group == 'Student':
-                schoolclass_title = forms_post.cleaned_data['schoolclass']
-                schoolclass = SchoolClass.objects.get(title=schoolclass_title)
-
-                schoolclass.students.add(new_user)
 
             image = image_form.save(commit=False)
             image.user = new_user
@@ -298,12 +303,43 @@ def homework(request):
 
 @login_required(login_url='/login/')
 def profile(request, user_id):
-    user = User.objects.filter(id=user_id).first()
-    user_image = UserImage.objects.filter(user=user).first()
+    curr_user = User.objects.filter(id=user_id).first()
+    if request.method == 'GET':
+        image_form = UserImageForm()
 
-    profile_photo = user_image.image.url
+        user_image = UserImage.objects.filter(user=curr_user).first()
 
-    return render(request, 'Journal/profile.html', {'profile_photo': profile_photo})
+        if user_image is not None:
+            profile_photo = user_image.image.url
+        else:
+            profile_photo = None
+
+        return render(request, 'Journal/profile.html', {'profile_photo': profile_photo, 'curr_user': curr_user,
+                                                        'image_form': image_form})
+
+    else:
+        image_form = UserImageForm(request.POST, request.FILES)
+        if image_form.is_valid():
+
+            user_image = UserImage.objects.filter(user=curr_user).first()
+
+            if user_image is not None:
+                user_image.image.delete()
+                user_image.delete()
+
+                image = image_form.save(commit=False)
+                image.user = curr_user
+
+                image.save()
+
+                return redirect('profile', curr_user.id)
+            else:
+                image = image_form.save(commit=False)
+                image.user = curr_user
+
+                image.save()
+
+                return redirect('profile', curr_user.id)
 
 
 def logout_view(request):

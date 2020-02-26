@@ -15,6 +15,7 @@ users = User.objects.all()
 
 teachers = [u for u in users if u.groups.get().name == 'Teacher' and u.teachers.first() is None]
 teachers_choices = [tuple([t.id, t.first_name + ' ' + t.last_name]) for t in teachers]
+teachers_choices.insert(0, (None, '-------'))
 
 schedules = Schedule.objects.all()
 schedules_choices = [tuple([s.id, s]) for s in schedules if s.homework_set.first() is None]
@@ -53,7 +54,7 @@ class UserImageForm(forms.ModelForm):
 
 
 class ClassAddForms(forms.ModelForm):
-    teacher = forms.CharField(label='Available head teacher:',
+    teacher = forms.CharField(label='Available head teacher:', required=False,
                               widget=forms.Select(choices=teachers_choices, attrs={'class': 'form-control'}))
 
     class Meta:

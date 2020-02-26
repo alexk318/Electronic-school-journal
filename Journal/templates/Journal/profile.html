@@ -3,19 +3,113 @@
 {% block title %}Your profile{% endblock %}
 
 {% block body %}
-    <div class="card mb-3" style="max-width: 540px;">
-        <div class="row no-gutters">
-            <div class="col-md-4">
-                <img src="{{ profile_photo }}" class="card-img" alt="...">
-            </div>
-            <div class="col-md-8">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
-                        additional content. This content is a little bit longer.</p>
-                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+
+
+    <div class="card-deck">
+        <div class="card mb-3" style="max-width: 540px;">
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                    <img src="{{ profile_photo }}" class="card-img" alt="...">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+
+                        <h5 class="card-title">{{ curr_user.first_name }} {{ curr_user.last_name }}</h5>
+                        <p class="card-text">
+
+                            ID: {{ curr_user.id }}<br/><br/>
+
+                            Username: {{ curr_user.username }}<br/><br/>
+
+                            First name: {{ curr_user.first_name }}<br/>
+                            Last name: {{ curr_user.last_name }}<br/><br/>
+
+                            Email: {{ curr_user.email }}<br/>
+
+
+                        <p class="card-text"><small class="text-muted"></small></p>
+                    </div>
                 </div>
             </div>
         </div>
+
+
+        <div class="card mb-3" style="max-width: 540px;">
+            <div class="row no-gutters">
+
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">Teacher of</h5>
+                        <p class="card-text">
+
+
+                        </p>
+                        <p class="card-text"><small class="text-muted">
+                        </small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if request.user.groups.get.name == 'Admin' %}
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row no-gutters">
+
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title"></h5>
+                            <p class="card-text">
+
+                                <button type="submit" class="btn btn-outline-danger">
+                                    Delete
+                                </button>
+
+                            </p>
+                            <p class="card-text"><small class="text-muted">Send password
+                                to {{ curr_user.first_name }}</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
     </div>
+
+    {% if request.user.groups.get.name == 'Admin' %}
+        <div class="card">
+        <div class="card-body">
+            <div class="accordion" id="accordion">
+                <div class="card">
+                    <div class="card-header" id="headingTwo">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo"
+                                    aria-controls="collapseTwo">
+                                Editing
+                            </button>
+                        </h5>
+                    </div>
+
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                        <div class="card-body">
+
+                            <form action="{% url 'profile' curr_user.id %}" method="post" enctype="multipart/form-data">
+
+                                <div class="col-5 col-sm-5">
+                                    {{ image_form.as_p }}
+                                </div>
+
+                                <button type="submit" class="btn btn-outline-primary">
+                                    Edit
+                                </button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    {% endif %}
+
+
+
+
 {% endblock %}

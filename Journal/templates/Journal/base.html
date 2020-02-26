@@ -71,7 +71,7 @@
                         <a href="javascript://" class="menu-link" data-toggle="collapse"
                            data-target="#menu-user">
                             <i class="menu-icon mdi mdi-account"></i>
-                            <span class="menu-label">{{ request.user.first_name }}  {{ request.user.last_name }}</span>
+                            <span class="menu-label">{{ request.user.first_name }} {{ request.user.last_name }}</span>
                             <i class="menu-arrow mdi mdi-chevron-right"></i>
                         </a>
 
@@ -83,12 +83,26 @@
                                 </a>
                             </li>
 
-{#                            <li class="menu-item">#}
-{#                                <a href="" class="menu-link">#}
-{#                                    <i class="menu-icon mdi mdi-clipboard-list-outline"></i>#}
-{#                                    <span class="menu-label">Plan</span>#}
-{#                                </a>#}
-{#                            </li>#}
+                            {% if request.user.groups.get.name == 'Student' %}
+                                <li class="menu-item">
+                                    <a href="{% url 'thisclass' request.user.schoolclass.first.id %}" class="menu-link">
+
+                                        <i class="menu-icon mdi mdi-account-supervisor-circle"></i>
+                                        <span class="menu-label">My class</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                            {% if request.user.groups.get.name == 'Teacher' and request.user.teachers.first is not None %}
+                                <li class="menu-item">
+                                    <a href="{% url 'thisclass' request.user.schoolclass.first.id %}" class="menu-link">
+
+                                        <i class="menu-icon mdi mdi-account-supervisor-circle"></i>
+                                        <span class="menu-label">My class</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+
                         </ul>
                     </li>
 

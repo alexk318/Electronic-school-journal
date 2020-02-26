@@ -150,8 +150,14 @@
 
                                     <br/>
                                     {% if u.groups.get.name == 'Student' %}
+                                        {% if u.schoolclass_set.first %}
                                         Class {{ u.schoolclass_set.first.title }} student.
+
+                                        {% else %}
+                                            No class defined for this user.
+                                            {% endif %}
                                     {% endif %}
+
 
                                     {% if u.groups.get.name == 'Teacher' %}
                                         {% if u.teachers.first %}
@@ -166,7 +172,7 @@
                                     <br/>
                                 </h6>
 
-                                <a href="#" class="card-link">Profile -></a>
+                                <a href="{% url 'profile' u.id %}" class="card-link">Profile -></a>
                             </div>
                         </div>
                     </div>
@@ -178,7 +184,6 @@
 
 
     <script>
-
 
 
     </script>
