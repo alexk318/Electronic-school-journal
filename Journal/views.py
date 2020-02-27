@@ -304,10 +304,15 @@ def homework(request):
 @login_required(login_url='/login/')
 def profile(request, user_id):
     curr_user = User.objects.filter(id=user_id).first()
-    if request.method == 'GET':
-        image_form = UserImageForm()
+    user_image = UserImage.objects.filter(user=curr_user).first()
 
-        user_image = UserImage.objects.filter(user=curr_user).first()
+    if request.method == 'GET':
+        user_form = UserAddForms(initial={'username': curr_user.username, 'password': curr_user.password,
+                                          'first_name': curr_user.first_name, 'last_name': curr_user.last_name,
+                                          'email': curr_user.email, 'group': curr_user.groups.first().name,
+                                          })
+
+        image_form = UserImageForm()
 
         if user_image is not None:
             profile_photo = user_image.image.url
@@ -315,7 +320,7 @@ def profile(request, user_id):
             profile_photo = None
 
         return render(request, 'Journal/profile.html', {'profile_photo': profile_photo, 'curr_user': curr_user,
-                                                        'image_form': image_form})
+                                                        'image_form': image_form, 'user_form': user_form})
 
     else:
         image_form = UserImageForm(request.POST, request.FILES)
