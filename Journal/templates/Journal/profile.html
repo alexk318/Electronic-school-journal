@@ -92,11 +92,21 @@
 
                             <form action="{% url 'profile' curr_user.id %}" method="post" enctype="multipart/form-data">
 
-                                <div class="col-5 col-sm-5">
-                                    {{ image_form.as_p }}
+                                <div class="row">
+                                    {% for field in user_form %}
+                                        <div class="col-5 col-sm-5">
+                                            {{ field.label }}
+                                            {{ field }}
+                                            <br/>
+                                        </div>
+                                    {% endfor %}
+
+                                    <div class="col-5 col-sm-5">
+                                        {{ image_form.as_p }}
+                                    </div>
                                 </div>
 
-                                <button type="submit" class="btn btn-outline-primary">
+                                <button type="submit" class="btn btn-outline-primary col-md-1">
                                     Edit
                                 </button>
                             </form>
@@ -106,6 +116,7 @@
                 </div>
 
             </div>
+        </div>
         </div>
     {% endif %}
 
