@@ -4,7 +4,8 @@ from django.contrib.auth.models import User
 
 class UserImage(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='images/')
+    image = models.ImageField(upload_to='images/', null=True, blank=True)
+
 
 class SchoolClass(models.Model):
     title = models.CharField(max_length=3, default="", unique=True)
@@ -34,6 +35,8 @@ class Schedule(models.Model):
     day = models.ForeignKey(Day, on_delete=models.CASCADE, default="")
     schoolclass = models.ForeignKey(SchoolClass, on_delete=models.CASCADE, default="")
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, default="")
+
+    #lessonteacher = models.ForeignKey(User, on_delete=models.CASCADE)
 
     date = models.DateField(blank=True, null=True)
 
