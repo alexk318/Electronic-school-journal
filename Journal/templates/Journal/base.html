@@ -39,6 +39,144 @@
 
 <div class="wrapper">
 
+    <div class="main-navbar navbar-expand-md navbar-light bg-white fixed-top shadow-sm">
+
+        <button class="btn hidden-md-up" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
+
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto hidden-sm-down">
+
+                <li class="nav-item mr-10">
+                    <a href="javascript://" class="nav-icon font-2xl" id="navbar-toggler">
+                        <!-- <i class="fas fa-bars"></i> -->
+                        <!-- <i class="mdi mdi-view-sequential font-2xl"></i> -->
+
+                        <i class="mdi mdi-menu"></i>
+                    </a>
+                </li>
+
+            </ul>
+
+
+            <ul class="navbar-nav my-2 my-lg-0">
+
+                {% if not request.user.is_authenticated %}
+                    <!-- Getting Started -->
+                    <li class="nav-item mr-5">
+                        <a href="/" class="nav-icon font-2xl">
+                            <!-- <i class="fas fa-chart-pie"></i> -->
+                            <i class="mdi mdi-view-dashboard"></i>
+                        </a>
+                    </li>
+
+                    <li class="nav-item mr-5">
+                        <a href="{% url 'login' %}" class="nav-icon font-2xl">
+                            <!-- <i class="fas fa-chart-pie"></i> -->
+                            <i class="mdi mdi-view-split-vertical"></i>
+                        </a>
+                    </li>
+
+                {% else %}
+                    <li class="nav-item mr-5 dropdown">
+                        <a href="#" class="nav-icon avatar rounded-circle" id="PJXN7R" role="button"
+                           data-toggle="dropdown" aria-expanded="false">
+                            <i class="mdi mdi-account"></i>
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="PJXN7R">
+                            <a class="dropdown-item" href="{% url 'profile' request.user.id %}"><i
+                                    class="mdi mdi-file-account"></i>Profile</a>
+                        </div>
+
+                        {% if request.user.groups.get.name == 'Student' and request.user.schoolclass_set.first is not None %}
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="PJXN7R">
+                                <a class="dropdown-item"
+                                   href="{% url 'thisclass' request.user.schoolclass_set.first.id %}"><i
+                                        class="mdi mdi-file-account"></i>My class</a>
+                            </div>
+                        {% endif %}
+                    </li>
+
+
+                    {% if request.user.groups.get.name == 'Teacher' and request.user.teachers.first is not None %}
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="PJXN7R">
+                            <a class="dropdown-item" href="{% url 'thisclass' request.user.teachers.first.id %}"><i
+                                    class="mdi mdi-file-account"></i>My class</a>
+                        </div>
+                    {% endif %}
+
+
+                    {% if request.user.groups.get.name == 'Admin' %}
+                        <li class="nav-item mr-5">
+                            <a href="{% url 'schedule' %}" class="nav-icon font-2xl">
+                                <!-- <i class="fas fa-chart-pie"></i> -->
+                                <i class="mdi mdi-account-supervisor-circle"></i>
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {% if request.user.groups.get.name == 'Student' and request.user.schoolclass_set.first is not None %}
+                        <li class="nav-item mr-5">
+                            <a href="{% url 'class_schedule' request.user.schoolclass_set.first.title 'September' '1-7' %}"
+                               class="nav-icon font-2xl">
+                                <!-- <i class="fas fa-chart-pie"></i> -->
+                                <i class="mdi mdi-clipboard-text-multiple"></i>
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {% if request.user.groups.get.name == 'Admin' %}
+
+                        <li class="nav-item mr-5 dropdown">
+                        <a href="#" class="nav-icon avatar rounded-circle" id="PJXN7R" role="button"
+                           data-toggle="dropdown" aria-expanded="false">
+                            <i class="mdi mdi-camera-control"></i>
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="PJXN7R">
+                            <a class="dropdown-item" href="{% url 'classes' %}"><i
+                                    class="mdi mdi-account-box-multiple"></i>Classes management</a>
+                        </div>
+
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="PJXN7R">
+                            <a class="dropdown-item" href="{% url 'lessons' %}"><i
+                                    class="mdi mdi-bookshelf"></i>Lessons management</a>
+                        </div>
+
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="PJXN7R">
+                            <a class="dropdown-item" href="{% url    'users' %}"><i
+                                    class="mdi mdi-account-group-outline"></i>Users management</a>
+                        </div>
+
+
+                    {% endif %}
+
+                    <li class="nav-item mr-5">
+                        <a href="{% url 'homework' %}"
+                           class="nav-icon font-2xl">
+                            <!-- <i class="fas fa-chart-pie"></i> -->
+                            <i class="mdi mdi-note-text"></i>
+                        </a>
+                    </li>
+
+                    <li class="nav-item mr-5">
+                        <a href="{% url 'logout' %}"
+                           class="nav-icon font-2xl">
+                            <!-- <i class="fas fa-chart-pie"></i> -->
+                            <i class="mdi mdi-exit-to-app"></i>
+                        </a>
+                    </li>
+                {% endif %}
+
+            </ul>
+
+        </div>
+    </div>
+
     <div class="menubar menubar-dark" id="main-menu">
 
         <div class="menubar-header text-center bg-primary">
@@ -102,6 +240,7 @@
                                         <span class="menu-label">My class</span>
                                     </a>
                                 </li>
+
                             {% endif %}
 
                         </ul>
@@ -109,34 +248,16 @@
 
                     {% if request.user.groups.get.name == 'Admin' %}
 
-                        <li class="menu-items">
-                            <a href="javascript://" class="menu-link" data-toggle="collapse"
-                               data-target="#menu-schedule">
-                                <i class="menu-icon mdi mdi-clipboard-text-multiple"></i>
+                        <li class="menu-item">
+                            <a href="{% url 'schedule' %}" class="menu-link">
+                                <i class="menu-icon mdi mdi-account-supervisor-circle"></i>
                                 <span class="menu-label">Schedule</span>
-                                <i class="menu-arrow mdi mdi-chevron-right"></i>
                             </a>
-
-                            <ul class="menu collapse" data-parent="#main-menu" id="menu-schedule">
-                                <li class="menu-item">
-                                    <a href="{% url 'schedule' %}" class="menu-link">
-                                        <i class="menu-icon mdi mdi-clipboard-text"></i>
-                                        <span class="menu-label">Classes</span>
-                                    </a>
-                                </li>
-
-                                <li class="menu-item">
-                                    <a href="" class="menu-link">
-                                        <i class="menu-icon mdi mdi-clipboard-list-outline"></i>
-                                        <span class="menu-label">Plan</span>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
 
                     {% endif %}
 
-                    {% if request.user.groups.get.name == 'Student' and request.user.schoolclass_set.first is not None%}
+                    {% if request.user.groups.get.name == 'Student' and request.user.schoolclass_set.first is not None %}
                         <li class="menu-item">
                             <a href="{% url 'class_schedule' request.user.schoolclass_set.first.title 'September' '1-7' %}"
                                class="menu-link">
