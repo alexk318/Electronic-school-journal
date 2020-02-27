@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import check_password
 
 import re
 from django.contrib.auth.models import User, Group
@@ -60,6 +61,9 @@ def log_in(request):
             else:
                 msg = 'The entered data is incorrect'
                 return render(request, 'Journal/login.html', {'forms': forms, 'msg': msg})
+        else:
+            msg = 'The entered data is incorrect'
+            return render(request, 'Journal/login.html', {'forms': forms, 'msg': msg})
 
 
 @login_required(login_url="/login/")
@@ -336,7 +340,7 @@ def profile(request, user_id):
         if image_form.is_valid() and user_form.is_valid():
             image = image_form.cleaned_data['image']
 
-            if image != '':
+            if image != None:
 
                 user_image = UserImage.objects.filter(user=curr_user).first()
 
@@ -360,7 +364,6 @@ def profile(request, user_id):
             data = get_data(user_form)
 
             curr_user.username = data['username']
-            curr_user.password = data['password']
 
             curr_user.first_name = data['first_name']
 
@@ -371,12 +374,17 @@ def profile(request, user_id):
             data['groups'].user_set.remove(curr_user)
             data['groups'].user_set.add(curr_user)
 
+            if not check_password(data['password'], curr_user.password):
+                curr_user.set_password(data['password'])
+                curr_user.save()
+
             return redirect('profile', curr_user.id)
         else:
             error = True
             return render(request, 'Journal/profile.html', {'profile_photo': profile_photo, 'curr_user': curr_user,
                                                             'image_form': image_form, 'user_form': user_form,
                                                             'error': error})
+
 
 @login_required(login_url='/login/')
 def user_delete(request, user_id):
@@ -389,6 +397,13 @@ def user_delete(request, user_id):
     u.delete()
 
     return redirect('users')
+
+
+@login_required(login_url='/login/')
+def send_password(request, user_id):
+    user = User.objects.filter(id=user_id).first()
+
+    return redirect('profile', user_id)
 
 
 def logout_view(request):

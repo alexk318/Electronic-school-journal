@@ -58,15 +58,14 @@
                         <div class="card-body">
                             <h5 class="card-title"></h5>
                             <p class="card-text">
-
-                            <form action="{% url 'user_delete' curr_user.id %}">
-                                <button type="submit" class="btn btn-outline-danger">
-                                    Delete
-                                </button>
-                            </form>
-
+                                <form action="{% url 'user_delete' curr_user.id %}">
+                                    <button type="submit" class="btn btn-outline-danger">
+                                        Delete
+                                    </button>
+                                </form>
                             </p>
-                            <p class="card-text"><small class="text-muted">Send password
+
+                            <p href="{% url 'send_password' curr_user.id %}" class="card-text"><small class="text-muted">Send password
                                 to {{ curr_user.first_name }}</small></p>
                         </div>
                     </div>
