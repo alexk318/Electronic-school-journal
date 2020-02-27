@@ -83,9 +83,10 @@
                                 </a>
                             </li>
 
-                            {% if request.user.groups.get.name == 'Student' %}
+                            {% if request.user.groups.get.name == 'Student' and request.user.schoolclass_set.first is not None %}
                                 <li class="menu-item">
-                                    <a href="{% url 'thisclass' request.user.schoolclass.first.id %}" class="menu-link">
+                                    <a href="{% url 'thisclass' request.user.schoolclass_set.first.id %}"
+                                       class="menu-link">
 
                                         <i class="menu-icon mdi mdi-account-supervisor-circle"></i>
                                         <span class="menu-label">My class</span>
@@ -95,7 +96,7 @@
 
                             {% if request.user.groups.get.name == 'Teacher' and request.user.teachers.first is not None %}
                                 <li class="menu-item">
-                                    <a href="{% url 'thisclass' request.user.schoolclass.first.id %}" class="menu-link">
+                                    <a href="{% url 'thisclass' request.user.teachers.first.id %}" class="menu-link">
 
                                         <i class="menu-icon mdi mdi-account-supervisor-circle"></i>
                                         <span class="menu-label">My class</span>
@@ -135,7 +136,7 @@
 
                     {% endif %}
 
-                    {% if request.user.groups.get.name == 'Student' %}
+                    {% if request.user.groups.get.name == 'Student' and request.user.schoolclass_set.first is not None%}
                         <li class="menu-item">
                             <a href="{% url 'class_schedule' request.user.schoolclass_set.first.title 'September' '1-7' %}"
                                class="menu-link">
@@ -144,6 +145,16 @@
                             </a>
                         </li>
                     {% endif %}
+                    {% if request.user.groups.get.name == 'Student' and request.user.schoolclass_set.first is None %}
+                        <li class="menu-item">
+                            <a href=""
+                               class="menu-link">
+                                <i class="menu-icon mdi mdi-clipboard-text-multiple"></i>
+                                <span class="menu-label">Class indefined</span>
+                            </a>
+                        </li>
+                    {% endif %}
+
 
                     {% if request.user.groups.get.name == 'Admin' %}
 
