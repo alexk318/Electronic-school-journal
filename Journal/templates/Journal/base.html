@@ -132,25 +132,23 @@
                     {% if request.user.groups.get.name == 'Admin' %}
 
                         <li class="nav-item mr-5 dropdown">
-                        <a href="#" class="nav-icon avatar rounded-circle" id="PJXN7R" role="button"
-                           data-toggle="dropdown" aria-expanded="false">
-                            <i class="mdi mdi-camera-control"></i>
-                        </a>
+                            <a href="#" class="nav-icon avatar rounded-circle" id="PJXN7R" role="button"
+                               data-toggle="dropdown" aria-expanded="false">
+                                <i class="mdi mdi-camera-control"></i>
+                            </a>
 
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="PJXN7R">
-                            <a class="dropdown-item" href="{% url 'classes' %}"><i
-                                    class="mdi mdi-account-box-multiple"></i>Classes management</a>
-                        </div>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="PJXN7R">
+                                <a class="dropdown-item" href="{% url 'classes' %}"><i
+                                        class="mdi mdi-account-box-multiple"></i>Classes management</a>
 
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="PJXN7R">
-                            <a class="dropdown-item" href="{% url 'lessons' %}"><i
-                                    class="mdi mdi-bookshelf"></i>Lessons management</a>
-                        </div>
 
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="PJXN7R">
-                            <a class="dropdown-item" href="{% url    'users' %}"><i
-                                    class="mdi mdi-account-group-outline"></i>Users management</a>
-                        </div>
+                                <a class="dropdown-item" href="{% url 'lessons' %}"><i
+                                        class="mdi mdi-bookshelf"></i>Lessons management</a>
+
+                                <a class="dropdown-item" href="{% url    'users' %}"><i
+                                        class="mdi mdi-account-group-outline"></i>Users management</a>
+                            </div>
+                        </li>
 
 
                     {% endif %}
