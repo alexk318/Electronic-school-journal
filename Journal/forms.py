@@ -13,7 +13,7 @@ groups_choices = [tuple([g, g]) for g in groups]
 
 users = User.objects.all()
 
-teachers = [u for u in users if u.groups.get().name == 'Teacher' and u.teachers.first() is None]
+teachers = [u for u in users if u.groups.first().name == 'Teacher' and u.teachers.first() is None]
 teachers_choices = [tuple([t.id, t.first_name + ' ' + t.last_name]) for t in teachers]
 teachers_choices.insert(0, (None, '-------'))
 
