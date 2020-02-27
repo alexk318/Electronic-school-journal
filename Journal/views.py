@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import check_password
+from django.core.mail import send_mail
 
 import re
 from django.contrib.auth.models import User, Group
@@ -398,12 +399,6 @@ def user_delete(request, user_id):
 
     return redirect('users')
 
-
-@login_required(login_url='/login/')
-def send_password(request, user_id):
-    user = User.objects.filter(id=user_id).first()
-
-    return redirect('profile', user_id)
 
 
 def logout_view(request):

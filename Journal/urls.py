@@ -10,8 +10,6 @@ urlpatterns = [
     path('journal/profile/<int:user_id>', views.profile, name='profile'),
     path('journal/profile/<int:user_id>/delete', views.user_delete, name='user_delete'),
 
-    path('journal/send_password/<int:user_id>', views.send_password, name='send_password'),
-
     path('journal/', views.journal, name='journal'),
     path('journal/schedule/', views.schedule, name='schedule'),
 
