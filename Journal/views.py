@@ -1,4 +1,4 @@
-# from django.http import HttpResponse
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required
@@ -7,11 +7,26 @@ import re
 from django.contrib.auth.models import User, Group
 
 from .forms import AuthForms, ClassAddForms, ScheduleAddForms, UserAddForms, HomeWorkForms, LessonAddForms, \
-    UserImageForm
+    UserImageForm, UserEditForms
 from .models import Day, SchoolClass, Lesson, Schedule, HomeWork, UserImage
 
 classes = SchoolClass.objects.all()
 titles = [classes_.title for classes_ in classes]
+
+
+def get_data(handler):
+    username = handler.cleaned_data['username']
+    password = handler.cleaned_data['password']
+    first_name = handler.cleaned_data['first_name']
+    last_name = handler.cleaned_data['last_name']
+    email = handler.cleaned_data['email']
+
+    group = handler.cleaned_data['group']
+    groups = Group.objects.get(name=group)
+
+    return {'username': username, 'password': password, 'first_name': first_name, 'last_name': last_name,
+            'email': email,
+            'group': group, 'groups': groups}
 
 
 def key(s):
@@ -210,23 +225,17 @@ def users(request):
         forms_post = UserAddForms(request.POST)
         image_form = UserImageForm(request.POST, request.FILES)
         if forms_post.is_valid() and image_form.is_valid():
-            username = forms_post.cleaned_data['username']
-            password = forms_post.cleaned_data['password']
-            first_name = forms_post.cleaned_data['first_name']
-            last_name = forms_post.cleaned_data['last_name']
-            email = forms_post.cleaned_data['email']
 
-            group = forms_post.cleaned_data['group']
-            groups = Group.objects.get(name=group)
+            data = get_data(forms_post)
 
-            new_user = User.objects.create_user(username=username,
-                                                password=password,
-                                                first_name=first_name,
-                                                last_name=last_name,
-                                                email=email)
+            new_user = User.objects.create_user(username=data['username'],
+                                                password=data['password'],
+                                                first_name=data['first_name'],
+                                                last_name=data['last_name'],
+                                                email=data['email'])
 
             new_user.save()
-            groups.user_set.add(new_user)
+            data['groups'].user_set.add(new_user)
 
             image = image_form.save(commit=False)
             image.user = new_user
@@ -305,46 +314,70 @@ def homework(request):
 def profile(request, user_id):
     curr_user = User.objects.filter(id=user_id).first()
     user_image = UserImage.objects.filter(user=curr_user).first()
+    image_form = UserImageForm()
+
+    if user_image is None:
+        profile_photo = 1
+    else:
+        profile_photo = user_image.image.url
+
 
     if request.method == 'GET':
-        user_form = UserAddForms(initial={'username': curr_user.username, 'password': curr_user.password,
-                                          'first_name': curr_user.first_name, 'last_name': curr_user.last_name,
-                                          'email': curr_user.email, 'group': curr_user.groups.first().name,
-                                          })
-
-        image_form = UserImageForm()
-
-        if user_image is not None:
-            profile_photo = user_image.image.url
-        else:
-            profile_photo = None
+        user_form = UserEditForms(initial={'username': curr_user.username, 'password': curr_user.password,
+                                           'first_name': curr_user.first_name, 'last_name': curr_user.last_name,
+                                           'email': curr_user.email, 'group': curr_user.groups.first().name,
+                                           })
 
         return render(request, 'Journal/profile.html', {'profile_photo': profile_photo, 'curr_user': curr_user,
                                                         'image_form': image_form, 'user_form': user_form})
 
-    else:
+    else:  # POST
+        user_form = UserEditForms(request.POST)
         image_form = UserImageForm(request.POST, request.FILES)
-        if image_form.is_valid():
+        if image_form.is_valid() and user_form.is_valid():
+            image = image_form.cleaned_data['image']
 
-            user_image = UserImage.objects.filter(user=curr_user).first()
+            if image != '':
 
-            if user_image is not None:
-                user_image.image.delete()
-                user_image.delete()
+                user_image = UserImage.objects.filter(user=curr_user).first()
 
-                image = image_form.save(commit=False)
-                image.user = curr_user
+                if user_image is not None:
+                    user_image.image.delete()
+                    user_image.delete()
 
-                image.save()
+                    image = image_form.save(commit=False)
+                    image.user = curr_user
 
-                return redirect('profile', curr_user.id)
-            else:
-                image = image_form.save(commit=False)
-                image.user = curr_user
+                    image.save()
 
-                image.save()
+                    return redirect('profile', curr_user.id)
 
-                return redirect('profile', curr_user.id)
+                else:
+                    image = image_form.save(commit=False)
+                    image.user = curr_user
+
+                    image.save()
+
+            data = get_data(user_form)
+
+            curr_user.username = data['username']
+            curr_user.password = data['password']
+
+            curr_user.first_name = data['first_name']
+
+            curr_user.last_name = data['last_name']
+            curr_user.email = data['email']
+
+            curr_user.save()
+            data['groups'].user_set.remove(curr_user)
+            data['groups'].user_set.add(curr_user)
+
+            return redirect('profile', curr_user.id)
+        else:
+            error = True
+            return render(request, 'Journal/profile.html', {'profile_photo': profile_photo, 'curr_user': curr_user,
+                                                            'image_form': image_form, 'user_form': user_form,
+                                                            'error': error})
 
 
 def logout_view(request):

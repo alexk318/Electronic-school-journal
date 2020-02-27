@@ -47,6 +47,19 @@ class UserAddForms(forms.ModelForm):
         }
 
 
+class UserEditForms(forms.Form):
+    username = forms.CharField(label='Username:', widget=forms.TextInput(attrs={'class': 'form-control'}))
+    password = forms.CharField(label='Password:', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    first_name = forms.CharField(label='First name:',
+                                 widget=forms.TextInput(attrs={'class': 'form-control', 'required': True}))
+    last_name = forms.CharField(label='Last name:',
+                                widget=forms.TextInput(attrs={'class': 'form-control', 'required': True}))
+    email = forms.CharField(label='Email:',
+                            widget=forms.EmailInput(attrs={'class': 'form-control', 'required': True}))
+    group = forms.CharField(label='Group:',
+                            widget=forms.Select(choices=groups_choices, attrs={'class': 'form-control', }))
+
+
 class UserImageForm(forms.ModelForm):
     class Meta:
         model = UserImage

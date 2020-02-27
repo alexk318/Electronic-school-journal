@@ -75,48 +75,67 @@
 
     {% if request.user.groups.get.name == 'Admin' %}
         <div class="card">
-        <div class="card-body">
-            <div class="accordion" id="accordion">
-                <div class="card">
-                    <div class="card-header" id="headingTwo">
-                        <h5 class="mb-0">
-                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo"
-                                    aria-controls="collapseTwo">
-                                Editing
-                            </button>
-                        </h5>
-                    </div>
+            <div class="card-body">
 
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                        <div class="card-body">
-
-                            <form action="{% url 'profile' curr_user.id %}" method="post" enctype="multipart/form-data">
-
-                                <div class="row">
-                                    {% for field in user_form %}
-                                        <div class="col-5 col-sm-5">
-                                            {{ field.label }}
-                                            {{ field }}
-                                            <br/>
-                                        </div>
+                {% if error %}
+                    <div class="col-md-4">
+                        <div class="alert alert-danger" role="alert">
+                            There was an error adding a new user
+                            <br/>
+                            {% if user_form.errors %}
+                                {% for field in user_form %}
+                                    {% for error in field.errors %}
+                                        {{ error|escape }}
                                     {% endfor %}
-
-                                    <div class="col-5 col-sm-5">
-                                        {{ image_form.as_p }}
-                                    </div>
-                                </div>
-
-                                <button type="submit" class="btn btn-outline-primary col-md-1">
-                                    Edit
-                                </button>
-                            </form>
+                                {% endfor %}
+                            {% endif %}
 
                         </div>
                     </div>
-                </div>
+                {% endif %}
 
+                <div class="accordion" id="accordion">
+                    <div class="card">
+                        <div class="card-header" id="headingTwo">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo"
+                                        aria-controls="collapseTwo">
+                                    Editing
+                                </button>
+                            </h5>
+                        </div>
+
+                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                            <div class="card-body">
+
+                                <form action="{% url 'profile' curr_user.id %}" method="post"
+                                      enctype="multipart/form-data">
+
+                                    <div class="row">
+                                        {% for field in user_form %}
+                                            <div class="col-5 col-sm-5">
+                                                {{ field.label }}
+                                                {{ field }}
+                                                <br/>
+                                            </div>
+                                        {% endfor %}
+
+                                        <div class="col-5 col-sm-5">
+                                            {{ image_form.as_p }}
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-outline-primary col-md-1">
+                                        Edit
+                                    </button>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
-        </div>
         </div>
     {% endif %}
 
