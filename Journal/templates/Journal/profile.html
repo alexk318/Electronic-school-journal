@@ -59,9 +59,11 @@
                             <h5 class="card-title"></h5>
                             <p class="card-text">
 
+                            <form action="{% url 'user_delete' curr_user.id %}">
                                 <button type="submit" class="btn btn-outline-danger">
                                     Delete
                                 </button>
+                            </form>
 
                             </p>
                             <p class="card-text"><small class="text-muted">Send password

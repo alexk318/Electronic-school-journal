@@ -378,6 +378,18 @@ def profile(request, user_id):
                                                             'image_form': image_form, 'user_form': user_form,
                                                             'error': error})
 
+@login_required(login_url='/login/')
+def user_delete(request, user_id):
+    u = User.objects.filter(id=user_id).first()
+    user_image = UserImage.objects.filter(user=u).first()
+
+    user_image.image.delete()
+    user_image.delete()
+
+    u.delete()
+
+    return redirect('users')
+
 
 def logout_view(request):
     logout(request)
