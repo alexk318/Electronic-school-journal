@@ -321,7 +321,6 @@ def profile(request, user_id):
     else:
         profile_photo = user_image.image.url
 
-
     if request.method == 'GET':
         user_form = UserEditForms(initial={'username': curr_user.username, 'password': curr_user.password,
                                            'first_name': curr_user.first_name, 'last_name': curr_user.last_name,
