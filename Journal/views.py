@@ -3,16 +3,16 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import check_password
-from django.core.mail import send_mail
 
 import re
 from django.contrib.auth.models import User, Group
 
 from .forms import AuthForms, ClassAddForms, ScheduleAddForms, UserAddForms, HomeWorkForms, LessonAddForms, \
     UserImageForm, UserEditForms
-from .models import Day, SchoolClass, Lesson, Schedule, HomeWork, UserImage
+from .models import Day, SchoolClass, Lesson, Schedule, HomeWork, UserImage, Teacher
 
 classes = SchoolClass.objects.all()
+
 titles = [classes_.title for classes_ in classes]
 
 
@@ -113,7 +113,7 @@ def class_schedule(request, class_title, month_title, week_numbers):
             return redirect('class_schedule', request.user.schoolclass_set.first().title, 'September', '1-7')
 
         schoolclass = SchoolClass.objects.filter(title=class_title).first()
-        all_schedules = Schedule.objects.filter(schoolclass=schoolclass).all()
+        all_schedules = Schedule.objects.filter(schoolclass=schoolclass).all().order_by('start')
 
         days = Day.objects.all()
         lessons = Lesson.objects.all()
@@ -332,13 +332,29 @@ def profile(request, user_id):
                                            'email': curr_user.email, 'group': curr_user.groups.first().name,
                                            })
 
+        #teacher_form = TeacherForm()
+
         return render(request, 'Journal/profile.html', {'profile_photo': profile_photo, 'curr_user': curr_user,
-                                                        'image_form': image_form, 'user_form': user_form})
+                                                        'image_form': image_form, 'user_form': user_form,
+                                                        })
 
     else:  # POST
         user_form = UserEditForms(request.POST)
         image_form = UserImageForm(request.POST, request.FILES)
-        if image_form.is_valid() and user_form.is_valid():
+        #teacher_form = TeacherForm(request.POST)
+        if image_form.is_valid() and user_form.is_valid(): #and teacher_form.is_valid():
+            # schoolclasses = teacher_form['schoolclasses']
+            # lessons = teacher_form['lessons']
+
+            # teacher = teacher_form.save(commit=False)
+            #
+            # teacher = Teacher.objects.create(
+            #     user=curr_user
+            # )
+            #
+            # teacher.schoolclasses.add(schoolclasses)
+            # teacher.lessons.add(lessons)
+
             image = image_form.cleaned_data['image']
 
             if image != None:
@@ -371,6 +387,7 @@ def profile(request, user_id):
             curr_user.last_name = data['last_name']
             curr_user.email = data['email']
 
+
             curr_user.save()
             data['groups'].user_set.remove(curr_user)
             data['groups'].user_set.add(curr_user)
@@ -398,7 +415,6 @@ def user_delete(request, user_id):
     u.delete()
 
     return redirect('users')
-
 
 
 def logout_view(request):
