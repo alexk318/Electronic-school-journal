@@ -4,6 +4,8 @@
     Home work
 {% endblock %}
 
+{% load crispy_forms_filters %}
+
 {% block body %}
     <div class="card">
         <div class="card-body">
@@ -52,15 +54,17 @@
                                       method="post">
 
 
-                                    <div class="row">
-                                        {% for field in forms %}
-                                            <div class="col-5 col-sm-5">
-                                                {{ field.label }}
-                                                {{ field }}
-                                                <br/>
-                                            </div>
-                                        {% endfor %}
+                                    <div class="form-row">
+                                        <div class="form-group col-md-2 mb-0">
+                                            {{ forms.schedule|as_crispy_field }}
+                                        </div>
                                     </div>
+
+                                    <br/>
+                                    <div class="form-row">
+                                        {{ forms.text|as_crispy_field }}
+                                    </div>
+
 
                                     <br/>
                                     <button type="submit" class="btn btn-outline-dark col-md-1">
@@ -83,13 +87,15 @@
                     <div class="card-body">
 
                         <div class="row">
-                            {% for h in homeworks %}
+                            {% for h in myhomeworks %}
 
                                 <div class="col-sm-3">
                                     <div class="card" style="width: 18rem;">
                                         <div class="card-body">
                                             <h5 class="card-title">Homework for "{{ h.schoolclass.title }}"</h5>
-                                            <h6 class="card-subtitle mb-2 text-muted"></h6>
+                                            <h6 class="card-subtitle mb-2 text-muted">
+                                                {{ h.homework_set.first.text }}
+                                            </h6>
 
                                             <a href="#" class="card-link"></a>
                                         </div>
