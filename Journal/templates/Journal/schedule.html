@@ -4,6 +4,7 @@
     Schedule
 {% endblock %}
 
+{% load crispy_forms_filters %}
 
 {% block body %}
     <div class="card">
@@ -113,21 +114,40 @@
                         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                             <div class="card-body">
 
-                                <form action="{% url 'class_schedule' class_title 'September' '1-7' %}"
-                                      method="post">
-
-                                    <div class="row">
-                                        {% for field in form %}
-                                            <div class="col-2 col-sm-2">
-                                                {{ field.label }}
-                                                {{ field }}
-                                                <br/>
-                                            </div>
-                                        {% endfor %}
+                                <form action="{% url 'class_schedule' class_title 'September' '1-7' %}" method="post">
+                                    {% csrf_token %}
+                                    <div class="form-row">
+                                        <div class="form-group col-md-2 mb-0">
+                                            {{ form.lesson|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-2 mb-0">
+                                            {{ form.lessonteacher|as_crispy_field }}
+                                        </div>
                                     </div>
 
+                                    <br/>
+                                    <div class="form-row">
+                                        {{ form.day|as_crispy_field }}
+                                    </div>
+                                    <br/>
 
-                                    <button type="submit" class="btn btn-outline-dark col-md-1">Add</button>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-1 mb-0">
+                                            {{ form.date|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-1 mb-0">
+                                            {{ form.start|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-1 mb-0">
+                                            {{ form.end|as_crispy_field }}
+                                        </div>
+                                    </div>
+
+                                    <br/>
+
+                                    <button type="submit" class="btn btn-outline-dark col-md-1">
+                                        Add
+                                    </button>
 
                                 </form>
 
@@ -147,25 +167,32 @@
             <div class="col">
                 <div class="card">
                     <div class="card-body">
-                        <h6 class="card-title text-muted">{{ day.title }}</h6>
+                        <p class="text-muted mb-1"> {{ day.title }}
+                        </p>
 
+                        {% for schedule_day in schedules_days %}
+                            {% for schedule in schedule_day %}
+                                {% if schedule.day == day %}
 
-                        <h3 class="mb-10">
-                            {% for schedule_day in schedules_days %}
-                                {% for schedule in schedule_day %}
-                                    {% if schedule.day == day %}
+                                    <h3 class="mb-12">
                                         {{ schedule.lesson }}
-                                        <br/>
-                                    {% endif %}
-                                {% endfor %}
+                                    </h3>
+
+                                    <h6 class="card-title text-muted mb-0">
+                                        {{ schedule.lessonteacher.user.first_name }}
+                                        {{ schedule.lessonteacher.user.last_name }}
+                                    </h6>
+
+                                    <h6 class="card-title text-muted mb-0">
+                                        {{ schedule.start }} -
+                                        {{ schedule.end }}
+                                    </h6>
+
+                                    <br/>
+                                {% endif %}
                             {% endfor %}
-                        </h3>
+                        {% endfor %}
 
-
-                        <p class="text-muted mb-0">
-                            {{ schedule.date }}<br/>
-                            {{ schedule.start }}<br/>
-                            {{ schedule.end }}
 
                     </div>
                 </div>
