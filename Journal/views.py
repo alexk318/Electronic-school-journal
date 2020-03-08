@@ -89,20 +89,19 @@ def class_schedule(request, class_title, month_title, week_numbers):
         form = ScheduleAddForms(request.POST)
 
         if form.is_valid():
-            day_title = form.cleaned_data['day_week']
-            day = Day.objects.filter(title=day_title).first()
+            day = form.cleaned_data['day']  # object
 
             schoolclass = SchoolClass.objects.filter(title=class_title).first()
 
-            lesson_title = form.cleaned_data['lesson']
-            lesson = Lesson.objects.filter(title=lesson_title).first()
+            lesson = form.cleaned_data['lesson']
+            lessonteacher = form.cleaned_data['lessonteacher']
 
-            date = form.cleaned_data['lesson_date']
+            date = form.cleaned_data['date']
 
-            start = form.cleaned_data['lesson_start']
-            end = form.cleaned_data['lesson_end']
+            start = form.cleaned_data['start']
+            end = form.cleaned_data['end']
 
-            new_schedule = Schedule(day=day, schoolclass=schoolclass, lesson=lesson, date=date,
+            new_schedule = Schedule(day=day, schoolclass=schoolclass, lesson=lesson, lessonteacher=lessonteacher ,date=date,
                                     start=start, end=end)
             new_schedule.save()
 
@@ -287,29 +286,26 @@ def lessons(request):
 
 @login_required(login_url='/login/')
 def homework(request):
+    teacher = Teacher.objects.filter(user=request.user).first()
+
     forms = HomeWorkForms()
-    homeworks = HomeWork.objects.all()
+    forms.fields['schedule'].queryset = Schedule.objects.filter(homework=None).filter(lessonteacher=teacher)
+
+    myhomeworks = teacher.schedule_set.all()
     if request.method == 'GET':
-        return render(request, 'Journal/homework.html', {'forms': forms, 'homeworks': homeworks})
+        return render(request, 'Journal/homework.html', {'forms': forms, 'myhomeworks': myhomeworks})
     else:
         forms_post = HomeWorkForms(request.POST)
         if forms_post.is_valid():
-            schoolclass_title = forms_post.cleaned_data['schoolclass']
-            schoolclass = SchoolClass.objects.filter(title=schoolclass_title).first()
-
-            schedule_id = forms_post.cleaned_data['schedule']
-            schedule = Schedule.objects.filter(id=schedule_id).first()
-
-            teacher = request.user
-
+            schedule = forms_post.cleaned_data['schedule']
             text = forms_post.cleaned_data['text']
 
-            new_homework = HomeWork(teacher=teacher, schoolclass=schoolclass, schedule=schedule, text=text)
+            new_homework = HomeWork(schedule=schedule, text=text)
             new_homework.save()
 
             success = True
             return render(request, 'Journal/homework.html',
-                          {'forms': forms, 'success': success, 'homeworks': homeworks})
+                          {'forms': forms, 'success': success, 'myhomeworks': myhomeworks})
         else:
             error = True
             return render(request, 'Journal/homework.html', {'forms': forms, 'error': error, 'homeworks': homeworks})
