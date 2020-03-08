@@ -7,11 +7,17 @@ class UserImage(models.Model):
     image = models.ImageField(upload_to='images/', null=True, blank=True)
 
 
+class Teacher(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return '{} {}'.format(self.user.first_name, self.user.last_name)
+
+
 class SchoolClass(models.Model):
     title = models.CharField(max_length=3, default="", unique=True)
+    #teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     students = models.ManyToManyField(User, blank=True)
-
-    teacher = models.ForeignKey(User, on_delete=models.CASCADE, related_name='teachers', null=True, blank=True)
 
     def __str__(self):
         return '%s' % self.title.capitalize()
@@ -19,6 +25,7 @@ class SchoolClass(models.Model):
 
 class Lesson(models.Model):
     title = models.CharField(max_length=50, default="", unique=True)
+    #teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
 
     def __str__(self):
         return '%s' % self.title
@@ -36,7 +43,7 @@ class Schedule(models.Model):
     schoolclass = models.ForeignKey(SchoolClass, on_delete=models.CASCADE, default="")
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, default="")
 
-    #lessonteacher = models.ForeignKey(User, on_delete=models.CASCADE)
+    lessonteacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, default="", blank=True, null=True)
 
     date = models.DateField(blank=True, null=True)
 
@@ -48,10 +55,12 @@ class Schedule(models.Model):
 
 
 class HomeWork(models.Model):
-    schoolclass = models.ForeignKey(SchoolClass, on_delete=models.CASCADE)
     schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE, default="")
-    teacher = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField(default="")
 
-    def __str__(self):
-        return 'Teacher: {} {}, SchoolClass: {}'.format(self.teacher.first_name, self.teacher.last_name, self.schoolclass)
+    def get_teacher(self):
+        return self.schedule.lessonteacher
+
+    # def __str__(self):
+    #     return 'Teacher: {} {}, SchoolClass: {}'.format(self.schedule, self.teacher.user.last_name,
+    #                                                     self.schoolclass)
