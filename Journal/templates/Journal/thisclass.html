@@ -4,6 +4,100 @@
 
 {% block body %}
 
+    <div class="card">
+        <div class="card-body">
+            <h3 class="display-3">Class {{ curr_class.title }}</h3>
+        </div>
+    </div>
 
+    <div class="card">
+        <div class="card-body">
+
+            <div class="accordion" id="accordion">
+                <div class="card">
+                    <div class="card-header" id="headingTwo">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo"
+                                    aria-controls="collapseTwo">
+                                {% if students %}
+                                    Students
+                                {% else %}
+                                    No students defined for this class
+                                {% endif %}
+                            </button>
+                        </h5>
+                    </div>
+
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                        <div class="card-body">
+
+                            <div class="row">
+                                {% for student in students %}
+
+                                    <div class="col-sm-3">
+                                        <div class="card" style="width: 18rem;">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{ student.first_name }} {{ student.last_name }}</h5>
+                                                <h6 class="card-subtitle mb-2 text-muted">
+
+                                                </h6>
+
+                                                <a href="{% url 'profile' student.id %}" class="card-link">Profile</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                {% endfor %}
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+
+            <div class="accordion" id="accordion">
+                <div class="card">
+                    <div class="card-header" id="headingThree">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseThree"
+                                    aria-controls="collapseTwo">
+                                Add student to class
+                            </button>
+                        </h5>
+                    </div>
+
+                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                        <div class="card-body">
+
+                            <form action="{% url 'thisclass' curr_class.id %}" method="post">
+
+                                <div class="row" style="margin-left:2px">
+                                    {% for form in forms %}
+                                        {{ form }}
+                                    {% endfor %}
+                                </div>
+
+                                <br/>
+                                <button type="submit" style="margin-left: 12px" class="btn btn-outline-dark col-md-1">
+                                    Add
+                                </button>
+
+                            </form>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
 {% endblock %}

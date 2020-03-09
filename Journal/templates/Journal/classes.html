@@ -48,7 +48,7 @@
 
                                 <div class="row">
                                     {% for field in addforms %}
-                                        <div class="col-5 col-sm-5">
+                                        <div class="col-md-1">
                                             {{ field.label }}
                                             {{ field }}
                                             <br/>
@@ -79,18 +79,13 @@
                     <div class="col-sm-3">
                         <div class="card" style="width: 18rem;">
                             <div class="card-body">
-                                <h5 class="card-title">Class {{ c.title }}</h5>
+                                <h5 class="card-title">
+                                    <a href="{% url 'thisclass' c.id %}" class="card-link">Class {{ c.title }}</a>
+                                </h5>
+
                                 <h6 class="card-subtitle mb-2 text-muted">
-                                    {% if c.teacher %}
-                                        <a href="">Head
-                                            teacher: {{ c.teacher.first_name }} {{ c.teacher.last_name }}</a>
 
-                                    {% else %}
-                                        The head teacher is not defined for this class
-                                    {% endif %}
                                 </h6>
-
-                                <a href="{% url 'thisclass' c.id %}" class="card-link">More ...</a>
                             </div>
                         </div>
                     </div>

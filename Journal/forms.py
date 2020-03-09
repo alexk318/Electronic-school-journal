@@ -24,6 +24,7 @@ teachers_choices = []
 schoolclasses = SchoolClass.objects.all()
 schoolclass_choices = [tuple([s, s]) for s in schoolclasses]
 
+student = Group.objects.get(name='Student')
 
 class AuthForms(forms.Form):
     username = forms.CharField(label='Username:', max_length=100, required=True,
@@ -85,6 +86,11 @@ class ClassAddForms(forms.ModelForm):
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
+
+class ClassStudentsAddForms(forms.Form):
+    students = forms.CharField(label='Select', widget=forms.SelectMultiple(
+        choices=[tuple([u.id, u.first_name + ' ' + u.last_name]) for u in User.objects.filter(groups=student).filter(schoolclass=None)]))
 
 
 class ScheduleAddForms(forms.ModelForm):

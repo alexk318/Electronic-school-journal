@@ -8,7 +8,7 @@ import re
 from django.contrib.auth.models import User, Group
 
 from .forms import AuthForms, ClassAddForms, ScheduleAddForms, UserAddForms, HomeWorkForms, LessonAddForms, \
-    UserImageForm, UserEditForms
+    UserImageForm, UserEditForms, ClassStudentsAddForms
 from .models import Day, SchoolClass, Lesson, Schedule, HomeWork, UserImage, Teacher
 
 classes = SchoolClass.objects.all()
@@ -181,11 +181,6 @@ def classes(request):
             new_class = SchoolClass(title=title)
             new_class.save()
 
-            if not form.cleaned_data['teacher'] == '':
-                teacher = User.objects.filter(id=form.cleaned_data['teacher']).first()
-                new_class.teacher = teacher
-                new_class.save()
-
             success = True
             return render(request, 'Journal/classes.html', {'titles': sorted_titles,
                                                             'schoolclasses': schoolclasses, 'addforms': addforms,
@@ -201,7 +196,24 @@ def classes(request):
 def thisclass(request, class_id):
     curr_class = SchoolClass.objects.filter(id=class_id).first()
 
-    return render(request, 'Journal/thisclass.html', {'curr_class': curr_class})
+    if request.method == 'GET':
+        forms = ClassStudentsAddForms()
+        curr_class_students = curr_class.students.all()
+
+        return render(request, 'Journal/thisclass.html', {'forms': forms, 'curr_class': curr_class,
+                                                          'students': curr_class_students})
+
+    else:
+        forms = ClassStudentsAddForms(request.POST)
+        if forms.is_valid():
+            students_id = forms.data.getlist('students')
+
+            for student_id in students_id:
+                curr_class.students.add(student_id)
+
+            curr_class.save()
+
+            return redirect('thisclass', curr_class.id)
 
 
 @login_required(login_url="/login/")
