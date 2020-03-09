@@ -143,19 +143,13 @@ sup {
   top: -.5em; }
 
 a {
-  color: #3b73da;
+  color: gray;
   text-decoration: none;
-  background-color: transparent; }
-  a:hover {
-    color: #2050a9;
-    text-decoration: underline; }
+}
 
-a:not([href]) {
-  color: inherit;
-  text-decoration: none; }
-  a:not([href]):hover {
-    color: inherit;
-    text-decoration: none; }
+a:hover, a:active, a:focus {
+  color: darkgray;
+}
 
 pre,
 code,
