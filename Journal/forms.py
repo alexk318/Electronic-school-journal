@@ -79,9 +79,6 @@ class UserImageForm(forms.ModelForm):
 
 
 class ClassAddForms(forms.ModelForm):
-    teacher = forms.CharField(label='Available head teacher:', required=False,
-                              widget=forms.Select(choices=teachers_choices, attrs={'class': 'form-control'}))
-
     class Meta:
         model = SchoolClass
         fields = ['title']
