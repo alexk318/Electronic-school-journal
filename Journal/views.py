@@ -3,9 +3,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import check_password
+from django.contrib.auth.models import User, Group
 
 import re
-from django.contrib.auth.models import User, Group
 
 from .forms import AuthForms, ClassAddForms, ScheduleAddForms, UserAddForms, HomeWorkForms, LessonAddForms, \
     UserImageForm, UserEditForms, ClassStudentsAddForms
@@ -39,9 +39,10 @@ def key(s):
 sorted_titles = sorted(titles, key=key)
 
 
-def index(request):
+def index(request):  # Getting started
     if request.user.is_authenticated:
         return redirect('journal')
+
     return render(request, 'Journal/index.html')
 
 

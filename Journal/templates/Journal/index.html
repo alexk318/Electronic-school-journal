@@ -1,7 +1,13 @@
 {% extends 'Journal/base.html' %}
 
+{% load i18n %}
+
+
+
 {% block title %}
-    Electronic school journal
+
+    {% trans 'Electronic school journal' %}
+
 {% endblock %}
 
 {% block head %}
@@ -13,7 +19,9 @@
         <div class="card-body">
             <h1 class="display-1">Electronic school Journal</h1>
 
-            <i><mark>Digitalization</mark> is an important step in the twenty-first century</i>
+            <i>
+                <mark>Digitalization</mark>
+                is an important step in the twenty-first century</i>
         </div>
     </div>
 
@@ -22,9 +30,12 @@
         <div class="card-body">
             <h4 class="display-4">What?</h4>
 
-            “Electronic diary and journal” - a service that allows participants in the educational process to receive information about training schedules,
-            current and final grades and homework online. Also, electronic school workflow should ensure a reduction in the administrative burden on educational institutions.
-            In addition, various systems of electronic diaries can support other, additional functions - electronic student portfolios, news feeds, social networks and so on.
+            “Electronic diary and journal” - a service that allows participants in the educational process to receive
+            information about training schedules,
+            current and final grades and homework online. Also, electronic school workflow should ensure a reduction in
+            the administrative burden on educational institutions.
+            In addition, various systems of electronic diaries can support other, additional functions - electronic
+            student portfolios, news feeds, social networks and so on.
         </div>
     </div>
 
