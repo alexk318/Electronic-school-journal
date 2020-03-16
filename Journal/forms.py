@@ -90,7 +90,12 @@ class ClassAddForms(forms.ModelForm):
 
 class ClassStudentsAddForms(forms.Form):
     students = forms.CharField(label='Select', widget=forms.SelectMultiple(
-        choices=[tuple([u.id, u.first_name + ' ' + u.last_name]) for u in User.objects.filter(groups=student).filter(schoolclass=None)]))
+        choices=[tuple([u.id, u.first_name + ' ' + u.last_name]) for u in User.objects.filter(groups=student).filter(schoolclass=None).order_by('first_name')]))
+
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['students'].choices = User.objects.none()
 
 
 class ScheduleAddForms(forms.ModelForm):

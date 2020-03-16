@@ -253,9 +253,11 @@ def users(request):
             new_user.save()
             data['groups'].user_set.add(new_user)
 
-            image = image_form.save(commit=False)
-            image.user = new_user
-            image.save()
+            if image_form.cleaned_data['image'] is not None:
+
+                image = image_form.save(commit=False)
+                image.user = new_user
+                image.save()
 
             success = True
             return render(request, 'Journal/users.html', {'users': users, 'forms': forms_post, 'success': success,
@@ -303,7 +305,11 @@ def homework(request):
     forms = HomeWorkForms()
     forms.fields['schedule'].queryset = Schedule.objects.filter(homework=None).filter(lessonteacher=teacher)
 
-    myhomeworks = teacher.schedule_set.all()
+    if teacher is None:
+        myhomeworks = None
+    else:
+        myhomeworks = teacher.schedule_set.all()
+
     if request.method == 'GET':
         return render(request, 'Journal/homework.html', {'forms': forms, 'myhomeworks': myhomeworks})
     else:
@@ -320,7 +326,7 @@ def homework(request):
                           {'forms': forms, 'success': success, 'myhomeworks': myhomeworks})
         else:
             error = True
-            return render(request, 'Journal/homework.html', {'forms': forms, 'error': error, 'homeworks': homeworks})
+            return render(request, 'Journal/homework.html', {'forms': forms, 'error': error, 'myhomeworks': myhomeworks})
 
 
 @login_required(login_url='/login/')
