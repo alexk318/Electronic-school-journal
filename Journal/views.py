@@ -372,7 +372,7 @@ def profile(request, user_id):
 
             image = image_form.cleaned_data['image']
 
-            if image != None:
+            if image is not None:
 
                 user_image = UserImage.objects.filter(user=curr_user).first()
 
@@ -424,8 +424,9 @@ def user_delete(request, user_id):
     u = User.objects.filter(id=user_id).first()
     user_image = UserImage.objects.filter(user=u).first()
 
-    user_image.image.delete()
-    user_image.delete()
+    if user_image is not None:
+        user_image.image.delete()
+        user_image.delete()
 
     u.delete()
 
