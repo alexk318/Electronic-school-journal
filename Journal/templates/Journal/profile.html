@@ -1,6 +1,14 @@
 {% extends 'Journal/base.html' %}
 
-{% block title %}Your profile{% endblock %}
+{% block title %}
+
+    {% if curr_user.id == request.user.id %}
+    Your profile
+    {% else %}
+        {{ curr_user.first_name }}'s profile
+
+    {% endif %}
+{% endblock %}
 
 {% block body %}
 
