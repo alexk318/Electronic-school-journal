@@ -218,10 +218,10 @@ def thisclass(request, class_id):
 
 
 @login_required(login_url="/login/")
-def class_delete(request, class_title):
+def class_delete(request, class_id):
     if request.user.groups.values_list('name', flat=True).first() != 'Admin':
         return redirect('index')
-    c = SchoolClass.objects.filter(title=class_title).first()
+    c = SchoolClass.objects.filter(id=class_id).first()
     c.delete()
 
     return redirect('classes')
