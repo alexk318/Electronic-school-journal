@@ -50,7 +50,7 @@
 
 
                     {% if curr_user.groups.get.name == 'Admin' %}
-                        <h5 class="card-title">Electronic school journal Administrator</h5>
+                        <h5 class="card-title">Administrator</h5>
                         <p class="card-text">
                             {% if request.user.groups.get.name == 'Admin' %}
                                 Date joined: {{ curr_user.date_joined }}<br/>
