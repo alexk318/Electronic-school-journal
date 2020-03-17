@@ -19,8 +19,8 @@ urlpatterns = [
          name='class_schedule'),
 
     path('journal/classes/', views.classes, name='classes'),
-    path('journal/classes/<int:class_id>', views.thisclass, name='thisclass'),
-    path('journal/classes/delete/<class_title>', views.class_delete, name='class_delete'),
+    path('journal/classes/<int:class_id>/', views.thisclass, name='thisclass'),
+    path('journal/classes/<int:class_id>/delete/', views.class_delete, name='class_delete'),
 
     path('journal/users/', views.users, name='users'),
 
