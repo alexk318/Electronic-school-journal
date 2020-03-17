@@ -25,7 +25,9 @@
                     <h5 class="card-title">{{ curr_user.first_name }} {{ curr_user.last_name }}</h5>
                     <p class="card-text">
 
-                        ID: {{ curr_user.id }}<br/><br/>
+                        {% if request.user.groups.get.name == 'Admin' %}
+                            ID: {{ curr_user.id }}<br/><br/>
+                        {% endif %}
 
                         Username: {{ curr_user.username }}<br/><br/>
 
@@ -47,7 +49,6 @@
 
             <div class="col-md-8">
                 <div class="card-body">
-
 
                     {% if curr_user.groups.get.name == 'Admin' %}
                         <h5 class="card-title">Administrator</h5>
