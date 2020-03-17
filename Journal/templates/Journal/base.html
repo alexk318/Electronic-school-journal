@@ -321,6 +321,12 @@
                         <a href="{% url 'homework' %}" class="menu-link">
                             <i class="menu-icon mdi mdi-note-text"></i>
                             <span class="menu-label">Home work</span>
+
+                            {% if request.user.groups.get.name == 'Student' %}
+                                    <i class="badge badge-primary" style="margin-left: 48px;"></i>
+                                    <i class="badge badge-info"></i>
+                            {% endif %}
+
                         </a>
                     </li>
 
