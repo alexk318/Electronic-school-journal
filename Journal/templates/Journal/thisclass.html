@@ -100,4 +100,14 @@
         </div>
     </div>
 
+    <div class="card">
+        <div class="card-body">
+            <form action="{% url 'class_delete' curr_class.id %}">
+                <button type="submit" class="btn btn-outline-danger">
+                    Delete
+                </button>
+            </form>
+        </div>
+    </div>
+
 {% endblock %}
