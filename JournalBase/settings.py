@@ -119,6 +119,11 @@ USE_L10N = True  # Format localization
 
 USE_TZ = True
 
+LANGUAGES = [
+    ('ru', 'Russian'),
+    ('en', 'English'),
+]
+
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'locale')
 ]

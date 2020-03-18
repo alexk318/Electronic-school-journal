@@ -6,7 +6,7 @@
 
 {% block title %}
 
-    {% trans 'Electronic school journal' %}
+    {% trans 'Electronic journal' %}
 
 {% endblock %}
 
@@ -17,44 +17,45 @@
 {% block body %}
     <div class="card">
         <div class="card-body">
-            <h1 class="display-1">Electronic school Journal</h1>
+            <h1 class="display-1">
+                {% trans 'Electronic school Journal' %}
+            </h1>
 
             <i>
-                <mark>Digitalization</mark>
-                is an important step in the twenty-first century</i>
+                <mark>{% trans 'Digitalization' %}</mark>
+
+                {% trans 'is an important step in the twenty-first century' %}
+            </i>
         </div>
     </div>
 
 
     <div class="card">
         <div class="card-body">
-            <h4 class="display-4">What?</h4>
+            <h4 class="display-4">{% trans 'What'%}?</h4>
 
-            “Electronic diary and journal” - a service that allows participants in the educational process to receive
-            information about training schedules,
-            current and final grades and homework online. Also, electronic school workflow should ensure a reduction in
-            the administrative burden on educational institutions.
-            In addition, various systems of electronic diaries can support other, additional functions - electronic
-            student portfolios, news feeds, social networks and so on.
+            {% trans '“Electronic diary and journal” - a service that allows participants in the educational process to receive information about training schedules, current and final grades and homework online. Also, electronic school workflow should ensure a reduction in the administrative burden on educational institutions. In addition, various systems of electronic diaries can support other, additional functions - electronic student portfolios, news feeds, social networks and so on.' %}
+
+
         </div>
     </div>
 
 
     <div class="card">
         <div class="card-body">
-            <h4 class="display-4">Why?</h4>
+            <h4 class="display-4">{% trans 'Why' %}?</h4>
 
             <ul>
                 <li>
-                    Less paperwork
+                    {% trans 'Less paperwork' %}
                 </li>
 
                 <li>
-                    Honest evaluation
+                    {% trans 'Honest evaluation' %}
                 </li>
 
                 <li>
-                    You will never lose him
+                    {% trans 'You will never lose him' %}
                 </li>
             </ul>
         </div>
@@ -63,19 +64,19 @@
 
     <div class="card">
         <div class="card-body">
-            <h4 class="display-4">What for?</h4>
+            <h4 class="display-4">{% trans 'What for'%}?</h4>
 
             <ul>
                 <li>
-                    Teacher curriculum development
+                    {% trans 'Teacher curriculum development' %}
                 </li>
 
                 <li>
-                    Compilation of statistics on attendance / academic performance of students
+                    {% trans 'Compilation of statistics on attendance / academic performance of students' %}
                 </li>
 
                 <li>
-                    Additional remote tasks
+                    {% trans 'Additional remote tasks' %}
                 </li>
             </ul>
         </div>

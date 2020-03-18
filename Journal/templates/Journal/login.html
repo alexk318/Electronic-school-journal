@@ -1,14 +1,16 @@
 {% extends 'Journal/base.html' %}
 
+{% load i18n %}
+
 {% block title %}
-    Login
+    {% trans 'Journal - Login' %}
 {% endblock %}
 
 
 {% block body %}
     <div class="card">
         <div class="card-body">
-            <h1 class="display-1">Login</h1>
+            <h1 class="display-1">{% trans 'Login' %}</h1>
         </div>
     </div>
 
@@ -44,7 +46,7 @@
                 </div>
 
                 <div class="loginbutton">
-                    <button type="submit" class="btn btn-outline-dark">Login</button>
+                    <button type="submit" class="btn btn-outline-dark">{% trans 'Go' %}</button>
                 </div>
             </form>
         </div>
