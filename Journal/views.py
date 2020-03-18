@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import check_password
@@ -107,6 +108,8 @@ def class_schedule(request, class_title, month_title, week_numbers):
             new_schedule.save()
 
             return redirect('class_schedule', class_title, 'September', '1-7')
+
+
 
     else:
         if request.user.groups.get().name == 'Student' and request.user.schoolclass_set.first().title != class_title:
@@ -254,6 +257,10 @@ def users(request):
             new_user.save()
             data['groups'].user_set.add(new_user)
 
+            if data['groups'].name == 'Teacher':
+                t = Teacher(user=new_user)
+                t.save()
+
             if image_form.cleaned_data['image'] is not None:
 
                 image = image_form.save(commit=False)
@@ -301,6 +308,14 @@ def lessons(request):
 
 @login_required(login_url='/login/')
 def homework(request):
+    # Admin
+    if request.user.groups.get().name == 'Admin':
+        homeworks = HomeWork.objects.all()
+
+    if request.user.groups.get().name == 'Student':
+        student_schedules = Schedule.objects.filter(schoolclass=request.user.schoolclass_set.first()).all()
+        homeworks = [s.homework_set.first() for s in student_schedules]
+
     teacher = Teacher.objects.filter(user=request.user).first()
 
     forms = HomeWorkForms()
@@ -309,17 +324,20 @@ def homework(request):
     if teacher is None:
         myhomeworks = None
     else:
-        myhomeworks = teacher.schedule_set.all()
+        myhomeworks = teacher.homework_set.all()
+
 
     if request.method == 'GET':
-        return render(request, 'Journal/homework.html', {'forms': forms, 'myhomeworks': myhomeworks})
+        return render(request, 'Journal/homework.html', {'forms': forms, 'myhomeworks': myhomeworks, 'homeworks': homeworks})
     else:
         forms_post = HomeWorkForms(request.POST)
         if forms_post.is_valid():
             schedule = forms_post.cleaned_data['schedule']
             text = forms_post.cleaned_data['text']
 
-            new_homework = HomeWork(schedule=schedule, text=text)
+            teacher = Teacher.objects.filter(user=request.user).first()
+
+            new_homework = HomeWork(schedule=schedule, text=text, teacher=teacher)
             new_homework.save()
 
             success = True
