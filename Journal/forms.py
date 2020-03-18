@@ -26,6 +26,7 @@ schoolclass_choices = [tuple([s, s]) for s in schoolclasses]
 
 student = Group.objects.get(name='Student')
 
+
 class AuthForms(forms.Form):
     username = forms.CharField(label='Username:', max_length=100, required=True,
                                widget=forms.TextInput(attrs={'class': 'form-control'}))
@@ -90,8 +91,8 @@ class ClassAddForms(forms.ModelForm):
 
 class ClassStudentsAddForms(forms.Form):
     students = forms.CharField(label='Select', widget=forms.SelectMultiple(
-        choices=[tuple([u.id, u.first_name + ' ' + u.last_name]) for u in User.objects.filter(groups=student).filter(schoolclass=None).order_by('first_name')]))
-
+        choices=[tuple([u.id, u.first_name + ' ' + u.last_name]) for u in User.objects.filter(groups=student).filter
+        (schoolclass=None).order_by('first_name')]))
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -106,7 +107,7 @@ class ScheduleAddForms(forms.ModelForm):
             'day': forms.Select(choices=Day.objects.all(), attrs={'class': 'form-control'}),
             'lesson': forms.Select(choices=Lesson.objects.all(), attrs={'class': 'form-control'}),
             'lessonteacher': forms.Select(choices=teachers, attrs={'class': 'form-control'}),
-            'date': forms.DateInput(attrs={'class': 'form-control'}),
+            'date': forms.DateInput(format='%Y-%m-%d', attrs={'class': 'form-control'}),
             'start': forms.TimeInput(attrs={'class': 'form-control'}),
             'end': forms.TimeInput(attrs={'class': 'form-control'})
         }
