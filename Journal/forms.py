@@ -94,10 +94,6 @@ class ClassStudentsAddForms(forms.Form):
         choices=[tuple([u.id, u.first_name + ' ' + u.last_name]) for u in User.objects.filter(groups=student).filter
         (schoolclass=None).order_by('first_name')]))
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['students'].choices = User.objects.none()
-
 
 class ScheduleAddForms(forms.ModelForm):
     class Meta:
