@@ -58,6 +58,8 @@ class HomeWork(models.Model):
     schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE, default="")
     text = models.TextField(default="")
 
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, default="")
+
     def get_teacher(self):
         return self.schedule.lessonteacher
 
