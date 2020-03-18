@@ -92,9 +92,9 @@
                                 <div class="col-sm-3">
                                     <div class="card" style="width: 18rem;">
                                         <div class="card-body">
-                                            <h5 class="card-title">Homework for "{{ h.schoolclass.title }}"</h5>
+                                            <h5 class="card-title">Homework for "{{ h.schedule.schoolclass.title }}"</h5>
                                             <h6 class="card-subtitle mb-2 text-muted">
-                                                {{ h.homework_set.first.text }}
+                                                {{ h.text }}
                                             </h6>
 
                                             <a href="#" class="card-link"></a>
@@ -108,4 +108,25 @@
                     </div>
                 </div>
             {% endif %}
+
+    {% if request.user.groups.get.name != 'Teacher' %}
+
+        {% for homework in homeworks %}
+
+            <div class="col-sm-3">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Homework for "{{ homework.schedule.schoolclass.title }}"</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">
+                            {{ homework.text }}
+                        </h6>
+
+                        <a href="#" class="card-link"></a>
+                    </div>
+                </div>
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
 {% endblock %}
