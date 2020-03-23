@@ -22,6 +22,15 @@ msgstr ""
 msgid "Electronic journal"
 msgstr "Электронный журнал"
 
+msgid "Electronic school journal"
+msgstr "Электронный школьный журнал"
+
+msgid "Getting Started"
+msgstr "Начальная страница"
+
+msgid "Log in"
+msgstr "Авторизация"
+
 msgid "Electronic school Journal"
 msgstr "Электронный школьный журнал"
 
@@ -69,3 +78,9 @@ msgstr "Авторизация"
 
 msgid "Go"
 msgstr "Вперёд"
+
+msgid "Username:"
+msgstr "Логин:"
+
+msgid "Password:"
+msgstr "Пароль:"
