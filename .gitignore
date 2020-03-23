@@ -1,5 +1,6 @@
 .idea
-Journal.migrations
+Journal/migrations
+media
 db.sqlite3
 __pycache__
 JournalBase/__pycache__
