@@ -84,3 +84,15 @@ msgstr "Логин:"
 
 msgid "Password:"
 msgstr "Пароль:"
+
+msgid "Home page"
+msgstr "Начальная страница"
+
+msgid "Profile"
+msgstr "Профиль"
+
+msgid "The entered data is incorrect"
+msgstr "Введёные данные неверные"
+
+msgid "Hello"
+msgstr "Здравствуй"
