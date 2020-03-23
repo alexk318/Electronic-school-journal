@@ -48,29 +48,46 @@
             <i class="fas fa-bars"></i>
         </button>
 
+        <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+
+            <input type="hidden" name="next" value="{{ redirect_to }}">
+
+            {% get_available_languages as LANGUAGES %}
+            {% get_language_info_list for LANGUAGES as languages %}
+            {% for language in languages %}
+
+                <button class="btn hidden-md-up" style="margin-left: 5px;" name="language" id=""
+                        type="submit" value="{{ language.code }}" onclick="{{ redirect_to }}">
+                    {{ language.code }}</button>
+
+            {% endfor %}
+
+
+        </form>
+
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto hidden-sm-down">
 
-                    <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+                <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
 
-                        <li class="nav-item mr-10">
+                    <li class="nav-item mr-10">
 
-                            <input type="hidden" name="next" value="{{ redirect_to }}">
+                        <input type="hidden" name="next" value="{{ redirect_to }}">
 
-                                {% get_available_languages as LANGUAGES %}
-                                {% get_language_info_list for LANGUAGES as languages %}
-                                {% for language in languages %}
+                        {% get_available_languages as LANGUAGES %}
+                        {% get_language_info_list for LANGUAGES as languages %}
+                        {% for language in languages %}
 
-                                    <button class="btn btn-light" style="margin-left: 5px;" name="language" id=""
-                                            type="submit" value="{{ language.code }}" onclick="{{ redirect_to }}">
-                                        {{ language.code }}</button>
+                            <button class="btn btn-light" style="margin-left: 5px;" name="language" id=""
+                                    type="submit" value="{{ language.code }}" onclick="{{ redirect_to }}">
+                                {{ language.code }}</button>
 
-                                {% endfor %}
+                        {% endfor %}
 
-                        </li>
+                    </li>
 
-                    </form>
+                </form>
 
             </ul>
 
@@ -228,7 +245,7 @@
                             <li class="menu-item">
                                 <a href="{% url 'profile' request.user.id %}" class="menu-link">
                                     <i class="menu-icon mdi mdi-file-account"></i>
-                                    <span class="menu-label">Profile</span>
+                                    <span class="menu-label">{% trans 'Profile' %}</span>
                                 </a>
                             </li>
 
@@ -330,8 +347,8 @@
                             <span class="menu-label">Home work</span>
 
                             {% if request.user.groups.get.name == 'Student' %}
-                                    <i class="badge badge-primary" style="margin-left: 48px;"></i>
-                                    <i class="badge badge-info"></i>
+                                <i class="badge badge-primary" style="margin-left: 48px;"></i>
+                                <i class="badge badge-info"></i>
                             {% endif %}
 
                         </a>
