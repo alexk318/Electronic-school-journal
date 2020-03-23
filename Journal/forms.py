@@ -12,14 +12,7 @@ users = User.objects.all()
 
 teachers = Teacher.objects.all()
 
-# teachers = [user for user in teacher.user_set.all() if user.teachers.first() is None]
-# teachers_choices = [tuple([t.id, t.first_name + ' ' + t.last_name]) for t in teachers]
-# teachers_choices.insert(0, (None, '-------'))
-
 teachers_choices = []
-
-# schedules = Schedule.objects.filter(homework=None).filter(lesson_teacher).all()
-# schedules_choices = [tuple([s, s]) for s in schedules]
 
 schoolclasses = SchoolClass.objects.all()
 schoolclass_choices = [tuple([s, s]) for s in schoolclasses]
