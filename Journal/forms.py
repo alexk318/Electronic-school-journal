@@ -2,6 +2,8 @@ from django import forms
 from .models import Day, Lesson, SchoolClass, Schedule, UserImage, Teacher, HomeWork
 from django.contrib.auth.models import User, Group
 
+from django.utils.translation import ugettext_lazy as _
+
 lessons = Lesson.objects.all()
 lessons_choices = [tuple([l, l]) for l in lessons]
 
@@ -21,9 +23,9 @@ student = Group.objects.get(name='Student')
 
 
 class AuthForms(forms.Form):
-    username = forms.CharField(label='Username:', max_length=100, required=True,
+    username = forms.CharField(label=_('Username:'), max_length=100, required=True,
                                widget=forms.TextInput(attrs={'class': 'form-control'}))
-    password = forms.CharField(label='Password:', max_length=200, required=True,
+    password = forms.CharField(label=_('Password:'), max_length=200, required=True,
                                widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
 
