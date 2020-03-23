@@ -50,17 +50,6 @@ class UserAddForms(forms.ModelForm):
         }
 
 
-# class TeacherForm(forms.ModelForm):
-#
-#     class Meta:
-#         model = Teacher
-#         fields = ['schoolclasses', 'lessons']
-#         widgets = {
-#             'schoolclasses': forms.CheckboxSelectMultiple(),
-#             'lessons': forms.CheckboxSelectMultiple()
-#         }
-
-
 class UserEditForms(forms.Form):
     username = forms.CharField(label='Username:', widget=forms.TextInput(attrs={'class': 'form-control'}))
     password = forms.CharField(label='Password:', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
