@@ -7,6 +7,7 @@ from django.contrib.auth.hashers import check_password
 from django.contrib.auth.models import User, Group
 
 import re
+from django.utils.translation import ugettext as _
 
 from .forms import AuthForms, ClassAddForms, ScheduleAddForms, UserAddForms, HomeWorkForms, LessonAddForms, \
     UserImageForm, UserEditForms, ClassStudentsAddForms
@@ -62,10 +63,10 @@ def log_in(request):
                 login(request, user)
                 return redirect('journal')
             else:
-                msg = 'The entered data is incorrect'
+                msg = _('The entered data is incorrect')
                 return render(request, 'Journal/login.html', {'forms': forms, 'msg': msg})
         else:
-            msg = 'The entered data is incorrect'
+            msg = _('The entered data is incorrect')
             return render(request, 'Journal/login.html', {'forms': forms, 'msg': msg})
 
 
