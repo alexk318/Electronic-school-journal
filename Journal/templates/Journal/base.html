@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 
+{% load i18n %}
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -49,8 +51,6 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto hidden-sm-down">
-
-                {% load i18n %}
 
                     <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
 
@@ -192,7 +192,7 @@
 
         <div class="menubar-header text-center bg-primary">
             <br/>
-            Electronic school journal
+            {% trans 'Electronic school journal' %}
         </div>
 
         <div class="menubar-body">
@@ -203,14 +203,14 @@
                     <li class="menu-item">
                         <a href="/" class="menu-link">
                             <i class="menu-icon mdi mdi-view-dashboard"></i>
-                            <span class="menu-label">Getting Started</span>
+                            <span class="menu-label">{% trans 'Getting Started' %}</span>
                         </a>
                     </li>
 
                     <li class="menu-item">
                         <a href="{% url 'login' %}" class="menu-link">
                             <i class="menu-icon mdi mdi-view-split-vertical"></i>
-                            <span class="menu-label">Log in</span>
+                            <span class="menu-label">{% trans 'Log in' %}</span>
                         </a>
                     </li>
 
