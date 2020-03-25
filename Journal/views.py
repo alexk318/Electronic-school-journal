@@ -309,27 +309,23 @@ def lessons(request):
 
 @login_required(login_url='/login/')
 def homework(request):
+    forms = HomeWorkForms()
     # Admin
     if request.user.groups.get().name == 'Admin':
         homeworks = HomeWork.objects.all()
 
-    if request.user.groups.get().name == 'Student':
+    elif request.user.groups.get().name == 'Student':
         student_schedules = Schedule.objects.filter(schoolclass=request.user.schoolclass_set.first()).all()
         homeworks = [s.homework_set.first() for s in student_schedules]
 
-    teacher = Teacher.objects.filter(user=request.user).first()
-
-    forms = HomeWorkForms()
-    forms.fields['schedule'].queryset = Schedule.objects.filter(homework=None).filter(lessonteacher=teacher)
-
-    if teacher is None:
-        myhomeworks = None
     else:
-        myhomeworks = teacher.homework_set.all()
+        teacher = Teacher.objects.filter(user=request.user).first()
+        forms.fields['schedule'].queryset = Schedule.objects.filter(homework=None).filter(lessonteacher=teacher)
 
+        homeworks = teacher.homework_set.all()
 
     if request.method == 'GET':
-        return render(request, 'Journal/homework.html', {'forms': forms, 'myhomeworks': myhomeworks, 'homeworks': homeworks})
+        return render(request, 'Journal/homework.html', {'forms': forms, 'homeworks': homeworks})
     else:
         forms_post = HomeWorkForms(request.POST)
         if forms_post.is_valid():
@@ -343,10 +339,10 @@ def homework(request):
 
             success = True
             return render(request, 'Journal/homework.html',
-                          {'forms': forms, 'success': success, 'myhomeworks': myhomeworks})
+                          {'forms': forms, 'success': success, 'homeworks': homeworks})
         else:
             error = True
-            return render(request, 'Journal/homework.html', {'forms': forms, 'error': error, 'myhomeworks': myhomeworks})
+            return render(request, 'Journal/homework.html', {'forms': forms, 'error': error, 'homeworks': homeworks})
 
 
 @login_required(login_url='/login/')

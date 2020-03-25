@@ -16,7 +16,6 @@ class Teacher(models.Model):
 
 class SchoolClass(models.Model):
     title = models.CharField(max_length=3, default="", unique=True)
-    #teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     students = models.ManyToManyField(User, blank=True)
 
     def __str__(self):
@@ -25,7 +24,6 @@ class SchoolClass(models.Model):
 
 class Lesson(models.Model):
     title = models.CharField(max_length=50, default="", unique=True)
-    #teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
 
     def __str__(self):
         return '%s' % self.title
@@ -62,7 +60,3 @@ class HomeWork(models.Model):
 
     def get_teacher(self):
         return self.schedule.lessonteacher
-
-    # def __str__(self):
-    #     return 'Teacher: {} {}, SchoolClass: {}'.format(self.schedule, self.teacher.user.last_name,
-    #                                                     self.schoolclass)
