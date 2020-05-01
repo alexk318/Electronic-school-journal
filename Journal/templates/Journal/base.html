@@ -198,8 +198,16 @@
                                     class="menu-icon mdi mdi-account-box-multiple"></i>Class homework</a>
 
                             {% if request.user.groups.get.name == 'Student' %}
-                                <a class="dropdown-item"
-                                   href="{% url 'individual_homework' request.user.schoolclass_set.first.id request.user.id %}">
+                                {% if request.user.schoolclass_set.first is not None %}
+                                    <a class="dropdown-item"
+                                       href="{% url 'individual_homework' request.user.schoolclass_set.first.id request.user.id %}">
+
+                                {% else %}
+                                    <a class="dropdown-item"
+                                       href="{% url 'individual_homework' 0 request.user.id %}">
+
+
+                                {% endif %}
 
                             {% else %}
                                 <a class="dropdown-item" href="{% url 'individual_homework' 0 0 %}">
@@ -359,8 +367,16 @@
 
                             <li class="menu-item">
                                 {% if request.user.groups.get.name == 'Student' %}
-                                    <a href="{% url 'individual_homework' request.user.schoolclass_set.first.id request.user.id %}"
-                                       class="menu-link">
+                                    {% if request.user.schoolclass_set.first is not None %}
+                                        <a href="{% url 'individual_homework' request.user.schoolclass_set.first.id request.user.id %}"
+                                           class="menu-link">
+
+                                    {% else %}
+                                        <a href="{% url 'individual_homework' 0 request.user.id %}"
+                                           class="menu-link">
+
+
+                                    {% endif %}
 
                                 {% else %}
                                     <a href="{% url 'individual_homework' 0 0 %}" class="menu-link">
