@@ -2,7 +2,7 @@ from django.urls import path
 
 from django.conf.urls.static import static
 
-from . import views
+from . import views, viewsrest
 from JournalBase import settings
 
 urlpatterns = [
@@ -50,6 +50,8 @@ urlpatterns = [
          name='close_individualhomework'),
 
     path('logout/', views.logout_view, name='logout'),
+
+    path('api/lessons', viewsrest.LessonView.as_view()),
 ]
 
 if settings.DEBUG:
