@@ -1,0 +1,195 @@
+{% extends 'Journal/base.html' %}
+
+{% block title %}
+    Individual homework
+{% endblock %}
+
+{% load crispy_forms_filters %}
+
+{% block body %}
+
+    <div class="card">
+        <div class="card-body">
+
+            <h3 class="display-3">Individual homework</h3>
+
+            {% if request.user.groups.get.name == 'Teacher' %}
+
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {% if schoolclass %}
+                            {{ schoolclass.title }}
+                        {% else %}
+                            Class
+                        {% endif %}
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        {% for schoolclass in schoolclasses %}
+                            <a class="dropdown-item"
+                               href="{% url 'individual_homework' schoolclass.id 0 %}">{{ schoolclass.title }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+                <br/>
+
+                {% if schoolclass is not None %}
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                        >
+                            {% if student %}
+                                {{ student.first_name }}  {{ student.last_name }}
+
+                            {% else %}
+                                Student
+                            {% endif %}
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            {% for student in students %}
+                                <a class="dropdown-item"
+                                   href="{% url 'individual_homework' schoolclass.id student.id %}">{{ student.first_name }} {{ student.last_name }}</a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if student is not None %}
+
+                    <form action="{% url 'individual_homework' schoolclass.id student.id %}"
+                          method="post">
+
+                        <br/>
+                        <div class="form-row">
+                            {{ forms.text|as_crispy_field }}
+                        </div>
+
+                        <div class="form-row">
+                            {{ forms.isWithFile|as_crispy_field }}
+                        </div>
+
+
+                        <br/>
+                        <button type="submit" class="btn btn-outline-dark">
+                            Add
+                        </button>
+                    </form>
+
+                {% endif %}
+            {% endif %}
+
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                {% for ih in myihomeworks %}
+
+                    <div class="col-sm-3">
+                        <div class="card" style="width: 18rem;">
+
+                            {% if request.user.groups.get.name != 'Student' %}
+                                <div class="card-header">
+                                    <ul class="nav nav-tabs card-header-tabs">
+                                        <li class="nav-item">
+                                            <a class="nav-link active"
+                                               href="{% url 'close_individualhomework' ih.id %}">Close</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            {% endif %}
+
+                            <div class="card-body">
+
+                                <h5 class="card-title">Homework for
+                                    {{ ih.student.first_name }} {{ ih.student.last_name }}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">
+                                    {{ ih.text }}
+                                </h6>
+
+                                {% if ih.file.name != '' %}
+                                    <div class="dropdown-divider"></div>
+
+                                    {% if request.user.groups.get.name == 'Student' or ih.grade or request.user.groups.get.name == 'Admin' %}
+
+                                        <h3 style="color: {{ ih.grade.color }}">{{ ih.grade.grade }}</h3>
+                                        {{ ih.comment }}
+
+                                    {% else %}
+                                        <form action="{% url 'assign_grade' ih.id 0 0 schoolclass_id student_id %}"
+                                              method="post">
+
+                                            <label for="comment">Comment:</label>
+                                            <textarea required id="comment" name="comment"></textarea><br/>
+
+                                            <label for="choosegrade">Grade:</label>
+                                            <select id="choosegrade" name="choosegrade" class="form-control">
+                                                {% for grade in grades %}
+                                                    <option style="color: {{ grade.color }}"
+                                                            value="{{ grade.id }}">{{ grade.grade }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <br/>
+
+                                            <button type="submit" class="btn btn-outline-dark">
+                                                Send
+                                            </button>
+
+                                        </form>
+
+                                    {% endif %}
+                                {% endif %}
+
+                                {% if request.user.groups.get.name == 'Admin' %}
+                                    <div class="dropdown-divider"></div>
+                                    Teacher -
+                                    <a href="{% url 'profile' ih.id %}" class="card-link">{{ ih.teacher.user.first_name }}  {{ ih.teacher.user.last_name }}</a>
+                                {% endif %}
+                            </div>
+
+                            {% if ih.isWithFile %}
+                                <div class="card-header">
+                                    {% if request.user.groups.get.name == 'Student' %}
+                                        {% if ih.file.name == '' %}
+                                            <form enctype="multipart/form-data"
+                                                  action="{% url 'submit_individualhomework' ih.id %}"
+                                                  method="post">
+                                                {% csrf_token %}
+
+                                                <input type="file" name="homework_file" required>
+
+
+                                                <button class="btn btn-secondary" type="submit">Submit</button>
+                                            </form>
+                                        {% else %}
+                                            <a href="{% url 'download' ih.file.path ih.get_filename %}">{{ ih.get_filename }}</a>
+                                        {% endif %}
+
+                                    {% else %}
+
+                                    {% endif %}
+
+                                    {% if request.user.groups.get.name == 'Teacher' or request.user.groups.get.name == 'Admin' %}
+                                        {% if ih.file.name == '' %}
+
+                                            {{ ih.student.first_name }} hasn't sent anything yet
+
+                                        {% else %}
+                                            <a href="{% url 'download' ih.file.path ih.get_filename %}">{{ ih.get_filename }}</a>
+
+                                        {% endif %}
+                                    {% endif %}
+
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
