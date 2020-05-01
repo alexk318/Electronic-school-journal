@@ -21,7 +21,7 @@
         <div class="card mb-3" style="max-width: 540px;">
             <div class="row no-gutters">
                 <div class="col-md-4">
-                    <a href="{% url 'rotate_image' request.user.id %}"><i class="mdi mdi-rotate-right"></i></a>
+                    <a href="{% url 'rotate_image' curr_user.id %}"><i class="mdi mdi-rotate-right"></i></a>
                     <img src="{{ profile_photo }}" class="card-img" alt="...">
                 </div>
                 <div class="col-md-8">
