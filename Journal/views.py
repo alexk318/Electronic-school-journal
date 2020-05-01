@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.models import User
 
+from PIL import Image
+
 import re
 from django.utils.translation import ugettext as _
 
@@ -557,6 +559,19 @@ def profile(request, user_id):
             return render(request, 'Journal/profile.html', {'profile_photo': profile_photo, 'curr_user': curr_user,
                                                             'image_form': image_form, 'user_form': user_form,
                                                             'error': error})
+
+
+def rotate_image(request, user_id):
+    thisuser = User.objects.filter(id=user_id).first()
+    thisuserimage = thisuser.userimage.image
+
+    image = Image.open(thisuserimage.path)
+
+    image = image.rotate(-90, expand=True)
+    image.save(thisuserimage.path)
+    image.close()
+
+    return redirect('profile', user_id)
 
 
 @login_required(login_url='/login/')

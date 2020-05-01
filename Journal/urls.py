@@ -11,6 +11,7 @@ urlpatterns = [
 
     path('journal/profile/<int:user_id>', views.profile, name='profile'),
     path('journal/profile/<int:user_id>/delete', views.user_delete, name='user_delete'),
+    path('journal/profile/<int:user_id>/imagerotate', views.rotate_image, name='rotate_image'),
 
     path('journal/schedule/', views.schedule, name='schedule'),
 
