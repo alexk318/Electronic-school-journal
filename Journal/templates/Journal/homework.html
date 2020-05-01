@@ -9,16 +9,14 @@
 {% block body %}
     <div class="card">
         <div class="card-body">
-            <h3 class="display-3">Home work</h3>
+            <h3 class="display-3">Class homework</h3>
         </div>
     </div>
+    {% if request.user.groups.get.name == 'Teacher' %}
 
-    <div class="card">
-        <div class="card-body">
-            {% if request.user.groups.get.name == 'Student' %}
-            {% endif %}
+        <div class="card">
+            <div class="card-body">
 
-            {% if request.user.groups.get.name == 'Teacher' %}
 
                 {% if error %}
                     <div class="col-md-3">
@@ -65,6 +63,10 @@
                                         {{ forms.text|as_crispy_field }}
                                     </div>
 
+                                    <div class="form-row">
+                                        {{ forms.isWithFile|as_crispy_field }}
+                                    </div>
+
 
                                     <br/>
                                     <button type="submit" class="btn btn-outline-dark col-md-1">
@@ -76,57 +78,150 @@
                         </div>
                     </div>
                 </div>
-
-
-                </div>
-
-
-
-                </div>
-                <div class="card">
-                    <div class="card-body">
-
-                        <div class="row">
-                            {% for h in homeworks %}
-
-                                <div class="col-sm-3">
-                                    <div class="card" style="width: 18rem;">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Homework for "{{ h.schedule.schoolclass.title }}"</h5>
-                                            <h6 class="card-subtitle mb-2 text-muted">
-                                                {{ h.text }}
-                                            </h6>
-
-                                            <a href="#" class="card-link"></a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            {% endfor %}
-                        </div>
-
-                    </div>
-                </div>
-            {% endif %}
-
-    {% if request.user.groups.get.name != 'Teacher' %}
-
-        {% for homework in homeworks %}
-
-            <div class="col-sm-3">
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Homework for "{{ homework.schedule.schoolclass.title }}"</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">
-                            {{ homework.text }}
-                        </h6>
-
-                        <a href="#" class="card-link"></a>
-                    </div>
-                </div>
             </div>
 
-        {% endfor %}
 
+        </div>
     {% endif %}
+
+
+
+
+    <div class="card">
+        <div class="card-body">
+
+            {% if request.user.groups.get.name == 'Teacher' or request.user.groups.get.name == 'Admin' %}
+
+                <div class="row">
+                    {% for h in homeworks %}
+
+                        <div class="col-sm-3">
+                            <div class="card" style="width: 18rem;">
+
+                                <div class="card-header">
+                                    <ul class="nav nav-tabs card-header-tabs">
+                                        <li class="nav-item">
+                                            <a class="nav-link active"
+                                               href="{% url 'close_homework' h.id %}">Close</a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="card-body">
+
+                                    <h5 class="card-title">Homework for
+                                        "{{ h.schedule.schoolclass.title }}" - {{ h.schedule.lesson }}</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">
+                                        {{ h.text }}
+                                    </h6>
+
+                                    {% if request.user.groups.get.name == 'Admin' %}
+                                        Teacher -
+                                        <a href="{% url 'profile' h.teacher.user.id %}"
+                                           class="card-link">{{ h.teacher.user.first_name }} {{ h.teacher.user.last_name }}</a>
+                                    {% endif %}
+                                </div>
+
+                                {% if h.isWithFile %}
+                                    <div class="card-header">
+                                        {% if h.submithomework_set.all|length == 0 %}
+                                            No one has sent homework yet
+
+                                        {% elif h.submithomework_set.all|length == 1 %}
+                                            1 work
+                                            <a href="{% url 'check_homework' h.id %}"
+                                               class="btn btn-link"
+                                               style="margin-left:15px">--></a>
+
+                                        {% else %}
+                                            {{ h.submithomework_set.all|length }} works
+                                            <a href="{% url 'check_homework' h.id %}"
+                                               class="btn btn-link"
+                                               style="margin-left:15px">--></a>
+                                        {% endif %}
+
+
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                    {% endfor %}
+                </div>
+
+
+            {% endif %}
+
+
+            {% if request.user.groups.get.name == 'Student' %}
+
+                <div class="row">
+                    {% for homework in homeworks %}
+
+                        <div class="col-sm-4">
+                            <div class="card" style="width: 26rem">
+                                <div class="card-body">
+                                    <h5 class="card-title">Homework for "{{ homework.schedule.schoolclass.title }}"
+                                        - {{ homework.schedule.lesson }}</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">
+                                        {{ homework.text }}
+                                    </h6>
+
+                                    {#                        <a href="{% url 'profile' homework.get_teacher.user.id %}">{{ homework.get_teacher.first_name }}#}
+                                    {#                            {{ homework.get_teacher.last_name }}</a>#}
+
+                                    <a href="#" class="card-link"></a>
+
+                                    {% for submitted_homework in homework.submithomework_set.all %}
+                                        {% if submitted_homework.student == request.user %}
+                                            {% if submitted_homework.grade %}
+                                                <h3 style="color: {{ submitted_homework.grade.color }}">{{ submitted_homework.grade.grade }}</h3>
+                                                <br/>
+                                                {{ submitted_homework.comment }}
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+
+                                </div>
+
+                                {% if homework.isWithFile is True %}
+                                    <div class="card-header">
+                                        {% if request.user.groups.get.name != 'Admin' %}
+                                            {% if homework not in submitted_homeworks %}
+                                                <form enctype="multipart/form-data"
+                                                      action="{% url 'submit_homework' homework.id %}"
+                                                      method="post">
+                                                    {% csrf_token %}
+
+                                                    <input type="file" name="homework_file" required>
+
+
+                                                    <button class="btn btn-secondary" type="submit">Submit</button>
+                                                </form>
+                                            {% else %}
+                                                {% for submitted_homework in homework.submithomework_set.all %}
+                                                    {% if submitted_homework.student == request.user %}
+                                                        <a href="{% url 'download' submitted_homework.file.path submitted_homework.get_filename %}">{{ submitted_homework.get_filename }}</a>
+                                                    {% endif %}
+                                                {% endfor %}
+
+                                            {% endif %}
+
+                                        {% else %}
+                                            * With file submit *
+
+                                        {% endif %}
+
+                                    </div>
+                                {% endif %}
+
+                            </div>
+                        </div>
+
+                    {% endfor %}
+                </div>
+
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}
