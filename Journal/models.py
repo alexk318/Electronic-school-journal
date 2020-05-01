@@ -87,8 +87,6 @@ class SubmitHomework(models.Model):
         return base
 
 
-
-
 class IndividualHomework(models.Model):
     student = models.ForeignKey(User, on_delete=models.CASCADE, default="", null=True)
     text = models.TextField(default="", null=True)
