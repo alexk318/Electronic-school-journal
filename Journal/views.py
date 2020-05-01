@@ -4,33 +4,21 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import check_password
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
 
 import re
 from django.utils.translation import ugettext as _
 
+from .functions import get_data
+
 from .forms import AuthForms, ClassAddForms, ScheduleAddForms, UserAddForms, HomeWorkForms, LessonAddForms, \
-    UserImageForm, UserEditForms, ClassStudentsAddForms
-from .models import Day, SchoolClass, Lesson, Schedule, HomeWork, UserImage, Teacher
+    UserImageForm, UserEditForms, ClassStudentsAddForms, GradesForms, IndividualHomeWorkForms
+from .models import Day, SchoolClass, Lesson, Schedule, HomeWork, UserImage, Teacher, IndividualHomework, \
+    SubmitHomework, Grade
 
 classes = SchoolClass.objects.all()
 
 titles = [classes_.title for classes_ in classes]
-
-
-def get_data(handler):
-    username = handler.cleaned_data['username']
-    password = handler.cleaned_data['password']
-    first_name = handler.cleaned_data['first_name']
-    last_name = handler.cleaned_data['last_name']
-    email = handler.cleaned_data['email']
-
-    group = handler.cleaned_data['group']
-    groups = Group.objects.get(name=group)
-
-    return {'username': username, 'password': password, 'first_name': first_name, 'last_name': last_name,
-            'email': email,
-            'group': group, 'groups': groups}
 
 
 def key(s):
@@ -40,10 +28,13 @@ def key(s):
 
 sorted_titles = sorted(titles, key=key)
 
+weeks = {'1-7': [1, 2, 3, 4, 5, 6, 7], '8-14': [8, 9, 10, 11, 12, 13, 14], '15-21': [15, 16, 17, 18, 19, 20, 21],
+         '22-28': [22, 23, 24, 25, 26, 27, 28], '29-31': [29, 30, 31]}
+
 
 def index(request):  # Getting started
     if request.user.is_authenticated:
-        return redirect('journal')
+        return redirect('homework')
 
     return render(request, 'Journal/index.html')
 
@@ -61,20 +52,13 @@ def log_in(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('journal')
+                return redirect('schedule')
             else:
                 msg = _('The entered data is incorrect')
                 return render(request, 'Journal/login.html', {'forms': forms, 'msg': msg})
         else:
             msg = _('The entered data is incorrect')
             return render(request, 'Journal/login.html', {'forms': forms, 'msg': msg})
-
-
-@login_required(login_url="/login/")
-def journal(request):
-    return render(request, 'Journal/journal.html', {'current_user': request.user,
-                                                    'group': request.user.groups.values_list('name', flat=True).
-                  first()})
 
 
 @login_required(login_url="/login/")
@@ -99,18 +83,17 @@ def class_schedule(request, class_title, month_title, week_numbers):
             lesson = form.cleaned_data['lesson']
             lessonteacher = form.cleaned_data['lessonteacher']
 
-            date = form.cleaned_data['date']
+            date = request.POST['date']  # str: YYYY-MM-DD
 
-            start = form.cleaned_data['start']
-            end = form.cleaned_data['end']
+            start = request.POST['start']  # str: HH:MM
+            end = request.POST['end']
 
-            new_schedule = Schedule(day=day, schoolclass=schoolclass, lesson=lesson, lessonteacher=lessonteacher ,date=date,
+            new_schedule = Schedule(day=day, schoolclass=schoolclass, lesson=lesson, lessonteacher=lessonteacher,
+                                    date=date,
                                     start=start, end=end)
             new_schedule.save()
 
             return redirect('class_schedule', class_title, 'September', '1-7')
-
-
 
     else:
         if request.user.groups.get().name == 'Student' and request.user.schoolclass_set.first().title != class_title:
@@ -120,13 +103,10 @@ def class_schedule(request, class_title, month_title, week_numbers):
         all_schedules = Schedule.objects.filter(schoolclass=schoolclass).all().order_by('start')
 
         days = Day.objects.all()
-        lessons = Lesson.objects.all()
+        alllessons = Lesson.objects.all()
 
         months = {'January': 1, 'February': 2, 'March': 3, 'April': 4, 'May': 5, 'June': 6, 'Jule': 7, 'August': 8,
                   'September': 9, 'October': 10, 'November': 11, 'December': 12}
-
-        weeks = {'1-7': [1, 2, 3, 4, 5, 6, 7], '8-14': [8, 9, 10, 11, 12, 13, 14],
-                 '15-21': [15, 16, 17, 18, 19, 20, 21], '22-28': [22, 23, 24, 25, 26, 27, 28], '29-31': [29, 30, 31]}
 
         schedules = []
         for i in all_schedules:
@@ -157,7 +137,7 @@ def class_schedule(request, class_title, month_title, week_numbers):
                                                          'class_title': class_title,
                                                          'all_schedules': all_schedules,
                                                          'days': days,
-                                                         'lessons': lessons,
+                                                         'lessons': alllessons,
                                                          'schedules_days': schedules_days,
                                                          'months': months,
                                                          'month_title': month_title,
@@ -233,7 +213,7 @@ def class_delete(request, class_id):
 
 @login_required(login_url="/login/")
 def users(request):
-    users = User.objects.all()
+    allusers = User.objects.all()
 
     forms = UserAddForms()
     image_form = UserImageForm()
@@ -241,7 +221,7 @@ def users(request):
     if request.user.groups.values_list('name', flat=True).first() != 'Admin':
         return redirect('index')
     elif request.method == 'GET':
-        return render(request, 'Journal/users.html', {'users': users, 'forms': forms, 'image_form': image_form})
+        return render(request, 'Journal/users.html', {'users': allusers, 'forms': forms, 'image_form': image_form})
     else:
         forms_post = UserAddForms(request.POST)
         image_form = UserImageForm(request.POST, request.FILES)
@@ -263,7 +243,6 @@ def users(request):
                 t.save()
 
             if image_form.cleaned_data['image'] is not None:
-
                 image = image_form.save(commit=False)
                 image.user = new_user
                 image.save()
@@ -280,14 +259,14 @@ def users(request):
 
 @login_required(login_url='/login/')
 def lessons(request):
-    lessons = Lesson.objects.all()
+    alllessons = Lesson.objects.all()
     lessonsforms = LessonAddForms()
     if request.user.groups.values_list('name', flat=True).first() != 'Admin':
         return redirect('index')
     elif request.method == 'GET':
 
         return render(request, 'Journal/lessons.html', {'titles': sorted_titles,
-                                                        'lessons': lessons, 'lessonsforms': lessonsforms})
+                                                        'lessons': alllessons, 'lessonsforms': lessonsforms})
     else:
         form = LessonAddForms(request.POST)
         if form.is_valid():
@@ -298,12 +277,12 @@ def lessons(request):
 
             success = True
             return render(request, 'Journal/lessons.html', {'titles': sorted_titles,
-                                                            'lessons': lessons, 'lessonsforms': lessonsforms,
+                                                            'lessons': alllessons, 'lessonsforms': lessonsforms,
                                                             'success': success})
 
         error = True
         return render(request, 'Journal/lessons.html', {'titles': sorted_titles,
-                                                        'lessons': lessons, 'lessonsforms': lessonsforms,
+                                                        'lessons': alllessons, 'lessonsforms': lessonsforms,
                                                         'error': error})
 
 
@@ -313,28 +292,36 @@ def homework(request):
     # Admin
     if request.user.groups.get().name == 'Admin':
         homeworks = HomeWork.objects.all()
+        submitted_homeworks = ''
 
     elif request.user.groups.get().name == 'Student':
         student_schedules = Schedule.objects.filter(schoolclass=request.user.schoolclass_set.first()).all()
-        homeworks = [s.homework_set.first() for s in student_schedules]
+        homeworks = [s.homework_set.first() for s in student_schedules if s.homework_set.first() is not None]
 
+        submitted_homeworks = [h.homework for h in request.user.submithomework_set.all()]
     else:
         teacher = Teacher.objects.filter(user=request.user).first()
         forms.fields['schedule'].queryset = Schedule.objects.filter(homework=None).filter(lessonteacher=teacher)
 
         homeworks = teacher.homework_set.all()
 
+        submitted_homeworks = ''
+
     if request.method == 'GET':
-        return render(request, 'Journal/homework.html', {'forms': forms, 'homeworks': homeworks})
+        return render(request, 'Journal/homework.html', {'forms': forms, 'homeworks': homeworks,
+                                                         'submitted_homeworks': submitted_homeworks,
+                                                         })
     else:
         forms_post = HomeWorkForms(request.POST)
         if forms_post.is_valid():
-            schedule = forms_post.cleaned_data['schedule']
+            thisschedule = forms_post.cleaned_data['schedule']
             text = forms_post.cleaned_data['text']
+
+            iswithfile = forms_post.cleaned_data['isWithFile']
 
             teacher = Teacher.objects.filter(user=request.user).first()
 
-            new_homework = HomeWork(schedule=schedule, text=text, teacher=teacher)
+            new_homework = HomeWork(schedule=thisschedule, text=text, teacher=teacher, isWithFile=iswithfile)
             new_homework.save()
 
             success = True
@@ -343,6 +330,145 @@ def homework(request):
         else:
             error = True
             return render(request, 'Journal/homework.html', {'forms': forms, 'error': error, 'homeworks': homeworks})
+
+
+@login_required(login_url='/login/')
+def submit_homework(request, homework_id):
+    if request.method == 'POST':
+        homework_file = request.FILES['homework_file']  # Uploaded file instance
+        for_homework = HomeWork.objects.filter(id=homework_id).first()
+
+        submithomework = SubmitHomework(homework=for_homework, file=homework_file, student=request.user)
+        submithomework.save()
+
+        return redirect('homework')
+
+
+@login_required(login_url='/login/')
+def submit_individualhomework(request, individualhomework_id):
+    if request.method == 'POST':
+        homework_file = request.FILES['homework_file']
+        individualhomework = IndividualHomework.objects.filter(id=individualhomework_id).first()
+
+        individualhomework.file = homework_file
+        individualhomework.save()
+
+        return redirect('individual_homework', request.user.schoolclass_set.first().id, request.user.id)
+
+
+@login_required(login_url='/login/')
+def check_homework(request, homework_id):
+    if request.method == 'GET':
+        thishomework = HomeWork.objects.filter(id=homework_id).first()
+        allgrades = Grade.objects.all()
+
+        return render(request, 'Journal/check_homework.html', {'thishomework': thishomework, 'grades': allgrades})
+
+
+@login_required(login_url='/login/')
+def assign_grade(request, ih_id, submithomework_id, homework_id, schoolclass_id, student_id):
+    if request.method == 'POST':
+        if ih_id == 0:
+            h = SubmitHomework.objects.filter(id=submithomework_id).first()
+        else:
+            h = IndividualHomework.objects.filter(id=ih_id).first()
+
+        grade = Grade.objects.filter(id=request.POST.get('choosegrade')).first()
+        comment = request.POST.get('comment')
+
+        h.grade = grade
+        h.comment = comment
+        h.save()
+
+        if ih_id == 0:
+            return redirect('check_homework', homework_id)
+        else:
+            return redirect('individual_homework', schoolclass_id, student_id)
+
+
+@login_required(login_url='/login/')
+def download(request, filepath, filename):
+    with open(filepath, 'rb') as fh:
+        response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+        response['Content-Disposition'] = "inline; filename=" + filename
+        return response
+
+
+@login_required(login_url='/login/')
+def grades(request):
+    if request.method == 'GET':
+        gradesforms = GradesForms()
+
+        allgrades = Grade.objects.all()
+        return render(request, 'Journal/grades.html', {'gradesforms': gradesforms, 'grades': allgrades})
+
+    else:
+        gradesforms = GradesForms(request.POST)
+
+        if gradesforms.is_valid():
+            grade = gradesforms.cleaned_data['grade']
+            color = gradesforms.cleaned_data['color']
+
+            new_grade = Grade(grade=grade, color=color)
+            new_grade.save()
+
+            return redirect('grades')
+
+
+@login_required(login_url='/login/')
+def individual_homework(request, schoolclass_id, student_id):
+    student = User.objects.filter(id=student_id).first()
+
+    if request.method == 'GET':
+        allgrades = Grade.objects.all()
+
+        if request.user.groups.get().name == 'Student':
+            myihomeworks = IndividualHomework.objects.filter(student=request.user).all()
+        elif request.user.groups.get().name == 'Teacher':
+            myihomeworks = IndividualHomework.objects.filter(teacher=request.user.teacher).all()
+        else:
+            myihomeworks = IndividualHomework.objects.all()
+
+        forms = IndividualHomeWorkForms()
+
+        schoolclasses = SchoolClass.objects.all()
+        schoolclass = SchoolClass.objects.filter(id=schoolclass_id).first()
+
+        students = User.objects.filter(schoolclass=schoolclass).all()
+
+        return render(request, 'Journal/individual_homework.html', {'schoolclasses': schoolclasses,
+                                                                    'schoolclass': schoolclass,
+                                                                    'students': students, 'student': student,
+                                                                    'forms': forms, 'myihomeworks': myihomeworks,
+                                                                    'schoolclass_id': schoolclass_id,
+                                                                    'student_id': student_id, 'grades': allgrades})
+
+    else:
+        forms = IndividualHomeWorkForms(request.POST)
+        if forms.is_valid():
+            text = forms.cleaned_data['text']
+            iswithfile = forms.cleaned_data['isWithFile']
+            teacher = Teacher.objects.filter(user=request.user).first()
+
+            new_individualhomework = IndividualHomework(student=student, text=text, teacher=teacher,
+                                                        isWithFile=iswithfile)
+            new_individualhomework.save()
+
+            return redirect('individual_homework', schoolclass_id, student_id)
+
+
+@login_required(login_url='/login/')
+def close_homework(request, h_id):
+    h = HomeWork.objects.filter(id=h_id).first()
+    h.delete()
+    return redirect('homework')
+
+
+@login_required(login_url='/login/')
+def close_individualhomework(request, h_id):
+    h = IndividualHomework.objects.filter(id=h_id).first()
+    h.delete()
+    return redirect('individual_homework', '0', 0)
 
 
 @login_required(login_url='/login/')
@@ -362,7 +488,7 @@ def profile(request, user_id):
                                            'email': curr_user.email, 'group': curr_user.groups.first().name,
                                            })
 
-        #teacher_form = TeacherForm()
+        # teacher_form = TeacherForm()
 
         return render(request, 'Journal/profile.html', {'profile_photo': profile_photo, 'curr_user': curr_user,
                                                         'image_form': image_form, 'user_form': user_form,
@@ -371,8 +497,8 @@ def profile(request, user_id):
     else:  # POST
         user_form = UserEditForms(request.POST)
         image_form = UserImageForm(request.POST, request.FILES)
-        #teacher_form = TeacherForm(request.POST)
-        if image_form.is_valid() and user_form.is_valid(): #and teacher_form.is_valid():
+        # teacher_form = TeacherForm(request.POST)
+        if image_form.is_valid() and user_form.is_valid():  # and teacher_form.is_valid():
             # schoolclasses = teacher_form['schoolclasses']
             # lessons = teacher_form['lessons']
 
@@ -416,7 +542,6 @@ def profile(request, user_id):
 
             curr_user.last_name = data['last_name']
             curr_user.email = data['email']
-
 
             curr_user.save()
             data['groups'].user_set.remove(curr_user)
