@@ -2,10 +2,12 @@
 
 {% load i18n %}
 
+{% load crispy_forms_filters %}
+
 {% block title %}
 
     {% if curr_user.id == request.user.id %}
-    {% trans 'Your profile' %}
+        {% trans 'Your profile' %}
     {% else %}
         {{ curr_user.first_name }}{% trans 's profile' %}
 
@@ -15,194 +17,223 @@
 {% block body %}
 
 
-<div class="card-deck">
-    <div class="card mb-3" style="max-width: 540px;">
-        <div class="row no-gutters">
-            <div class="col-md-4">
-                <a href="{% url 'rotate_image' request.user.id %}"><i class="mdi mdi-rotate-right"></i></a>
-                <img src="{{ profile_photo }}" class="card-img" alt="...">
-            </div>
-            <div class="col-md-8">
-                <div class="card-body">
+    <div class="card-deck">
+        <div class="card mb-3" style="max-width: 540px;">
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                    <a href="{% url 'rotate_image' request.user.id %}"><i class="mdi mdi-rotate-right"></i></a>
+                    <img src="{{ profile_photo }}" class="card-img" alt="...">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
 
-                    <h5 class="card-title">{{ curr_user.first_name }} {{ curr_user.last_name }}</h5>
-                    <p class="card-text">
+                        <h5 class="card-title">{{ curr_user.first_name }} {{ curr_user.last_name }}</h5>
+                        <p class="card-text">
 
-                        {% if request.user.groups.get.name == 'Admin' %}
-                            ID: {{ curr_user.id }}<br/><br/>
-                        {% endif %}
+                            {% if request.user.groups.get.name == 'Admin' %}
+                                ID: {{ curr_user.id }}<br/><br/>
+                            {% endif %}
 
-                        {% trans 'Username:' %} {{ curr_user.username }}<br/><br/>
+                            {% trans 'Username:' %} {{ curr_user.username }}<br/><br/>
 
-                        {% trans 'First name:' %} {{ curr_user.first_name }}<br/>
-                        {% trans 'Last name:' %} {{ curr_user.last_name }}<br/><br/>
+                            {% trans 'First name:' %} {{ curr_user.first_name }}<br/>
+                            {% trans 'Last name:' %} {{ curr_user.last_name }}<br/><br/>
 
-                        {% trans 'Email:' %} {{ curr_user.email }}<br/>
+                            {% trans 'Email:' %} {{ curr_user.email }}<br/>
 
 
-                    <p class="card-text"><small class="text-muted"></small></p>
+                        <p class="card-text"><small class="text-muted"></small></p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
 
-    <div class="card mb-3" style="max-width: 540px;">
-        <div class="row no-gutters">
-
-            <div class="col-md-8">
-                <div class="card-body">
-
-                    {% if curr_user.groups.get.name == 'Admin' %}
-                        <h5 class="card-title">{% trans 'Administrator' %}</h5>
-                        <p class="card-text">
-                            {% if request.user.groups.get.name == 'Admin' %}
-                                {% trans 'Date joined' %}: {{ curr_user.date_joined }}<br/>
-                                {% trans 'Last login' %}: {{ curr_user.last_login }}
-                            {% endif %}
-
-                        </p>
-                        <p class="card-text"><small class="text-muted">
-                        </small></p>
-                    {% endif %}
-
-                    {% if curr_user.groups.get.name == 'Teacher' %}
-                        <h5 class="card-title">{% trans 'Teacher' %}</h5>
-                        <p class="card-text">
-                            {% if request.user.groups.get.name == 'Admin' %}
-                                {% trans 'Date joined' %}: {{ curr_user.date_joined }}<br/>
-                                {% trans 'Last login' %}: {{ curr_user.last_login }}
-                            {% endif %}
-                        </p>
-                        <p class="card-text"><small class="text-muted">
-                        </small></p>
-                    {% endif %}
-
-                    {% if curr_user.groups.get.name == 'Student' %}
-                        {% if curr_user.schoolclass_set.first %}
-                        <h5 class="card-title">Student - {{ curr_user.schoolclass_set.first.title }} {% trans 'class' %}</h5>
-                            {% else %}
-                            <h5 class="card-title">{% trans 'Student, class not assigned' %}</h5>
-                            {% endif %}
-                        <p class="card-text">
-                            {% if request.user.groups.get.name == 'Admin' %}
-                                {% trans 'Date joined' %}: {{ curr_user.date_joined }}<br/>
-                                {% trans 'Last login' %}: {{ curr_user.last_login }}
-                            {% endif %}
-                        </p>
-                        <p class="card-text"><small class="text-muted">
-                        </small></p>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
-    {% if request.user.groups.get.name == 'Admin' %}
         <div class="card mb-3" style="max-width: 540px;">
             <div class="row no-gutters">
 
                 <div class="col-md-8">
                     <div class="card-body">
-                        <h5 class="card-title"></h5>
-                        <p class="card-text">
 
-                            {% if request.user.id != curr_user.id %}
-                                <form action="{% url 'user_delete' curr_user.id %}">
-                                    <button type="submit" class="btn btn-outline-danger">
-                                        {% trans 'Delete' %}
-                                    </button>
-                                </form>
+                        {% if curr_user.groups.get.name == 'Admin' %}
+                            <h5 class="card-title">{% trans 'Administrator' %}</h5>
+                            <p class="card-text">
+                                {% if request.user.groups.get.name == 'Admin' %}
+                                    {% trans 'Date joined' %}: {{ curr_user.date_joined }}<br/>
+                                    {% trans 'Last login' %}: {{ curr_user.last_login }}
+                                {% endif %}
+
+                            </p>
+                            <p class="card-text"><small class="text-muted">
+                            </small></p>
+                        {% endif %}
+
+                        {% if curr_user.groups.get.name == 'Teacher' %}
+                            <h5 class="card-title">{% trans 'Teacher' %}</h5>
+                            <p class="card-text">
+                                {% if request.user.groups.get.name == 'Admin' %}
+                                    {% trans 'Date joined' %}: {{ curr_user.date_joined }}<br/>
+                                    {% trans 'Last login' %}: {{ curr_user.last_login }}
+                                {% endif %}
+                            </p>
+                            <p class="card-text"><small class="text-muted">
+                            </small></p>
+                        {% endif %}
+
+                        {% if curr_user.groups.get.name == 'Student' %}
+                            {% if curr_user.schoolclass_set.first %}
+                                <h5 class="card-title">Student
+                                    - {{ curr_user.schoolclass_set.first.title }} {% trans 'class' %}</h5>
+                            {% else %}
+                                <h5 class="card-title">{% trans 'Student, class not assigned' %}</h5>
                             {% endif %}
-
+                            <p class="card-text">
+                                {% if request.user.groups.get.name == 'Admin' %}
+                                    {% trans 'Date joined' %}: {{ curr_user.date_joined }}<br/>
+                                    {% trans 'Last login' %}: {{ curr_user.last_login }}
+                                {% endif %}
+                            </p>
+                            <p class="card-text"><small class="text-muted">
+                            </small></p>
+                        {% endif %}
                     </div>
                 </div>
             </div>
         </div>
-    {% endif %}
-</div>
+        {% if request.user.groups.get.name == 'Admin' %}
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row no-gutters">
 
-{% if request.user.groups.get.name == 'Admin' %}
-    <div class="card">
-        <div class="card-body">
-
-            {% if error %}
-                <div class="col-md-4">
-                    <div class="alert alert-danger" role="alert">
-                        {% trans 'There was an error adding a new user' %}
-                        <br/>
-                        {% if user_form.errors %}
-                            {% for field in user_form %}
-                                {% for error in field.errors %}
-                                    {{ error|escape }}
-                                {% endfor %}
-                            {% endfor %}
-                        {% endif %}
-
-                    </div>
-                </div>
-            {% endif %}
-
-            <div class="accordion" id="accordion">
-                <div class="card">
-                    <div class="card-header" id="headingTwo">
-                        <h5 class="mb-0">
-                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo"
-                                    aria-controls="collapseTwo">
-                                {% trans 'Editing' %}
-                            </button>
-                        </h5>
-                    </div>
-
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                    <div class="col-md-8">
                         <div class="card-body">
+                            <h5 class="card-title"></h5>
+                            <p class="card-text">
 
-                            <form action="{% url 'profile' curr_user.id %}" method="post"
-                                  enctype="multipart/form-data">
-
-                                <div class="row">
-                                    {% for field in user_form %}
-                                        <div class="col-5 col-sm-5">
-                                            {{ field.label }}
-                                            {{ field }}
-                                            <br/>
-                                        </div>
-                                    {% endfor %}
-
-                                    <div class="col-5 col-sm-5">
-                                        {{ image_form.as_p }}
-                                    </div>
-                                </div>
-
-                                <br/>
-
-
-                                {% if curr_user.groups.get.name == 'Teacher' %}
-                                    <div class="row">
-                                        {% for field in teacher_form %}
-                                            <div class="col-5 col-sm-5">
-                                                {{ field.label }}
-                                                {{ field }}
-                                                <br/>
-                                            </div>
-                                        {% endfor %}
-                                    </div>
+                                {% if request.user.id != curr_user.id %}
+                                    <form action="{% url 'user_delete' curr_user.id %}">
+                                        <button type="submit" class="btn btn-outline-danger">
+                                            {% trans 'Delete' %}
+                                        </button>
+                                    </form>
                                 {% endif %}
-
-
-
-                                <button type="submit" class="btn btn-outline-primary col-md-1">
-                                    {% trans 'Edit' %}
-                                </button>
-                            </form>
 
                         </div>
                     </div>
                 </div>
+            </div>
+        {% endif %}
+    </div>
 
+    {% if request.user.groups.get.name == 'Admin' %}
+        <div class="card">
+            <div class="card-body">
+
+                {% if error %}
+                    <div class="col-md-4">
+                        <div class="alert alert-danger" role="alert">
+                            {% trans 'There was an error adding a new user' %}
+                            <br/>
+                            {% if user_form.errors %}
+                                {% for field in user_form %}
+                                    {% for error in field.errors %}
+                                        {{ error|escape }}
+                                    {% endfor %}
+                                {% endfor %}
+                            {% endif %}
+
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="accordion" id="accordion">
+                    <div class="card">
+                        <div class="card-header" id="headingTwo">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo"
+                                        aria-controls="collapseTwo">
+                                    {% trans 'Editing' %}
+                                </button>
+                            </h5>
+                        </div>
+
+                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                            <div class="card-body">
+
+                                <form action="{% url 'profile' curr_user.id %}" method="post"
+                                      enctype="multipart/form-data">
+
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-3 mb-1">
+                                            {{ user_form.username|as_crispy_field }}
+                                        </div>
+
+                                        <div class="form-group col-md-3 mb-1">
+                                            {{ user_form.password|as_crispy_field }}
+                                        </div>
+                                    </div>
+
+                                    <br/>
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-3 mb-1">
+                                            {{ user_form.first_name|as_crispy_field }}
+                                        </div>
+
+                                        <div class="form-group col-md-3 mb-1">
+                                            {{ user_form.last_name|as_crispy_field }}
+                                        </div>
+                                    </div>
+                                    <br/>
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-3 mb-1">
+                                            {{ user_form.email|as_crispy_field }}
+                                        </div>
+
+
+                                        <div class="col-5 col-sm-5">
+                                            <div class="form-group col-md-3 mb-1">
+                                                {{ user_form.group|as_crispy_field }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="col-5 col-sm-5">
+                                        {{ image_form.as_p }}
+                                    </div>
+
+
+                                    <br/>
+
+
+                                    {% if curr_user.groups.get.name == 'Teacher' %}
+                                        <div class="row">
+                                            {% for field in teacher_form %}
+                                                <div class="col-5 col-sm-5">
+                                                    {{ field.label }}
+                                                    {{ field }}
+                                                    <br/>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+
+
+
+                                    <button type="submit" class="btn btn-outline-primary col-md-1">
+                                        {% trans 'Edit' %}
+                                    </button>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
-    </div>
-{% endif %}
+    {% endif %}
 
 
 

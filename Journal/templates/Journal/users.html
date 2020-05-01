@@ -4,6 +4,8 @@
     Users management
 {% endblock %}
 
+{% load crispy_forms_filters %}
+
 {% block body %}
     <div class="card">
         <div class="card-body">
@@ -73,18 +75,39 @@
                             <form action="{% url 'users' %}" method="post" enctype="multipart/form-data">
 
 
-                                <div class="row">
-                                    {% for field in forms %}
-                                        <div class="col-5 col-sm-5">
-                                            {{ field.label }}
-                                            {{ field }}
-                                            <br/>
-                                        </div>
-                                    {% endfor %}
+                                <div class="form-row">
+                                    <div class="form-group col-md-3 mb-1">
+                                        {{ forms.username|as_crispy_field }}
+                                    </div>
+
+                                    <div class="form-group col-md-3 mb-1">
+                                        {{ forms.password|as_crispy_field }}
+                                    </div>
+                                </div>
+
+                                <br/>
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-3 mb-1">
+                                        {{ forms.first_name|as_crispy_field }}
+                                    </div>
+
+                                    <div class="form-group col-md-3 mb-1">
+                                        {{ forms.last_name|as_crispy_field }}
+                                    </div>
+                                </div>
+                                <br/>
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-3 mb-1">
+                                        {{ forms.email|as_crispy_field }}
+                                    </div>
 
 
                                     <div class="col-5 col-sm-5">
-                                        {{ image_form.as_p }}
+                                        <div class="form-group col-md-3 mb-1">
+                                            {{ image_form.as_p }}
+                                        </div>
                                     </div>
                                 </div>
 
@@ -151,11 +174,11 @@
                                     <br/>
                                     {% if u.groups.get.name == 'Student' %}
                                         {% if u.schoolclass_set.first %}
-                                        Class {{ u.schoolclass_set.first.title }} student.
+                                            Class {{ u.schoolclass_set.first.title }} student.
 
                                         {% else %}
                                             No class defined for this user.
-                                            {% endif %}
+                                        {% endif %}
                                     {% endif %}
 
                                     <br/>
