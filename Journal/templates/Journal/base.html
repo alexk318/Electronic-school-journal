@@ -175,20 +175,39 @@
                                 <a class="dropdown-item" href="{% url 'lessons' %}"><i
                                         class="mdi mdi-bookshelf"></i>Lessons management</a>
 
+                                <a class="dropdown-item" href="{% url  'grades' %}"><i
+                                        class="mdi mdi-checkbox-multiple-blank-outline"></i>Grades management</a>
+
                                 <a class="dropdown-item" href="{% url    'users' %}"><i
                                         class="mdi mdi-account-group-outline"></i>Users management</a>
+
                             </div>
                         </li>
 
 
                     {% endif %}
 
-                    <li class="nav-item mr-5">
-                        <a href="{% url 'homework' %}"
-                           class="nav-icon font-2xl">
-                            <!-- <i class="fas fa-chart-pie"></i> -->
-                            <i class="mdi mdi-note-text"></i>
+                    <li class="nav-item mr-5 dropdown">
+                        <a href="#" class="nav-icon avatar rounded-circle" id="PJXN7R" role="button"
+                           data-toggle="dropdown" aria-expanded="false">
+                            <i class="menu-icon mdi mdi-file-document"></i>
                         </a>
+
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="PJXN7R">
+                            <a class="dropdown-item" href="{% url 'homework' %}"><i
+                                    class="menu-icon mdi mdi-account-box-multiple"></i>Class homework</a>
+
+                            {% if request.user.groups.get.name == 'Student' %}
+                                <a class="dropdown-item"
+                                   href="{% url 'individual_homework' request.user.schoolclass_set.first.id request.user.id %}">
+
+                            {% else %}
+                                <a class="dropdown-item" href="{% url 'individual_homework' 0 0 %}">
+
+                            {% endif %}
+                            <i class="menu-icon mdi mdi-file-account"></i>Individual homework</a>
+
+                        </div>
                     </li>
 
                     <li class="nav-item mr-5">
@@ -233,45 +252,10 @@
 
                 {% else %}
 
-                    <li class="menu-items">
-                        <a href="javascript://" class="menu-link" data-toggle="collapse"
-                           data-target="#menu-user">
+                    <li class="menu-item">
+                        <a href="{% url 'profile' request.user.id %}" class="menu-link">
                             <i class="menu-icon mdi mdi-account"></i>
-                            <span class="menu-label">{{ request.user.first_name }} {{ request.user.last_name }}</span>
-                            <i class="menu-arrow mdi mdi-chevron-right"></i>
-                        </a>
-
-                        <ul class="menu collapse" data-parent="#main-menu" id="menu-user">
-                            <li class="menu-item">
-                                <a href="{% url 'profile' request.user.id %}" class="menu-link">
-                                    <i class="menu-icon mdi mdi-file-account"></i>
-                                    <span class="menu-label">{% trans 'Profile' %}</span>
-                                </a>
-                            </li>
-
-                            {% if request.user.groups.get.name == 'Student' and request.user.schoolclass_set.first is not None %}
-                                <li class="menu-item">
-                                    <a href="{% url 'thisclass' request.user.schoolclass_set.first.id %}"
-                                       class="menu-link">
-
-                                        <i class="menu-icon mdi mdi-account-supervisor-circle"></i>
-                                        <span class="menu-label">My class</span>
-                                    </a>
-                                </li>
-                            {% endif %}
-
-                            {% if request.user.groups.get.name == 'Teacher' and request.user.teachers.first is not None %}
-                                <li class="menu-item">
-                                    <a href="{% url 'thisclass' request.user.teachers.first.id %}" class="menu-link">
-
-                                        <i class="menu-icon mdi mdi-account-supervisor-circle"></i>
-                                        <span class="menu-label">My class</span>
-                                    </a>
-                                </li>
-
-                            {% endif %}
-
-                        </ul>
+                            <span class="menu-label">{% trans 'Profile' %}</span></a>
                     </li>
 
                     {% if request.user.groups.get.name == 'Admin' %}
@@ -279,7 +263,7 @@
                         <li class="menu-item">
                             <a href="{% url 'schedule' %}" class="menu-link">
                                 <i class="menu-icon mdi mdi-account-supervisor-circle"></i>
-                                <span class="menu-label">Schedule</span>
+                                <span class="menu-label">{% trans 'Schedule' %}</span>
                             </a>
                         </li>
 
@@ -290,7 +274,7 @@
                             <a href="{% url 'class_schedule' request.user.schoolclass_set.first.title 'September' '1-7' %}"
                                class="menu-link">
                                 <i class="menu-icon mdi mdi-clipboard-text-multiple"></i>
-                                <span class="menu-label">Schedule</span>
+                                <span class="menu-label">{% trans 'Schedule' %}</span>
                             </a>
                         </li>
                     {% endif %}
@@ -311,7 +295,7 @@
                             <a href="javascript://" class="menu-link" data-toggle="collapse"
                                data-target="#menu-management">
                                 <i class="menu-icon mdi mdi-camera-control"></i>
-                                <span class="menu-label">Management</span>
+                                <span class="menu-label">{% trans 'Management' %}</span>
                                 <i class="menu-arrow mdi mdi-chevron-right"></i>
                             </a>
 
@@ -320,21 +304,28 @@
                                 <li class="menu-item">
                                     <a href="{% url 'classes' %}" class="menu-link">
                                         <i class="menu-icon mdi mdi-account-box-multiple"></i>
-                                        <span class="menu-label">Classes management</span>
+                                        <span class="menu-label">{% trans 'Classes management' %}</span>
                                     </a>
                                 </li>
 
                                 <li class="menu-item">
                                     <a href="{% url 'lessons' %}" class="menu-link">
                                         <i class="menu-icon mdi mdi-bookshelf"></i>
-                                        <span class="menu-label">Lessons management</span>
+                                        <span class="menu-label">{% trans 'Lessons management' %}</span>
+                                    </a>
+                                </li>
+
+                                <li class="menu-item">
+                                    <a href="{% url 'grades' %}" class="menu-link">
+                                        <i class="menu-icon mdi mdi-checkbox-multiple-blank-outline"></i>
+                                        <span class="menu-label">{% trans 'Grades management' %}</span>
                                     </a>
                                 </li>
 
                                 <li class="menu-item">
                                     <a href="{% url 'users' %}" class="menu-link">
                                         <i class="menu-icon mdi mdi-account-group-outline"></i>
-                                        <span class="menu-label">Users management</span>
+                                        <span class="menu-label">{% trans 'Users management' %}</span>
                                     </a>
                                 </li>
                             </ul>
@@ -342,22 +333,59 @@
                     {% endif %}
 
                     <li class="menu-items">
-                        <a href="{% url 'homework' %}" class="menu-link">
-                            <i class="menu-icon mdi mdi-note-text"></i>
-                            <span class="menu-label">Home work</span>
-
-                            {% if request.user.groups.get.name == 'Student' %}
-                                <i class="badge badge-primary" style="margin-left: 48px;"></i>
-                                <i class="badge badge-info"></i>
-                            {% endif %}
-
+                        <a href="javascript://" class="menu-link" data-toggle="collapse"
+                           data-target="#menu-homework">
+                            <i class="menu-icon mdi mdi-file-document"></i>
+                            <span class="menu-label">{% trans 'Homework' %}</span>
+                            <i class="menu-arrow mdi mdi-chevron-right"></i>
                         </a>
+
+                        {% load tags %}
+
+                        <ul class="menu collapse" data-parent="#main-menu" id="menu-homework">
+                            <li class="menu-item">
+                                <a href="{% url 'homework' %}" class="menu-link">
+                                    <i class="menu-icon mdi mdi-account-box-multiple"></i>
+                                    <span class="menu-label">{% trans 'Class homework' %}</span>
+
+                                    {% if request.user.groups.get.name == 'Student' %}
+                                        <span class="badge badge-primary">
+                                        {% get_curruser_newhomeworks request %}
+                                    </span>
+                                    {% endif %}
+
+                                </a>
+                            </li>
+
+                            <li class="menu-item">
+                                {% if request.user.groups.get.name == 'Student' %}
+                                    <a href="{% url 'individual_homework' request.user.schoolclass_set.first.id request.user.id %}"
+                                       class="menu-link">
+
+                                {% else %}
+                                    <a href="{% url 'individual_homework' 0 0 %}" class="menu-link">
+                                {% endif %}
+
+                                <i class="menu-icon mdi mdi-file-account"></i>
+                                <span class="menu-label">{% trans 'Individual homework' %}</span>
+                                {% if request.user.groups.get.name == 'Student' %}
+                                    <span class="badge badge-info">{{ request.user.individualhomework_set.all|length }}</span>
+                                {% endif %}
+
+                                </a>
+                            </li>
+                        </ul>
                     </li>
+
+                    {% if request.user.groups.get.name == 'Student' %}
+                        <i class="badge badge-primary" style="margin-left: 48px;"></i>
+                        <i class="badge badge-info"></i>
+                    {% endif %}
 
                     <li class="menu-items">
                         <a href="{% url 'logout' %}" class="menu-link">
                             <i class="menu-icon mdi mdi-exit-to-app"></i>
-                            <span class="menu-label">Log out</span>
+                            <span class="menu-label">{% trans 'Log out' %}</span>
                         </a>
                     </li>
 
