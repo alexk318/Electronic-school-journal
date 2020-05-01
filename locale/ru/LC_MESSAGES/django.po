@@ -79,12 +79,6 @@ msgstr "Авторизация"
 msgid "Go"
 msgstr "Вперёд"
 
-msgid "Username:"
-msgstr "Логин:"
-
-msgid "Password:"
-msgstr "Пароль:"
-
 msgid "Home page"
 msgstr "Начальная страница"
 
@@ -96,3 +90,124 @@ msgstr "Введёные данные неверные"
 
 msgid "Hello"
 msgstr "Здравствуй"
+
+msgid "Schedule"
+msgstr "Расписание"
+
+msgid "Management"
+msgstr "Управление"
+
+msgid "Classes management"
+msgstr "Управление классами"
+
+msgid "Lessons management"
+msgstr "Управление уроками"
+
+msgid "Users management"
+msgstr "Управление пользователями"
+
+msgid "Homework"
+msgstr "Домашнее задание"
+
+msgid "Class homework"
+msgstr "Домашнее задание для классов"
+
+msgid "Individual homework"
+msgstr "Индивидуальное домашнее задание"
+
+msgid "Log out"
+msgstr "Выйти"
+
+msgid "Your profile"
+msgstr "Ваш профиль"
+
+msgid "s profile"
+msgstr " - Профиль"
+
+msgid "Username:"
+msgstr "Имя пользователя:"
+
+msgid "First name:"
+msgstr "Имя:"
+
+msgid "Last name:"
+msgstr "Фамилия:"
+
+msgid "Email:"
+msgstr "Электронный адрес:"
+
+msgid "Administrator"
+msgstr "Администратор"
+
+msgid "Teacher"
+msgstr "Учитель"
+
+msgid "сlass"
+msgstr "класс"
+
+msgid "Student, class not assigned"
+msgstr "Ученика, класс не назначен"
+
+msgid "Date joined"
+msgstr "Дата присоединения"
+
+msgid "Last login"
+msgstr "Последняя авторизация"
+
+msgid "Delete"
+msgstr "Удалить"
+
+msgid "There was an error adding a new user"
+msgstr "При добавлении пользователя произошла ошибка"
+
+msgid "Editing"
+msgstr "Редактирование"
+
+msgid "Group:"
+msgstr "Группа"
+
+msgid "Password:"
+msgstr "Пароль"
+
+msgid "Edit"
+msgstr "Применить"
+
+msgid "Choose class"
+msgstr "Выбрать класс"
+
+msgid "January"
+msgstr "Январь"
+
+msgid "February"
+msgstr "Февраль"
+
+msgid "Март"
+msgstr "March"
+
+msgid "April"
+msgstr "Апрель"
+
+msgid "May"
+msgstr "Май"
+
+msgid "June"
+msgstr "Июнь"
+
+msgid "Jule"
+msgstr "Июль"
+
+msgid "August"
+msgstr "Август"
+
+msgid "September"
+msgstr "Сентябрь"
+
+msgid "October"
+msgstr "Октябрь"
+
+msgid "November"
+msgstr "Ноябрь"
+
+msgid "December"
+msgstr "Декабрь"
+
