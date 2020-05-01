@@ -255,7 +255,7 @@ def users(request):
         else:
 
             error = True
-            return render(request, 'Journal/users.html', {'users': users, 'forms': forms_post, 'error': error,
+            return render(request, 'Journal/users.html', {'users': allusers, 'forms': forms_post, 'error': error,
                                                           'image_form': image_form})
 
 
