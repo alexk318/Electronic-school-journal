@@ -106,10 +106,13 @@
 
                                     <div class="col-5 col-sm-5">
                                         <div class="form-group col-md-3 mb-1">
-                                            {{ image_form.as_p }}
+                                            {{ forms.group|as_crispy_field }}
                                         </div>
                                     </div>
                                 </div>
+
+                                <br/>
+                                {{ image_form.as_p }}
 
 
                                 <br/>
