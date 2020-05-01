@@ -1,0 +1,91 @@
+{% extends 'Journal/base.html' %}
+
+{% block title %}
+    Checking homework
+{% endblock %}
+
+{% block body %}
+
+    <div class="card">
+        <div class="card-body">
+            <h4 class="display-4">Homework #{{ thishomework.id }}</h4>
+
+            {{ thishomework.text }}<br/>
+            For {{ thishomework.schedule.schoolclass.title }} class
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+
+            <div class="row">
+                {% for submithomework in thishomework.submithomework_set.all %}
+                    {% if not submithomework.grade %}
+                        <div class="col-sm-3">
+                            <div class="card" style="width: 18rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ submithomework.student.first_name }} {{ submithomework.student.last_name }}</h5>
+                                    <p class="card-text"><a
+                                            href="{% url 'download' submithomework.file.path submithomework.get_filename %}">{{ submithomework.get_filename }}</a>
+                                    </p>
+
+                                    {% if request.user.groups.get.name != 'Admin' %}
+                                        <form action="{% url 'assign_grade' 0 submithomework.id thishomework.id 0 0 %}"
+                                              method="post">
+
+                                            <label for="comment">Comment:</label>
+                                            <textarea required id="comment" name="comment"></textarea><br/>
+
+                                            <label for="choosegrade">Grade:</label>
+                                            <select id="choosegrade" name="choosegrade" class="form-control">
+                                                {% for grade in grades %}
+                                                    <option style="color: {{ grade.color }}"
+                                                            value="{{ grade.id }}">{{ grade.grade }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <br/>
+
+                                            <button type="submit" class="btn btn-outline-dark">
+                                                Send
+                                            </button>
+
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                {% for submithomework in thishomework.submithomework_set.all %}
+                    {% if submithomework.grade %}
+                        <div class="col-sm-3">
+                            <div class="card" style="width: 18rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ submithomework.student.first_name }} {{ submithomework.student.last_name }}</h5>
+                                    <p class="card-text"><a
+                                            href="{% url 'download' submithomework.file.path submithomework.get_filename %}">{{ submithomework.get_filename }}</a>
+                                    </p>
+
+                                    {{ submithomework.comment }}
+                                    <br/><br/>
+                                    <h3 style="color: {{ submithomework.grade.color }}">{{ submithomework.grade.grade }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
