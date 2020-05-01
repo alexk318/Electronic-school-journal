@@ -1,0 +1,79 @@
+{% extends 'Journal/base.html' %}
+
+{% block title %}
+    Grades management
+{% endblock %}
+
+
+{% block body %}
+    <div class="card">
+        <div class="card-body">
+            <h3 class="display-3">Grades management</h3>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="accordion" id="accordion">
+                <div class="card">
+                    <div class="card-header" id="headingTwo">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo"
+                                    aria-controls="collapseTwo">
+                                Adding a new grade
+                            </button>
+                        </h5>
+                    </div>
+
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                        <div class="card-body">
+
+                            <form action="{% url 'grades' %}"
+                                  method="post">
+
+                                {% for field in gradesforms %}
+                                    <div class="col-2 col-sm-2">
+                                        {{ field.label }}
+                                        {{ field }}
+                                        <br/>
+                                    </div>
+                                {% endfor %}
+
+                                <br/>
+                                <button type="submit" class="btn btn-outline-dark col-md-1">
+                                    Add
+                                </button>
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+
+            <div class="row">
+                {% for g in grades %}
+
+                    <div class="col-sm-3">
+                        <div class="card" style="width: 18rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">Grade "{{ g.grade }}"</h5>
+                                <h6 class="card-subtitle mb-2 text-muted"></h6>
+                                Color: <a style="color: {{ g.color }}">{{ g.color }}</a>
+                                <a href="#" class="card-link"></a>
+                            </div>
+                        </div>
+                    </div>
+
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
