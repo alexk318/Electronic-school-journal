@@ -79,9 +79,11 @@
                             <form action="{% url 'thisclass' curr_class.id %}" method="post">
 
                                 <div class="row" style="margin-left:2px">
-                                    {% for form in forms %}
-                                        {{ form }}
-                                    {% endfor %}
+                                    <div class="col-md-2">
+                                        {% for form in forms %}
+                                            {{ form }}
+                                        {% endfor %}
+                                    </div>
                                 </div>
 
                                 <br/>

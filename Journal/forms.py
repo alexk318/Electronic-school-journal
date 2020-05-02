@@ -79,7 +79,8 @@ class ClassStudentsAddForms(forms.Form):
                                                                                     User.objects.filter(
                                                                                         groups=student).filter(
                                                                                         schoolclass=None).order_by(
-                                                                                        'first_name')]))
+                                                                                        'first_name')],
+                                                                           attrs={'class': 'form-control'}))
 
 
 class ScheduleAddForms(forms.ModelForm):
