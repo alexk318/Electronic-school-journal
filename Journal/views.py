@@ -250,7 +250,7 @@ def users(request):
                 image.save()
 
             success = True
-            return render(request, 'Journal/users.html', {'users': users, 'forms': forms_post, 'success': success,
+            return render(request, 'Journal/users.html', {'users': allusers, 'forms': forms_post, 'success': success,
                                                           'image_form': image_form})
         else:
 
