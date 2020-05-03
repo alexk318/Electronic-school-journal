@@ -13,6 +13,7 @@ class ScheduleSerializer(serializers.Serializer):
 
 class StudentsSerializer(serializers.Serializer):
     username = serializers.CharField()
+    password = serializers.CharField()
 
     first_name = serializers.CharField()
     last_name = serializers.CharField()
