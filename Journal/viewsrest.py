@@ -33,9 +33,7 @@ class StudentsView(APIView):
         serializer = StudentsSerializer(data=student)
 
         if serializer.is_valid(raise_exception=True):
-            new_user = User.objects.create_user(username=serializer.username, password=serializer.password,
-                                                first_name=serializer.first_name, last_name=serializer.last_name)
-            new_user.save()
+            student_saved = serializer.save()
 
-        return Response({"success": "Student '{} {}' create successfully".format(new_user.first_name,
-                                                                                 new_user.last_name)})
+        return Response({"success": "Student '{} {}' create successfully".format(student_saved.first_name,
+                                                                                 student_saved.last_name)})
