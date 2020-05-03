@@ -26,3 +26,13 @@ class StudentsView(APIView):
         serializer = StudentsSerializer(all_students, many=True)
 
         return Response({"all_students": serializer.data})
+
+    def post(self, request):
+        student = request.data.get('student')
+
+        serializer = StudentsSerializer(data=student)
+        if serializer.is_valid(raise_exception=True):
+            student_saved = serializer.save()
+
+        return Response({"success": "Student '{} {}' create successfully".format(student_saved.first_name,
+                                                                                 student_saved.last_name)})
