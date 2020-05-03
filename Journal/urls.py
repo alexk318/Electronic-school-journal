@@ -51,7 +51,8 @@ urlpatterns = [
 
     path('logout/', views.logout_view, name='logout'),
 
-    path('api/lessons', viewsrest.LessonView.as_view()),
+
+    path('api/schedule', viewsrest.ScheduleView.as_view()),
 ]
 
 if settings.DEBUG:

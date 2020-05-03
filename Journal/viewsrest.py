@@ -1,5 +1,5 @@
-from .models import Lesson
-from .serializers import LessonSerializer
+from .models import Schedule
+from .serializers import ScheduleSerializer
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -7,11 +7,11 @@ from rest_framework.views import APIView
 # Get all Lessons
 
 
-class LessonView(APIView):
+class ScheduleView(APIView):
     def get(self, request):
-        all_lessons = Lesson.objects.all()
-        serializer = LessonSerializer(all_lessons, many=True)
+        all_schedules = Schedule.objects.all()
+        serializer = ScheduleSerializer(all_schedules, many=True)
 
-        return Response({"all_lessons": serializer.data})
+        return Response({"all_schedules": serializer.data})
 
 
