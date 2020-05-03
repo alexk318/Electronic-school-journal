@@ -53,6 +53,7 @@ urlpatterns = [
 
 
     path('api/schedule', viewsrest.ScheduleView.as_view()),
+    path('api/students', viewsrest.StudentsView.as_view()),
 ]
 
 if settings.DEBUG:

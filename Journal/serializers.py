@@ -8,3 +8,12 @@ class ScheduleSerializer(serializers.Serializer):
     date = serializers.DateField()
     start = serializers.TimeField()
     end = serializers.TimeField()
+
+
+class StudentsSerializer(serializers.Serializer):
+    username = serializers.CharField()
+
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+
+    email = serializers.EmailField()
