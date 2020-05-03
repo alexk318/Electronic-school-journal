@@ -3,6 +3,8 @@
 
 {% load i18n %}
 
+{% load tags %}
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -151,8 +153,14 @@
 
                     {% if request.user.groups.get.name == 'Student' and request.user.schoolclass_set.first is not None %}
                         <li class="nav-item mr-5">
-                            <a href="{% url 'class_schedule' request.user.schoolclass_set.first.title 'September' '1-7' %}"
-                               class="nav-icon font-2xl">
+
+                            {% get_current_month as current_month %}
+                            {% get_current_week as current_week %}
+
+                                <a
+                                href="{% url 'class_schedule' request.user.schoolclass_set.first.title current_month current_week %}"
+
+                                class="nav-icon font-2xl">
                                 <!-- <i class="fas fa-chart-pie"></i> -->
                                 <i class="mdi mdi-clipboard-text-multiple"></i>
                             </a>
@@ -279,7 +287,10 @@
 
                     {% if request.user.groups.get.name == 'Student' and request.user.schoolclass_set.first is not None %}
                         <li class="menu-item">
-                            <a href="{% url 'class_schedule' request.user.schoolclass_set.first.title 'September' '1-7' %}"
+                            {% get_current_month as current_month %}
+                            {% get_current_week as current_week %}
+
+                            <a href="{% url 'class_schedule' request.user.schoolclass_set.first.title current_month current_week %}"
                                class="menu-link">
                                 <i class="menu-icon mdi mdi-clipboard-text-multiple"></i>
                                 <span class="menu-label">{% trans 'Schedule' %}</span>
@@ -348,7 +359,6 @@
                             <i class="menu-arrow mdi mdi-chevron-right"></i>
                         </a>
 
-                        {% load tags %}
 
                         <ul class="menu collapse" data-parent="#main-menu" id="menu-homework">
                             <li class="menu-item">
