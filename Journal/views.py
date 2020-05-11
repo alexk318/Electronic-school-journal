@@ -18,6 +18,8 @@ from .forms import AuthForms, ClassAddForms, ScheduleAddForms, UserAddForms, Hom
 from .models import Day, SchoolClass, Lesson, Schedule, HomeWork, UserImage, Teacher, IndividualHomework, \
     SubmitHomework, Grade
 
+from rest_framework.authtoken.models import Token
+
 classes = SchoolClass.objects.all()
 
 titles = [classes_.title for classes_ in classes]
@@ -591,3 +593,23 @@ def user_delete(request, user_id):
 def logout_view(request):
     logout(request)
     return redirect('index')
+
+
+def api(request):
+    if request.user.is_staff:
+        token = Token.objects.filter(user=request.user).first()
+
+        if request.method == 'GET':
+            return render(request, 'Journal/api.html', {'token': token})
+        else:
+            if token is not None:
+                token.delete()
+
+            else:
+                new_token = Token.objects.create(user=request.user)
+                new_token.save()
+
+            return redirect('api')
+
+    else:
+        redirect('schedule')
