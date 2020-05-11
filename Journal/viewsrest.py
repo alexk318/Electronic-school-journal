@@ -1,8 +1,10 @@
 from .models import Schedule
-from .serializers import ScheduleSerializer, StudentsSerializer
+from .serializers import ScheduleSerializer, StudentSerializer
 
 from django.contrib.auth.models import User, Group
 
+from rest_framework import generics
+from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -17,23 +19,15 @@ class ScheduleView(APIView):
         return Response({"all_schedules": serializer.data})
 
 
-student = Group.objects.get(name='Student')
+class StudentListView(generics.ListAPIView):
+    serializer_class = StudentSerializer
+    queryset = User.objects.filter(groups__name='Student')
 
 
-class StudentsView(APIView):
-    def get(self, request):
-        all_students = User.objects.filter(groups=student).all()
-        serializer = StudentsSerializer(all_students, many=True)
+class StudentCreateView(generics.CreateAPIView):
+    serializer_class = StudentSerializer
 
-        return Response({"all_students": serializer.data})
 
-    def post(self, request):
-        student = request.data.get('student')
-
-        serializer = StudentsSerializer(data=student)
-
-        if serializer.is_valid(raise_exception=True):
-            student_saved = serializer.save()
-
-        return Response({"success": "Student '{} {}' create successfully".format(student_saved.first_name,
-                                                                                 student_saved.last_name)})
+class StudentDetailView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = StudentSerializer
+    queryset = User.objects.filter(groups__name='Student')
