@@ -157,10 +157,10 @@
                             {% get_current_month as current_month %}
                             {% get_current_week as current_week %}
 
-                                <a
-                                href="{% url 'class_schedule' request.user.schoolclass_set.first.title current_month current_week %}"
+                            <a
+                                    href="{% url 'class_schedule' request.user.schoolclass_set.first.title current_month current_week %}"
 
-                                class="nav-icon font-2xl">
+                                    class="nav-icon font-2xl">
                                 <!-- <i class="fas fa-chart-pie"></i> -->
                                 <i class="mdi mdi-clipboard-text-multiple"></i>
                             </a>
@@ -419,6 +419,18 @@
 
 
             </ul>
+
+            {% if request.user.is_staff %}
+                <div class="menubar-footer bg-dark p-10">
+                    <li class="menu-item">
+                        <a href="{% url 'api' %}" class="menu-link">
+                            <i class="menu-icon mdi mdi-api"></i>
+                            <span class="menu-label">Electronic Journal API</span>
+                        </a>
+                    </li>
+                </div>
+            {% endif %}
+
 
         </div>
 
