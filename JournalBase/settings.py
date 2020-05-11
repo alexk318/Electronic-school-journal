@@ -37,8 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispy_forms',
+
     'rest_framework',
-    #'send',
+    'rest_framework.authtoken'
+
+    # 'send',
 ]
 
 MIDDLEWARE = [
@@ -51,7 +54,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
 
 ROOT_URLCONF = 'JournalBase.urls'
 
@@ -114,7 +116,7 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Asia/Almaty'
 
-USE_I18N = True    # Internationalization
+USE_I18N = True  # Internationalization
 
 USE_L10N = True  # Format localization
 
@@ -136,3 +138,13 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAdminUser'
+    ],
+
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
