@@ -1,0 +1,56 @@
+{% extends 'Journal/base.html' %}
+
+
+{% block title %}
+    Electronic Journal API
+{% endblock %}
+
+{% block body %}
+
+    <div class="card">
+        <div class="card-body">
+            <h3 class="display-3">Electonic school journal API</h3>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            {% if token %}
+                Your token: {{ token.key }}
+            {% else %}
+                You currently do not have a token
+            {% endif %}
+            <br/><br/>
+
+            <div class="row">
+
+                <form action="{% url 'api' %}" method="post">
+                    {% if not token %}
+
+                        <div class="col-sm">
+                            <button type="submit" class="btn btn-primary">
+
+                                Generate token
+
+                            </button>
+                        </div>
+
+                    {% endif %}
+
+                    {% if token %}
+                        <div class="col-sm">
+                            <button type="submit" class="btn btn-warning">
+                                Destroy my token
+                            </button>
+                        </div>
+
+                    {% endif %}
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+
+{% endblock %}
