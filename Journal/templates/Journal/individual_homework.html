@@ -144,7 +144,7 @@
                                 {% if request.user.groups.get.name == 'Admin' %}
                                     <div class="dropdown-divider"></div>
                                     Teacher -
-                                    <a href="{% url 'profile' ih.id %}" class="card-link">{{ ih.teacher.user.first_name }}  {{ ih.teacher.user.last_name }}</a>
+                                    <a href="{% url 'profile' ih.teacher.user.id %}" class="card-link">{{ ih.teacher.user.first_name }}  {{ ih.teacher.user.last_name }}</a>
                                 {% endif %}
                             </div>
 
