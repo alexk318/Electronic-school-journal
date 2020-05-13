@@ -93,8 +93,17 @@
 
             </ul>
 
-
             <ul class="navbar-nav my-2 my-lg-0">
+
+                {% if request.user.is_staff %}
+                    <li class="nav-item mr-5">
+                        <a href="{% url 'api' %}"
+                           class="nav-icon font-2xl">
+                            <!-- <i class="fas fa-chart-pie"></i> -->
+                            <i class="mdi mdi-api"></i>
+                        </a>
+                    </li>
+                {% endif %}
 
                 {% if not request.user.is_authenticated %}
                     <!-- Getting Started -->
@@ -400,6 +409,7 @@
 
                                 </a>
                             </li>
+
                         </ul>
                     </li>
 
