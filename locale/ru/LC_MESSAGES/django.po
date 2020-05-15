@@ -75,7 +75,7 @@ msgid "Lessons management"
 msgstr "Управление уроками"
 
 msgid "hasn't sent anything yet"
-msgstr "Еще ничего не отправил(-а)"
+msgstr "еще ничего не отправил(-а)"
 
 msgid "Choose class"
 msgstr "Выберите класс"
