@@ -99,7 +99,7 @@ msgid "works"
 msgstr "работ"
 
 msgid "No one has sent homework yet"
-msgstr "Еще никто не сделал домашнее заданеи"
+msgstr "Еще никто не сделал домашнее задание"
 
 msgid "Homework assignment"
 msgstr "Назначение домашней работы"
