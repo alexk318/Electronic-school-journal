@@ -22,5 +22,5 @@ urlpatterns = [
 
     path('', include('Journal.urls')),
 
-    path('api/v1/students/', include('Journal.urlsrest')),
+    path('api/v1/', include('Journal.urlsrest')),
 ]
