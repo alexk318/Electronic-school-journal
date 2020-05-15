@@ -30,7 +30,7 @@ class AuthForms(forms.Form):
 
 
 class UserAddForms(forms.ModelForm):
-    group = forms.CharField(label='Group:',
+    group = forms.CharField(label=_('Group:'),
                             widget=forms.Select(choices=groups_choices, attrs={'class': 'form-control', }))
 
     class Meta:
@@ -72,6 +72,10 @@ class ClassAddForms(forms.ModelForm):
             'title': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super(ClassAddForms, self).__init__(*args, **kwargs)
+        self.fields['title'].label = _("Title")
+
 
 class ClassStudentsAddForms(forms.Form):
     students = forms.CharField(label='Select', widget=forms.SelectMultiple(choices=[tuple([u.id, u.first_name + ' ' +
@@ -93,6 +97,12 @@ class ScheduleAddForms(forms.ModelForm):
             'lessonteacher': forms.Select(choices=teachers, attrs={'class': 'form-control'}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super(ScheduleAddForms, self).__init__(*args, **kwargs)
+        self.fields['day'].label = _("Day")
+        self.fields['lesson'].label = _("Lesson")
+        self.fields['lessonteacher'].label = _("Teacher")
+
 
 class LessonAddForms(forms.ModelForm):
     class Meta:
@@ -113,6 +123,12 @@ class HomeWorkForms(forms.ModelForm):
             'isWithFile': forms.CheckboxInput()
         }
 
+    def __init__(self, *args, **kwargs):
+        super(HomeWorkForms, self).__init__(*args, **kwargs)
+        self.fields['schedule'].label = _("Schedule")
+        self.fields['text'].label = _("Text")
+        self.fields['isWithFile'].label = _("With file submit")
+
 
 class IndividualHomeWorkForms(forms.ModelForm):
     class Meta:
@@ -121,6 +137,11 @@ class IndividualHomeWorkForms(forms.ModelForm):
         widgets = {
             'isWithFile': forms.CheckboxInput()
         }
+
+    def __init__(self, *args, **kwargs):
+        super(IndividualHomeWorkForms, self).__init__(*args, **kwargs)
+        self.fields['text'].label = _("Text")
+        self.fields['isWithFile'].label = _("With file submit")
 
 
 class GradesForms(forms.ModelForm):
@@ -131,3 +152,8 @@ class GradesForms(forms.ModelForm):
             'grade': forms.TextInput(attrs={'class': 'form-control'}),
             'color': forms.TextInput(attrs={'type': 'color'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super(GradesForms, self).__init__(*args, **kwargs)
+        self.fields['grade'].label = _("Grade")
+        self.fields['color'].label = _("Color")

@@ -1,7 +1,9 @@
 {% extends 'Journal/base.html' %}
 
+{% load i18n %}
+
 {% block title %}
-    Users management
+    {% trans 'Users management' %}
 {% endblock %}
 
 {% load crispy_forms_filters %}
@@ -9,14 +11,14 @@
 {% block body %}
     <div class="card">
         <div class="card-body">
-            <h3 class="display-3">Users management</h3>
+            <h3 class="display-3">{% trans 'Users management' %}</h3>
         </div>
     </div>
 
     {% if error %}
         <div class="col-md-4">
             <div class="alert alert-danger" role="alert">
-                There was an error adding a new user
+                {% trans 'There was an error adding a new user' %}
 
                 <!--
                 With username:
@@ -51,7 +53,7 @@
     {% if success %}
         <div class="col-md-2">
             <div class="alert alert-success" role="alert">
-                New user added successfully
+                {% trans 'New user added successfully' %}
             </div>
         </div>
     {% endif %}
@@ -64,7 +66,7 @@
                         <h5 class="mb-0">
                             <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo"
                                     aria-controls="collapseTwo">
-                                Adding a new user
+                                {% trans 'Adding a new user' %}
                             </button>
                         </h5>
                     </div>
@@ -117,7 +119,7 @@
 
                                 <br/>
                                 <button type="submit" class="btn btn-outline-dark col-md-1">
-                                    Add
+                                    {% trans 'Add' %}
                                 </button>
 
                             </form>
@@ -134,60 +136,60 @@
             <div class="row">
                 {% for u in users %}
 
-                    <div class="col-sm-3">
+                    <div class="col-sm">
                         <div class="card" style="width: 18rem;">
                             <div class="card-body">
-                                <h5 class="card-title">User "{{ u.username }}"
+                                <h5 class="card-title">{% trans 'User' %} "{{ u.username }}"
                                     {% if request.user.username == u.username %}
-                                        (You)
+                                        ({% trans 'You' %})
                                     {% endif %}</h5>
                                 <h6 class="card-subtitle mb-2 text-muted">
 
                                     {% if u.first_name %}
-                                        First name: {{ u.first_name }}
+                                        {% trans 'First name:' %} {{ u.first_name }}
                                     {% else %}
-                                        First name is not defined
+                                        {% trans 'First name is not defined' %}
                                     {% endif %}
 
                                     <br/>
 
                                     {% if u.last_name %}
-                                        Last name: {{ u.last_name }}
+                                        {% trans 'Last name:' %} {{ u.last_name }}
                                     {% else %}
-                                        Last name is not defined
+                                        {% trans 'Last name is not defined' %}
                                     {% endif %}
 
                                     <br/>
 
                                     {% if u.email %}
-                                        Email: {{ u.email }}
+                                        {% trans 'Email:' %} {{ u.email }}
                                     {% endif %}
 
                                     <br/>
                                     <br/>
 
                                     {% if u.groups.first.name %}
-                                        Group: {{ u.groups.first.name }}
+                                        {% trans 'Group:' %} {{ u.groups.first.name }}
 
                                     {% else %}
-                                        No group defined for this user!
+                                        {% trans 'No group defined for this user!' %}
 
                                     {% endif %}
 
                                     <br/>
                                     {% if u.groups.get.name == 'Student' %}
                                         {% if u.schoolclass_set.first %}
-                                            Class {{ u.schoolclass_set.first.title }} student.
+                                            {% trans 'Class' %} {{ u.schoolclass_set.first.title }} {% trans 'Student' %}.
 
                                         {% else %}
-                                            No class defined for this user.
+                                            {% trans 'No class defined for this user' %}.
                                         {% endif %}
                                     {% endif %}
 
                                     <br/>
                                 </h6>
 
-                                <a href="{% url 'profile' u.id %}" class="card-link">Profile -></a>
+                                <a href="{% url 'profile' u.id %}" class="card-link">{% trans 'Profile' %} -></a>
                             </div>
                         </div>
                     </div>

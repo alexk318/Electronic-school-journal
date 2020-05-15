@@ -1,14 +1,16 @@
 {% extends 'Journal/base.html' %}
 
+{% load i18n %}
+
 {% block title %}
-    Grades management
+    {% trans 'Grades management' %}
 {% endblock %}
 
 
 {% block body %}
     <div class="card">
         <div class="card-body">
-            <h3 class="display-3">Grades management</h3>
+            <h3 class="display-3">{% trans 'Grades management' %}</h3>
         </div>
     </div>
 
@@ -20,7 +22,7 @@
                         <h5 class="mb-0">
                             <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo"
                                     aria-controls="collapseTwo">
-                                Adding a new grade
+                                {% trans 'Adding a new grade' %}
                             </button>
                         </h5>
                     </div>
@@ -41,7 +43,7 @@
 
                                 <br/>
                                 <button type="submit" class="btn btn-outline-dark col-md-1">
-                                    Add
+                                    {% trans 'Add' %}
                                 </button>
 
                             </form>
@@ -62,9 +64,9 @@
                     <div class="col-sm-3">
                         <div class="card" style="width: 18rem;">
                             <div class="card-body">
-                                <h5 class="card-title">Grade "{{ g.grade }}"</h5>
+                                <h5 class="card-title">{% trans 'Grade' %} "{{ g.grade }}"</h5>
                                 <h6 class="card-subtitle mb-2 text-muted"></h6>
-                                Color: <a style="color: {{ g.color }}">{{ g.color }}</a>
+                                {% trans 'Color' %}: <a style="color: {{ g.color }}">{{ g.color }}</a>
                                 <a href="#" class="card-link"></a>
                             </div>
                         </div>

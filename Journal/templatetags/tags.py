@@ -48,3 +48,8 @@ def get_current_week():
         current_week = 'error'
 
     return current_week
+
+
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)

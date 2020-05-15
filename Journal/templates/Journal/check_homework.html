@@ -1,17 +1,19 @@
 {% extends 'Journal/base.html' %}
 
+{% load i18n %}
+
 {% block title %}
-    Checking homework
+    {% trans 'Checking homework' %}
 {% endblock %}
 
 {% block body %}
 
     <div class="card">
         <div class="card-body">
-            <h4 class="display-4">Homework #{{ thishomework.id }}</h4>
+            <h4 class="display-4">{% trans 'Homework' %} #{{ thishomework.id }}</h4>
 
             {{ thishomework.text }}<br/>
-            For {{ thishomework.schedule.schoolclass.title }} class
+            {% trans 'For' %} {{ thishomework.schedule.schoolclass.title }} {% trans 'class' %}
         </div>
     </div>
 

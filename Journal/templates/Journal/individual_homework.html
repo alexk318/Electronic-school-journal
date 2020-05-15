@@ -1,7 +1,9 @@
 {% extends 'Journal/base.html' %}
 
+{% load i18n %}
+
 {% block title %}
-    Individual homework
+    {% trans 'Individual homework' %}
 {% endblock %}
 
 {% load crispy_forms_filters %}
@@ -11,7 +13,7 @@
     <div class="card">
         <div class="card-body">
 
-            <h3 class="display-3">Individual homework</h3>
+            <h3 class="display-3">{% trans 'Individual homework' %}</h3>
 
             {% if request.user.groups.get.name == 'Teacher' %}
 
@@ -21,7 +23,7 @@
                         {% if schoolclass %}
                             {{ schoolclass.title }}
                         {% else %}
-                            Class
+                            {% trans 'Class' %}
                         {% endif %}
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -42,7 +44,7 @@
                                 {{ student.first_name }}  {{ student.last_name }}
 
                             {% else %}
-                                Student
+                                {% trans 'Student' %}
                             {% endif %}
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -71,7 +73,7 @@
 
                         <br/>
                         <button type="submit" class="btn btn-outline-dark">
-                            Add
+                            {% trans 'Add' %}
                         </button>
                     </form>
 
@@ -87,14 +89,14 @@
                 {% for ih in myihomeworks %}
 
                     <div class="col-sm">
-                        <div class="card" style="width: 18rem;">
+                        <div class="card" style="width: 26rem">
 
                             {% if request.user.groups.get.name != 'Student' %}
                                 <div class="card-header">
                                     <ul class="nav nav-tabs card-header-tabs">
                                         <li class="nav-item">
                                             <a class="nav-link active"
-                                               href="{% url 'close_individualhomework' ih.id %}">Close</a>
+                                               href="{% url 'close_individualhomework' ih.id %}">{% trans 'Close' %}</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -102,7 +104,7 @@
 
                             <div class="card-body">
 
-                                <h5 class="card-title">Homework for
+                                <h5 class="card-title">{% trans 'Homework for' %}
                                     {{ ih.student.first_name }} {{ ih.student.last_name }}</h5>
                                 <h6 class="card-subtitle mb-2 text-muted">
                                     {{ ih.text }}
@@ -120,10 +122,10 @@
                                         <form action="{% url 'assign_grade' ih.id 0 0 schoolclass_id student_id %}"
                                               method="post">
 
-                                            <label for="comment">Comment:</label>
+                                            <label for="comment">{% trans 'Comment' %}:</label>
                                             <textarea required id="comment" name="comment"></textarea><br/>
 
-                                            <label for="choosegrade">Grade:</label>
+                                            <label for="choosegrade">{% trans 'Grade' %}:</label>
                                             <select id="choosegrade" name="choosegrade" class="form-control">
                                                 {% for grade in grades %}
                                                     <option style="color: {{ grade.color }}"
@@ -133,7 +135,7 @@
                                             <br/>
 
                                             <button type="submit" class="btn btn-outline-dark">
-                                                Send
+                                                {% trans 'Submit' %}
                                             </button>
 
                                         </form>
@@ -143,7 +145,7 @@
 
                                 {% if request.user.groups.get.name == 'Admin' %}
                                     <div class="dropdown-divider"></div>
-                                    Teacher -
+                                    {% trans 'Teacher' %} -
                                     <a href="{% url 'profile' ih.teacher.user.id %}" class="card-link">{{ ih.teacher.user.first_name }}  {{ ih.teacher.user.last_name }}</a>
                                 {% endif %}
                             </div>
@@ -173,7 +175,7 @@
                                     {% if request.user.groups.get.name == 'Teacher' or request.user.groups.get.name == 'Admin' %}
                                         {% if ih.file.name == '' %}
 
-                                            {{ ih.student.first_name }} hasn't sent anything yet
+                                            {{ ih.student.first_name }} {% trans "hasn't sent anything yet" %}
 
                                         {% else %}
                                             <a href="{% url 'download' ih.file.path ih.get_filename %}">{{ ih.get_filename }}</a>

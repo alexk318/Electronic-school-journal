@@ -1,28 +1,30 @@
 {% extends 'Journal/base.html' %}
 
+{% load i18n %}
+
 {% block title %}
-    Lessons management
+    {% trans 'Lessons management' %}
 {% endblock %}
 
 {% block body %}
     <div class="card">
         <div class="card-body">
-            <h3 class="display-3">Lessons management</h3>
+            <h3 class="display-3">{% trans 'Lessons management' %}</h3>
         </div>
     </div>
 
     {% if error %}
-        <div class="col-md-4">
+        <div class="col-md">
             <div class="alert alert-danger" role="alert">
-                There was an error adding a new lesson
+                {% trans 'There was an error adding a new lesson' %}
             </div>
         </div>
     {% endif %}
 
     {% if success %}
-        <div class="col-md-3">
+        <div class="col-md">
             <div class="alert alert-success" role="alert">
-                New lesson added successfully
+                {% trans 'New lesson added successfully' %}
             </div>
         </div>
     {% endif %}
@@ -35,7 +37,7 @@
                         <h5 class="mb-0">
                             <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo"
                                     aria-controls="collapseTwo">
-                                Adding a new lesson
+                                {% trans 'Adding a new lesson' %}
                             </button>
                         </h5>
                     </div>
@@ -58,7 +60,7 @@
 
                                 <br/>
                                 <button type="submit" class="btn btn-outline-dark col-md-1">
-                                    Add
+                                    {% trans 'Add' %}
                                 </button>
 
                             </form>
@@ -79,7 +81,7 @@
                     <div class="col-sm-3">
                         <div class="card" style="width: 18rem;">
                             <div class="card-body">
-                                <h5 class="card-title">Lesson "{{ l.title }}"</h5>
+                                <h5 class="card-title">{% trans 'Lesson' %} "{{ l.title }}"</h5>
                                 <h6 class="card-subtitle mb-2 text-muted"></h6>
 
                                 <a href="#" class="card-link"></a>

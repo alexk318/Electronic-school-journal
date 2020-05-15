@@ -1,7 +1,9 @@
 {% extends 'Journal/base.html' %}
 
+{% load i18n %}
+
 {% block title %}
-    Home work
+    {% trans 'Class homework' %}
 {% endblock %}
 
 {% load crispy_forms_filters %}
@@ -9,7 +11,7 @@
 {% block body %}
     <div class="card">
         <div class="card-body">
-            <h3 class="display-3">Class homework</h3>
+            <h3 class="display-3">{% trans 'Class homework' %}</h3>
         </div>
     </div>
     {% if request.user.groups.get.name == 'Teacher' %}
@@ -19,17 +21,17 @@
 
 
                 {% if error %}
-                    <div class="col-md-3">
+                    <div class="col-md">
                         <div class="alert alert-danger" role="alert">
-                            There was an error adding a new homework
+                            {% trans 'There was an error adding a new homework' %}
                         </div>
                     </div>
                 {% endif %}
 
                 {% if success %}
-                    <div class="col-md-2">
+                    <div class="col-md">
                         <div class="alert alert-success" role="alert">
-                            New homework added successfully
+                            {% trans 'New homework added successfully' %}
                         </div>
                     </div>
                 {% endif %}
@@ -40,7 +42,7 @@
                             <h5 class="mb-0">
                                 <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo"
                                         aria-controls="collapseTwo">
-                                    Homework assignment
+                                    {% trans 'Homework assignment' %}
                                 </button>
                             </h5>
                         </div>
@@ -70,7 +72,7 @@
 
                                     <br/>
                                     <button type="submit" class="btn btn-outline-dark col-md-1">
-                                        Add
+                                        {% trans 'Add' %}
                                     </button>
                                 </form>
 
@@ -102,7 +104,7 @@
                                     <ul class="nav nav-tabs card-header-tabs">
                                         <li class="nav-item">
                                             <a class="nav-link active"
-                                               href="{% url 'close_homework' h.id %}">Close</a>
+                                               href="{% url 'close_homework' h.id %}">{% trans 'Close' %}</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -116,7 +118,7 @@
                                     </h6>
 
                                     {% if request.user.groups.get.name == 'Admin' %}
-                                        Teacher -
+                                        {% trans 'Teacher' %} -
                                         <a href="{% url 'profile' h.teacher.user.id %}"
                                            class="card-link">{{ h.teacher.user.first_name }} {{ h.teacher.user.last_name }}</a>
                                     {% endif %}
@@ -125,16 +127,16 @@
                                 {% if h.isWithFile %}
                                     <div class="card-header">
                                         {% if h.submithomework_set.all|length == 0 %}
-                                            No one has sent homework yet
+                                            {% trans 'No one has sent homework yet' %}
 
                                         {% elif h.submithomework_set.all|length == 1 %}
-                                            1 work
+                                            1 {% trans 'work' %}
                                             <a href="{% url 'check_homework' h.id %}"
                                                class="btn btn-link"
                                                style="margin-left:15px">--></a>
 
                                         {% else %}
-                                            {{ h.submithomework_set.all|length }} works
+                                            {{ h.submithomework_set.all|length }} {% trans 'works' %}
                                             <a href="{% url 'check_homework' h.id %}"
                                                class="btn btn-link"
                                                style="margin-left:15px">--></a>
@@ -161,7 +163,7 @@
                         <div class="col-sm">
                             <div class="card" style="width: 26rem">
                                 <div class="card-body">
-                                    <h5 class="card-title">Homework for "{{ homework.schedule.schoolclass.title }}"
+                                    <h5 class="card-title">{% trans 'Homework for' %} "{{ homework.schedule.schoolclass.title }}"
                                         - {{ homework.schedule.lesson }}</h5>
                                     <h6 class="card-subtitle mb-2 text-muted">
                                         {{ homework.text }}
@@ -196,7 +198,7 @@
                                                     <input type="file" name="homework_file" required>
 
 
-                                                    <button class="btn btn-secondary" type="submit">Submit</button>
+                                                    <button class="btn btn-secondary" type="submit">{% trans 'Submit' %}</button>
                                                 </form>
                                             {% else %}
                                                 {% for submitted_homework in homework.submithomework_set.all %}
@@ -208,7 +210,7 @@
                                             {% endif %}
 
                                         {% else %}
-                                            * With file submit *
+                                            {% trans 'With file submit' %}
 
                                         {% endif %}
 

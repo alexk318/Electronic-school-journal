@@ -39,18 +39,26 @@
 
             </div>
 
+            {% load tags %}
+
             {% if class_title %}
                 <div class="btn-group">
                     <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {{ month_title }}
+
+                            {% for month in months_choose %}
+                                {% if months_choose|get_item:month == month_title %}
+                                    {{ month }}
+                                {% endif %}
+                            {% endfor %}
+
                         </button>
 
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            {% for month in months %}
+                            {% for month in months_choose %}
                                 <a class="dropdown-item"
-                                   href="{% url 'class_schedule' class_title month week_numbers %}">{{ month }}</a>
+                                   href="{% url 'class_schedule' class_title months_choose|get_item:month week_numbers %}">{{ month }}</a>
                             {% endfor %}
                         </div>
 
@@ -82,7 +90,7 @@
                 {% if error %}
                     <div class="col-md-4">
                         <div class="alert alert-danger" role="alert">
-                            There was an error adding a new class
+                            {% trans 'There was an error adding a new schedule' %}
                         </div>
                     </div>
                 {% endif %}
@@ -90,82 +98,85 @@
                 {% if success %}
                     <div class="col-md-2">
                         <div class="alert alert-success" role="alert">
-                            New class added successfully
+                            {% trans 'New schedule added successfully' %}
                         </div>
                     </div>
                 {% endif %}
 
 
                 {% if request.user.groups.get.name == 'Admin' %}
-                <div class="accordion" id="accordion">
-                    <div class="card">
-                        <div class="card-header" id="headingTwo">
-                            <h5 class="mb-0">
-                                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo"
-                                        aria-controls="collapseTwo">
-                                    Adding a new schedule
-                                </button>
-                            </h5>
-                        </div>
-
-                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                            <div class="card-body">
-
-                                <form action="{% url 'class_schedule' class_title 'September' '1-7' %}" method="post">
-                                    {% csrf_token %}
-                                    <div class="form-row">
-                                        <div class="form-group col-md-2 mb-0">
-                                            {{ form.lesson|as_crispy_field }}
-                                        </div>
-                                        <div class="form-group col-md-2 mb-0">
-                                            {{ form.lessonteacher|as_crispy_field }}
-                                        </div>
-                                    </div>
-
-                                    <br/>
-                                    <div class="form-row">
-                                        {{ form.day|as_crispy_field }}
-
-
-                                    </div>
-
-                                    <br/>
-
-                                    <div class="form-row">
-
-                                        <label for="date">Date</label>
-
-                                        <div class="col-md-2">
-                                            <input type="date" id="date" name="date" class="form-control" required/><br />
-                                        </div>
-
-                                        <label for="start">Start</label>
-
-                                        <div class="col-md-2">
-                                            <input type="time" id="start" name="start" class="form-control" required/>
-                                        </div>
-
-                                        <label for="end">End</label>
-
-                                        <div class="col-md-2">
-                                            <input type="time" id="end" name="end" class="form-control" required/>
-                                        </div>
-
-                                    </div>
-
-                                    <br/>
-
-                                    <button type="submit" class="btn btn-outline-dark col-md-1">
-                                        Add
+                    <div class="accordion" id="accordion">
+                        <div class="card">
+                            <div class="card-header" id="headingTwo">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo"
+                                            aria-controls="collapseTwo">
+                                        {% trans 'Adding a new schedule' %}
                                     </button>
+                                </h5>
+                            </div>
 
-                                </form>
+                            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+                                 data-parent="#accordion">
+                                <div class="card-body">
 
+                                    <form action="{% url 'class_schedule' class_title 'September' '1-7' %}"
+                                          method="post">
+                                        {% csrf_token %}
+                                        <div class="form-row">
+                                            <div class="form-group col-md-2 mb-0">
+                                                {{ form.lesson|as_crispy_field }}
+                                            </div>
+                                            <div class="form-group col-md-2 mb-0">
+                                                {{ form.lessonteacher|as_crispy_field }}
+                                            </div>
+                                        </div>
+
+                                        <br/>
+                                        <div class="form-row">
+                                            {{ form.day|as_crispy_field }}
+
+
+                                        </div>
+
+                                        <br/>
+
+                                        <div class="form-row">
+
+                                            <label for="date">{% trans 'Date' %}</label>
+
+                                            <div class="col-md-2">
+                                                <input type="date" id="date" name="date" class="form-control" required/><br/>
+                                            </div>
+
+                                            <label for="start">{% trans 'Start' %}</label>
+
+                                            <div class="col-md-2">
+                                                <input type="time" id="start" name="start" class="form-control"
+                                                       required/>
+                                            </div>
+
+                                            <label for="end">{% trans 'End' %}</label>
+
+                                            <div class="col-md-2">
+                                                <input type="time" id="end" name="end" class="form-control" required/>
+                                            </div>
+
+                                        </div>
+
+                                        <br/>
+
+                                        <button type="submit" class="btn btn-outline-dark col-md-1">
+                                            {% trans 'Add' %}
+                                        </button>
+
+                                    </form>
+
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                    {% endif %}
+                {% endif %}
 
             {% endif %}
 
@@ -173,12 +184,21 @@
 
 
     <div class="row row row-cols-1 row-cols-md-2 row-cols-lg-5">
+
+        {% load tags %}
+
         {% for day in days %}
+
 
             <div class="col">
                 <div class="card">
                     <div class="card-body">
-                        <p class="text-muted mb-1"> {{ day.title }}
+                        <p class="text-muted mb-1">
+                            {% for day_choose in days_choose %}
+                                {% if day.title == days_choose|get_item:day_choose %}
+                                    {{ day_choose }}
+                                {% endif %}
+                            {% endfor %}
                         </p>
 
                         {% for schedule_day in schedules_days %}
@@ -211,7 +231,9 @@
                 </div>
             </div>
 
+
         {% endfor %}
+
     </div>
 
 

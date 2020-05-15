@@ -19,8 +19,162 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 #: .\Journal\templates\Journal\index.html:9
+
+msgid "No students defined for this class"
+msgstr "Не один ученик не определен для этого класса"
+
+msgid "You"
+msgstr "Вы"
+
+msgid "Users management"
+msgstr "Управление пользователями"
+
+msgid "Title"
+msgstr "Название"
+
+msgid "Date"
+msgstr "Дата"
+
+msgid "Start"
+msgstr "Начало"
+
+msgid "End"
+msgstr "Конец"
+
+msgid "User"
+msgstr "Пользователь"
+
+msgid "Adding a new user"
+msgstr "Добавление нового пользователя"
+
+msgid "New user added successfully"
+msgstr "Новый пользователь успешно добавлен"
+
+msgid "Add student to class"
+msgstr "Назначение ученика к классу"
+
+msgid "Profile"
+msgstr "Профиль"
+
+msgid "Comment"
+msgstr "Комментарий"
+
+msgid "Lesson"
+msgstr "Урок"
+
+msgid "Adding a new lesson"
+msgstr "Добавление нового урока"
+
+msgid "There was an error adding a new lesson"
+msgstr "При добавлении нового урока произошла ошибка"
+
+msgid "New lesson added successfully"
+msgstr "Новый урок успешно добавлен"
+
+msgid "Lessons management"
+msgstr "Управление уроками"
+
+msgid "hasn't sent anything yet"
+msgstr "Еще ничего не отправил(-а)"
+
+msgid "Choose class"
+msgstr "Выберите класс"
+
+msgid "Submit"
+msgstr "Отправить"
+
+msgid "With file submit"
+msgstr "С отправкой файла"
+
+msgid "Adding a new grade"
+msgstr "Добавление новой оценки"
+
+msgid "Homework for"
+msgstr "Домашнее задание для"
+
+msgid "work"
+msgstr "работа"
+
+msgid "works"
+msgstr "работ"
+
+msgid "No one has sent homework yet"
+msgstr "Еще никто не сделал домашнее заданеи"
+
+msgid "Homework assignment"
+msgstr "Назначение домашней работы"
+
+msgid "There was an error adding a new homework"
+msgstr "При добавлении новой домашней работы произошла ошибка"
+
+msgid "New homework added successfully"
+msgstr "Домашняя работа успешно добавлена"
+
+msgid "Grade"
+msgstr "Оценка"
+
+msgid "Close"
+msgstr "Закрыть"
+
+msgid "Color"
+msgstr "Цвет"
+
+msgid "Class"
+msgstr "Класс"
+
+msgid "Grades management"
+msgstr "Управление оценками"
+
 msgid "Electronic journal"
 msgstr "Электронный журнал"
+
+msgid "Add"
+msgstr "Добавить"
+
+msgid "There was an error adding a new schedule"
+msgstr "При добавлении расписание произошла ошибка"
+
+msgid "Adding a new schedule"
+msgstr "Добавление нового расписания"
+
+msgid "New schedule added successfully"
+msgstr "Новое расписание успешно добавлено"
+
+msgid "Adding a new class"
+msgstr "Добавление нового класса"
+
+msgid "There was an error adding a new class"
+msgstr "При создании класса произошла ошибка"
+
+msgid "New class added successfully"
+msgstr "Новый класс успешно добавлен"
+
+msgid "Classes management"
+msgstr "Управление классами"
+
+msgid "Checking homework"
+msgstr "Проверка домашней работы"
+
+msgid "For"
+msgstr "Для"
+
+msgid "class"
+msgstr "класса"
+
+msgid "Homework"
+msgstr "Домашнее задание"
+
+msgid "Your token"
+msgstr "Ваше токен"
+
+msgid "You currently do not have a token"
+msgstr "У вас не имеется токена в данный момент"
+
+msgid "Generate token"
+msgstr "Сгенерировать токен"
+
+msgid "Destroy my token"
+msgstr "Уничтожить мой токен"
 
 msgid "Electronic school journal"
 msgstr "Электронный школьный журнал"
@@ -82,9 +236,6 @@ msgstr "Вперёд"
 msgid "Home page"
 msgstr "Начальная страница"
 
-msgid "Profile"
-msgstr "Профиль"
-
 msgid "The entered data is incorrect"
 msgstr "Введёные данные неверные"
 
@@ -97,32 +248,23 @@ msgstr "Расписание"
 msgid "Management"
 msgstr "Управление"
 
-msgid "Classes management"
-msgstr "Управление классами"
-
-msgid "Lessons management"
-msgstr "Управление уроками"
-
-msgid "Users management"
-msgstr "Управление пользователями"
-
-msgid "Homework"
-msgstr "Домашнее задание"
-
 msgid "Class homework"
 msgstr "Домашнее задание для классов"
 
 msgid "Individual homework"
 msgstr "Индивидуальное домашнее задание"
 
-msgid "Log out"
-msgstr "Выйти"
-
 msgid "Your profile"
 msgstr "Ваш профиль"
 
 msgid "s profile"
 msgstr " - Профиль"
+
+msgid "First name is not defined"
+msgstr "Имя не определено"
+
+msgid "Last name is not defined"
+msgstr "Фамилия не определена"
 
 msgid "Username:"
 msgstr "Имя пользователя:"
@@ -139,14 +281,20 @@ msgstr "Электронный адрес:"
 msgid "Administrator"
 msgstr "Администратор"
 
+msgid "Text"
+msgstr "Текст"
+
 msgid "Teacher"
 msgstr "Учитель"
 
-msgid "сlass"
-msgstr "класс"
+msgid "Students"
+msgstr "Ученики"
 
-msgid "Student, class not assigned"
-msgstr "Ученика, класс не назначен"
+msgid "Day"
+msgstr "День недели"
+
+msgid "Student"
+msgstr "Ученик"
 
 msgid "Date joined"
 msgstr "Дата присоединения"
@@ -163,6 +311,12 @@ msgstr "При добавлении пользователя произошла 
 msgid "Editing"
 msgstr "Редактирование"
 
+msgid "No class defined for this user"
+msgstr "Класс не определен для этого пользователя"
+
+msgid "No group defined for this user!"
+msgstr "Не одна группа не определена для этого пользователя"
+
 msgid "Group:"
 msgstr "Группа"
 
@@ -172,23 +326,8 @@ msgstr "Пароль"
 msgid "Edit"
 msgstr "Применить"
 
-msgid "Choose class"
-msgstr "Выбрать класс"
-
-msgid "January"
-msgstr "Январь"
-
 msgid "February"
 msgstr "Февраль"
-
-msgid "Март"
-msgstr "March"
-
-msgid "April"
-msgstr "Апрель"
-
-msgid "May"
-msgstr "Май"
 
 msgid "June"
 msgstr "Июнь"

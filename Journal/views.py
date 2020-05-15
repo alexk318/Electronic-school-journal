@@ -106,8 +106,18 @@ def class_schedule(request, class_title, month_title, week_numbers):
         schoolclass = SchoolClass.objects.filter(title=class_title).first()
         all_schedules = Schedule.objects.filter(schoolclass=schoolclass).all().order_by('start')
 
+        days_choose = {_('Monday'): 'Monday', _('Tuesday'): 'Tuesday', _('Wednesday'): 'Wednesday',
+                       _('Thursday'): 'Thursday', _('Friday'): 'Friday', _('Saturday'): 'Saturday',
+                       _('Sunday'): 'Sunday', }
+
         days = Day.objects.all()
+
         alllessons = Lesson.objects.all()
+
+        months_choose = {_('January'): 'January', _('February'): 'February', _('March'): 'March', _('April'): 'April',
+                         _('May'): 'May', _('June'): 'June', _('Jule'): 'Jule', _('August'): 'August',
+                         _('September'): 'September',
+                         _('October'): 'October', _('November'): 'November', _('December'): 'December', }
 
         months = {'January': 1, 'February': 2, 'March': 3, 'April': 4, 'May': 5, 'June': 6, 'Jule': 7, 'August': 8,
                   'September': 9, 'October': 10, 'November': 11, 'December': 12}
@@ -140,9 +150,11 @@ def class_schedule(request, class_title, month_title, week_numbers):
         return render(request, 'Journal/schedule.html', {'titles': sorted_titles,
                                                          'class_title': class_title,
                                                          'all_schedules': all_schedules,
+                                                         'days_choose': days_choose,
                                                          'days': days,
                                                          'lessons': alllessons,
                                                          'schedules_days': schedules_days,
+                                                         'months_choose': months_choose,
                                                          'months': months,
                                                          'month_title': month_title,
                                                          'weeks': weeks,

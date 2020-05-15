@@ -1,28 +1,30 @@
 {% extends 'Journal/base.html' %}
 
+{% load i18n %}
+
 {% block title %}
-    Classes management
+    {% trans 'Classes management' %}
 {% endblock %}
 
 {% block body %}
     <div class="card">
         <div class="card-body">
-            <h3 class="display-3">Classes management</h3>
+            <h3 class="display-3">{% trans 'Classes management' %}</h3>
         </div>
     </div>
 
     {% if error %}
-        <div class="col-md-4">
+        <div class="col-md">
             <div class="alert alert-danger" role="alert">
-                There was an error adding a new class
+                {% trans 'There was an error adding a new class' %}
             </div>
         </div>
     {% endif %}
 
     {% if success %}
-        <div class="col-md-2">
+        <div class="col-md">
             <div class="alert alert-success" role="alert">
-                New class added successfully
+                {% trans 'New class added successfully' %}
             </div>
         </div>
     {% endif %}
@@ -35,7 +37,7 @@
                         <h5 class="mb-0">
                             <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo"
                                     aria-controls="collapseTwo">
-                                Adding a new class
+                                {% trans 'Adding a new class' %}
                             </button>
                         </h5>
                     </div>
@@ -58,7 +60,7 @@
 
                                 <br/>
                                 <button type="submit" class="btn btn-outline-dark col-md-1">
-                                    Add
+                                    {% trans 'Add' %}
                                 </button>
 
                             </form>
@@ -76,11 +78,11 @@
             <div class="row">
                 {% for c in schoolclasses %}
 
-                    <div class="col-sm-3">
+                    <div class="col-sm">
                         <div class="card" style="width: 18rem;">
                             <div class="card-body">
                                 <h5 class="card-title">
-                                    <a href="{% url 'thisclass' c.id %}" class="card-link">Class {{ c.title }}</a>
+                                    <a href="{% url 'thisclass' c.id %}" class="card-link">{{ c.title }} {% trans 'Class' %}</a>
                                 </h5>
 
                                 <h6 class="card-subtitle mb-2 text-muted">

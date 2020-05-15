@@ -1,12 +1,14 @@
 {% extends 'Journal/base.html' %}
 
-{% block title %}Class {{ curr_class.title }}{% endblock %}
+{% load i18n %}
+
+{% block title %}{% trans 'Class' %} {{ curr_class.title }}{% endblock %}
 
 {% block body %}
 
     <div class="card">
         <div class="card-body">
-            <h3 class="display-3">Class {{ curr_class.title }}</h3>
+            <h3 class="display-3">{% trans 'Class' %} {{ curr_class.title }}</h3>
         </div>
     </div>
 
@@ -20,9 +22,9 @@
                             <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo"
                                     aria-controls="collapseTwo">
                                 {% if students %}
-                                    Students
+                                    {% trans 'Students' %}
                                 {% else %}
-                                    No students defined for this class
+                                    {% trans 'No students defined for this class' %}
                                 {% endif %}
                             </button>
                         </h5>
@@ -42,7 +44,7 @@
 
                                                 </h6>
 
-                                                <a href="{% url 'profile' student.id %}" class="card-link">Profile</a>
+                                                <a href="{% url 'profile' student.id %}" class="card-link">{% trans 'Profile' %}</a>
                                             </div>
                                         </div>
                                     </div>
@@ -68,7 +70,7 @@
                         <h5 class="mb-0">
                             <button class="btn btn-link" data-toggle="collapse" data-target="#collapseThree"
                                     aria-controls="collapseTwo">
-                                Add student to class
+                                {% trans 'Add student to class' %}
                             </button>
                         </h5>
                     </div>
@@ -88,7 +90,7 @@
 
                                 <br/>
                                 <button type="submit" style="margin-left: 12px" class="btn btn-outline-dark col-md-1">
-                                    Add
+                                    {% trans 'Add' %}
                                 </button>
 
                             </form>
@@ -106,7 +108,7 @@
         <div class="card-body">
             <form action="{% url 'class_delete' curr_class.id %}">
                 <button type="submit" class="btn btn-outline-danger">
-                    Delete
+                    {% trans 'Delete' %}
                 </button>
             </form>
         </div>
