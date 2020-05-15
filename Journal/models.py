@@ -89,7 +89,7 @@ class SubmitHomework(models.Model):
 
 class IndividualHomework(models.Model):
     student = models.ForeignKey(User, on_delete=models.CASCADE, default="", null=True)
-    text = models.TextField(default="", null=True)
+    text = models.TextField(default="")
 
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, default="")
 
