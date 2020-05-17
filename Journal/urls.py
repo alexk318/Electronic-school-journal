@@ -36,7 +36,7 @@ urlpatterns = [
 
     path('journal/homework/check/<int:homework_id>', views.check_homework, name='check_homework'),
 
-    path('journal/download/<str:filepath>/<str:filename>', views.download, name='download'),
+    path('journal/download/<int:ih_id>/<int:sh_id>', views.download, name='download'),
 
     path('journal/homework/individual/<int:schoolclass_id>/<int:student_id>', views.individual_homework,
          name='individual_homework'),

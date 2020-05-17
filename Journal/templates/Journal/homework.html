@@ -203,7 +203,7 @@
                                             {% else %}
                                                 {% for submitted_homework in homework.submithomework_set.all %}
                                                     {% if submitted_homework.student == request.user %}
-                                                        <a href="{% url 'download' submitted_homework.file.path submitted_homework.get_filename %}">{{ submitted_homework.get_filename }}</a>
+                                                        <a href="{% url 'download' 0 submitted_homework.id %}">{{ submitted_homework.get_filename }}</a>
                                                     {% endif %}
                                                 {% endfor %}
 

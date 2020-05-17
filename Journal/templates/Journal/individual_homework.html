@@ -165,7 +165,7 @@
                                                 <button class="btn btn-secondary" type="submit">Submit</button>
                                             </form>
                                         {% else %}
-                                            <a href="{% url 'download' ih.file.path ih.get_filename %}">{{ ih.get_filename }}</a>
+                                            <a href="{% url 'download' ih.id 0 %}">{{ ih.get_filename }}</a>
                                         {% endif %}
 
                                     {% else %}
@@ -178,7 +178,7 @@
                                             {{ ih.student.first_name }} {% trans "hasn't sent anything yet" %}
 
                                         {% else %}
-                                            <a href="{% url 'download' ih.file.path ih.get_filename %}">{{ ih.get_filename }}</a>
+                                            <a href="{% url 'download' ih.id 0 %}">{{ ih.get_filename }}</a>
 
                                         {% endif %}
                                     {% endif %}

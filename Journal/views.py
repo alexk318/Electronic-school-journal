@@ -403,7 +403,15 @@ def assign_grade(request, ih_id, submithomework_id, homework_id, schoolclass_id,
 
 
 @login_required(login_url='/login/')
-def download(request, filepath, filename):
+def download(request, ih_id, sh_id):
+    if ih_id != 0:
+        h = IndividualHomework.objects.filter(id=ih_id).first()
+    else:
+        h = SubmitHomework.objects.filter(id=sh_id).first()
+
+    filepath = h.file.path
+    filename = h.get_filename()
+
     with open(filepath, 'rb') as fh:
         response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
         response['Content-Disposition'] = "inline; filename=" + filename
