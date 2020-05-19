@@ -28,7 +28,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title">{{ submithomework.student.first_name }} {{ submithomework.student.last_name }}</h5>
                                     <p class="card-text"><a
-                                            href="{% url 'download' submithomework.file.path submithomework.get_filename %}">{{ submithomework.get_filename }}</a>
+                                            href="{% url 'download' 0 submithomework.id %}">{{ submithomework.get_filename }}</a>
                                     </p>
 
                                     {% if request.user.groups.get.name != 'Admin' %}
@@ -74,7 +74,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title">{{ submithomework.student.first_name }} {{ submithomework.student.last_name }}</h5>
                                     <p class="card-text"><a
-                                            href="{% url 'download' submithomework.file.path submithomework.get_filename %}">{{ submithomework.get_filename }}</a>
+                                            href="{% url 'download' 0 submithomework.id %}">{{ submithomework.get_filename }}</a>
                                     </p>
 
                                     {{ submithomework.comment }}
