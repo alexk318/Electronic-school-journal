@@ -53,5 +53,20 @@
         </div>
     </div>
 
+    {% if urlpatterns %}
+
+        <div class="card">
+            <div class="card-body">
+
+                {% for u in urlpatterns %}
+                    {{ u }}
+                    <br />
+                {% endfor %}
+
+            </div>
+        </div>
+
+    {% endif %}
+
 
 {% endblock %}

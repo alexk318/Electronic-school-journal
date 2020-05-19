@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.models import User
 
+from .urlsrest import urlpatterns
+
 from PIL import Image
 
 import re
@@ -620,7 +622,7 @@ def api(request):
         token = Token.objects.filter(user=request.user).first()
 
         if request.method == 'GET':
-            return render(request, 'Journal/api.html', {'token': token})
+            return render(request, 'Journal/api.html', {'token': token, 'urlpatterns': urlpatterns})
         else:
             if token is not None:
                 token.delete()
