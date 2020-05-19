@@ -5,4 +5,4 @@ db.sqlite3
 __pycache__
 JournalBase/__pycache__
 Journal/__pycache__
-
+venv
